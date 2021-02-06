@@ -10,6 +10,9 @@ This is CSCI3100 project
 
 ## Collaboration
 
+Work on the respective branch according to work division.
+Create pull request when ever you want to merge things to main branch.
+
 ## UI libraries used
 
 - [styled-components](https://github.com/styled-components/styled-components)
