@@ -12,7 +12,7 @@ This is CSCI3100 project
 
 - main branch is for deployment.
 - Work on the respective branch according to work division.
-- Create pull request when ever you want to merge things to main branch.
+- Create pull request when ever you want to merge things to the main branch.
 - Commit your code only after you have tested it.
 
 ## UI libraries used
