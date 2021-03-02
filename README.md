@@ -8,6 +8,7 @@ This is CSCI3100 project
 - Work on the respective branch according to work division.
 - Create pull request when ever you want to merge things to the main branch.
 - Commit your code only after you have tested it.
+- Prettier will be run in the pre-commit stage
 - Cite code reference in the "References" section below.
 
 ## UI libraries used
