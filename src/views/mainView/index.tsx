@@ -6,7 +6,7 @@ type Props = {
 }
 
 const MainView = (props: Props): ReactElement => {
-  const { children } = props
+  const { children } = props;
   return <AppLayout>{children}</AppLayout>
 }
 
