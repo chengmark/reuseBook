@@ -2,18 +2,14 @@
 
 This is CSCI3100 project
 
-## Pendings
-
-1. set run prettier on commit to standardize coding style
-2. config public folder
-3. API folder is from my previous work, need some modifications to fit our project
-
 ## Collaboration
 
-- main branch is for deployment.
+- Main branch is for deployment.
 - Work on the respective branch according to work division.
 - Create pull request when ever you want to merge things to the main branch.
 - Commit your code only after you have tested it.
+- Prettier will be run in the pre-commit stage
+- Cite code reference in the "References" section below.
 
 ## UI libraries used
 

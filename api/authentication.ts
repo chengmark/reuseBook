@@ -1,7 +1,8 @@
 import passport from 'passport'
 import GoogleStrategy from 'passport-google-oauth2'
 
-const GOOGLE_OAUTH_CLIENT_ID = '550291530150-51o51t1k1o57ru2slf911qg9vcikvg06.apps.googleusercontent.com'
+// add these credentials to env only
+const GOOGLE_OAUTH_CLIENT_ID = ''
 const GOOGLE_CLIENT_SECRET = ''
 const TWITTER_CLIENT_ID = ''
 const TWITTER_CLIENT_SECRET = ''
