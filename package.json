@@ -76,7 +76,7 @@
     ]
   },
   "lint-staged": {
-    "*.tsx": ["prettier --write"]
+    "*.{tsx, ts}": ["prettier --write"]
   },
   "husky": {
     "hooks": {

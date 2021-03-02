@@ -2,12 +2,6 @@
 
 This is CSCI3100 project
 
-## Pendings
-
-1. set run prettier on commit to standardize coding style
-2. config public folder
-3. API folder is from my previous work, need some modifications to fit our project
-
 ## Collaboration
 
 - Main branch is for deployment.
