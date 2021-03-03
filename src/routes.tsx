@@ -1,8 +1,11 @@
 import React, { ReactChild, ReactElement } from 'react'
-import Loadable, { LoadingComponentProps } from 'react-loadable'
 import { Redirect, Route, Switch } from 'react-router-dom'
-// import Navigation from './components/navigation'
+import Navigation from '@components/navigation'
+import AppView from './views/appView'
 import MainView from './views/mainView'
+import SearchView from './views/searchView'
+import ProfileView from './views/profileView'
+import CartView from './views/cartView'
 // import LoadingView from './views/loadingView'
 
 // const Sample = Loadable({
@@ -16,15 +19,29 @@ type Props = {
 
 const Routes = (props: Props): ReactElement => {
   return (
-    <MainView>
-      {/* <Navigation /> */}
+    <AppView>
+      <Navigation />
       <Switch>
         <Route exact path="/">
-          {/* <Sample /> */}
-          <div> test </div>
+          <MainView></MainView>
+        </Route>
+        <Route exact path="/search">
+          <SearchView>
+            <div>Search View</div>
+          </SearchView>
+        </Route>
+        <Route exact path="/profile">
+          <ProfileView>
+            <div> Profile view </div>
+          </ProfileView>
+        </Route>
+        <Route exact path="/cart">
+          <CartView>
+            <div> Shopping cart view </div>
+          </CartView>
         </Route>
       </Switch>
-    </MainView>
+    </AppView>
   )
 }
 

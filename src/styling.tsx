@@ -1,16 +1,33 @@
-// defines global custom stylings
-export const parseRGB = (hex: string, alpha?: number): string => {
-  const r = parseInt(hex.slice(1, 3), 16),
-    g = parseInt(hex.slice(3, 5), 16),
-    b = parseInt(hex.slice(5, 6), 16)
+// global stylings
 
-  if (alpha) return `rgba(${r}, ${g}, ${b}, ${alpha})`
-  return `rgba(${r}, ${g}, ${b})`
+export const COLOR = {
+  bg: {
+    light: '#FFFFFF',
+    dark: '#000000',
+  },
+  font: {
+    primary: {
+      light: '#000000',
+      dark: '#FFFFFF',
+    },
+    secondary: {
+      light: '#000000',
+      dark: '#FFFFFF',
+    },
+  },
+  divider: {
+    light: '#EBECED',
+    dark: '#EBECED',
+  },
+  active: {
+    light: 'rgba(36, 41, 46, 0.04)',
+    dark: 'rgba(36, 41, 46, 0.04)',
+  },
 }
 
-export const Transition = {
+export const TRANSITION = {
   hover: {
-    on: '0.2s',
-    off: '0.2s',
+    on: '.2s',
+    off: '.2s',
   },
 }
