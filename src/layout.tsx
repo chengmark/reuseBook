@@ -14,9 +14,15 @@ export const AppLayout = styled.div`
   width: 100%;
   grid-template-columns: ${NAV_WIDTH}px 1fr;
   grid-template-areas: 'navigation main';
+  @media (max-width: ${MEDIA_BREAK}px) {
+    height: 100%;
+    grid-template-columns: none;
+    grid-template-rows: auto ${NAV_WIDTH}px;
+    grid-template-areas: 'main' 'navigation';
+  }
 `
 
-/* navbar on left, main view on right
+/* navbar on left, main view on right (desktop version)
 ┌──┬───────────┐
 │xx│     xx    │
 │  │           │
@@ -26,17 +32,24 @@ export const AppLayout = styled.div`
 └──┴───────────┘
 */
 
+/* navbar on bottom, main view on right (mobile version)
+┌──────────────┐
+│      xx      │
+│      xx      │
+│      xx      │
+│      xx      │
+│──────────────│
+└──────────────┘
+*/
+
 export const MainLayout = styled.main.attrs({
   className: 'main-view',
 })`
-  display: grid;
   grid-area: main;
   height: 100%;
   max-height: 100vh;
   overflow: hidden;
   overflow-y: auto;
-  grid-template-columns: 1fr;
-  grid-template-rows: ${SEARCH_BAR_HEIGHT}px auto ${FOOTER_HEIGHT}px;
 `
 
 /*

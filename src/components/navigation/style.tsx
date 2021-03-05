@@ -1,31 +1,64 @@
 import styled from 'styled-components'
 import { COLOR } from '@src/styling'
-import { NAV_WIDTH } from '@src/layout'
+import { MEDIA_BREAK, NAV_WIDTH } from '@src/layout'
+import { ReactElement } from 'react'
 
 export const NavWrapper = styled.div`
   grid-area: navigation;
-  position: sticky;
+  position: relative;
   top: 0;
   left: 0;
   width: ${NAV_WIDTH}px;
   height: 100vh;
   overflow: hidden;
   overflow-y: auto;
+  border-right: 1px solid ${COLOR.divider.light};
+  @media (max-width: ${MEDIA_BREAK}px) {
+    border-right: 0px;
+    border-top: 1px solid ${COLOR.divider.light};
+    height: ${NAV_WIDTH}px;
+    width: 100%;
+  }
 `
 export const NavigationGrid = styled.div`
-  display: grid;
-  align-content: start;
-  grid-template-columns: minmax(0, 1fr);
-  grid-template-rows: auto;
-  position: fixed;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   max-width: ${NAV_WIDTH}px;
-  height: 100%;
+  height: calc(100% - 24px);
   overflow: hidden;
   overflow-y: auto;
   padding: 12px 0 12px;
-  border-right: 1px solid ${COLOR.divider.light};
+  @media (max-width: ${MEDIA_BREAK}px) {
+    flex: 1 1 1 1 1;
+    flex-direction: row;
+    height: 100%;
+    max-width: calc(100% - 24px);
+    grid-template-rows: none;
+    grid-template-columns: repeat(6, 1fr);
+    padding: 0 12px 0px 12px;
+  }
 `
+
+type Props = {
+  children: Array<ReactElement> | ReactElement
+}
+
+export const NavSection = styled.div`
+  ${(props: Props) => `
+    display: grid;
+    align-content: start;
+    grid-template-rows: auto;
+    @media (max-width: ${MEDIA_BREAK}px) {
+      max-width: fit-content;
+      grid-template-rows: none;
+      grid-template-columns: repeat(${props.children instanceof Array ? props.children.length : 1}, 72px);
+    }
+`}
+`
+
 // reference: spectrum/views/navigation/style.js

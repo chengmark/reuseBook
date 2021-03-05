@@ -22,7 +22,8 @@
     "jsx": "react-jsx"
   },
   "include": [
-    "src","common"
+    "src",
+    "common"
   ],
   "exclude": [
     "node_modules",

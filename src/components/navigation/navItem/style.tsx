@@ -1,11 +1,12 @@
-import styled, { css } from 'styled-components'
-import { NAV_WIDTH } from '@src/layout'
+import styled from 'styled-components'
 import { TRANSITION } from '@src/styling'
 import { COLOR } from '@src/styling'
 import { Link } from 'react-router-dom'
+import { MEDIA_BREAK } from '@src/layout'
 
 type Props = {
   isActive?: boolean
+  toBottom?: boolean
 }
 
 export const NavItemContainer = styled.div`
@@ -21,6 +22,14 @@ export const NavItemContainer = styled.div`
       transition: ${TRANSITION.hover.on};
       background: ${COLOR.active.light};
     }
+    ${props.toBottom ? `margin-top: auto;` : ``}
+
+    @media (max-width: ${MEDIA_BREAK}px) {
+      ${props.isActive ? ` box-shadow: 0px -3px 0px rgb(36, 41, 46) inset; ` : ``}
+      margin-top:0;
+      flex:1;
+    }
+
   `}
 `
 

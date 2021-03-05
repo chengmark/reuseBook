@@ -1,4 +1,26 @@
+import { createGlobalStyle } from 'styled-components'
+
 // global stylings
+export const GlobalStyles = createGlobalStyle`
+
+  html, body{
+    width: 100%;
+    height: 100%;
+    overflow-y: hidden;
+    overflow-x: hidden;
+  }
+
+  #root{
+    width: 100%;
+    height: 100%;
+  }
+
+  .App{
+    width: 100%;
+    height: 100%;
+  }
+
+`
 
 export const COLOR = {
   bg: {

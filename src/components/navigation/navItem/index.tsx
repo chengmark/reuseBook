@@ -1,12 +1,29 @@
+import { SvgIconTypeMap } from '@material-ui/core'
+import { OverridableComponent } from '@material-ui/core/OverridableComponent'
+import { Obj } from '@myTypes/Obj'
+import Tooltip from '@src/components/tooltip'
 import React, { ReactElement } from 'react'
+import { navIconStyle, NavItemContainer, NavItemLink } from './style'
 
 type Props = {
-  children?: ReactElement
+  title: string
+  isActive: boolean
+  toBottom?: boolean // whether this is the item to start placing bottom
+  icon: OverridableComponent<SvgIconTypeMap<Obj, 'svg'>>
 }
 
 const NavItem = (props: Props): ReactElement => {
-  const { children, ...rest } = props
-  return <>{children}</>
+  const { title, isActive, toBottom = false, ...rest } = props
+  const Icon = props.icon
+  return (
+    <Tooltip title={title} style={{ fontSize: '16px' }}>
+      <NavItemContainer isActive={isActive} toBottom={toBottom} {...rest}>
+        <NavItemLink to={title}>
+          <Icon style={navIconStyle}></Icon>
+        </NavItemLink>
+      </NavItemContainer>
+    </Tooltip>
+  )
 }
 
 export default NavItem
