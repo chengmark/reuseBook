@@ -8,7 +8,7 @@ const Footer = (props: Props): ReactElement => {
   const { children, ...rest } = props
   return (
     <>
-      <div>Footer</div>
+      <div {...rest}>Footer</div>
       {children}
     </>
   )

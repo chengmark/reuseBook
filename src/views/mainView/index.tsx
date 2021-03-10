@@ -1,21 +1,21 @@
 import Footer from '@src/components/footer'
-import SearchBar from '@src/components/searchBar'
 import { MainLayout } from '@src/layout'
 import React, { ReactElement } from 'react'
 import MainContent from './mainContent'
+import MainHeader from './mainHeader'
 
 type Props = {
   children?: ReactElement
 }
 
 const MainView = (props: Props): ReactElement => {
-  const { children, ...rest } = props
+  const { ...rest } = props
   return (
-    <MainLayout>
-      <SearchBar></SearchBar>
+    <>
+      <MainHeader></MainHeader>
       <MainContent></MainContent>
       <Footer></Footer>
-    </MainLayout>
+    </>
   )
 }
 

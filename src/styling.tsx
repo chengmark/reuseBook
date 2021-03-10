@@ -22,28 +22,44 @@ export const GlobalStyles = createGlobalStyle`
 
 `
 
+/**
+ * bg is for general background coloring
+ * font is for general font colors
+ * the above two scheme is usually only black white contrast
+ * primary & secondary is the theme color,
+ * use more primary & secondary for better UI
+ */
 export const COLOR = {
   bg: {
-    light: '#FFFFFF',
-    dark: '#000000',
-  },
-  font: {
-    primary: {
-      light: '#000000',
-      dark: '#FFFFFF',
-    },
-    secondary: {
-      light: '#000000',
-      dark: '#FFFFFF',
-    },
+    light: '#FFFFFF', // white
+    dark: '#012032', // dark blue from primary
+    grey: '#F5FBFF',
   },
   divider: {
-    light: '#EBECED',
-    dark: '#EBECED',
+    light: '#D6D6D6',
+    dark: '#BDBDBD',
   },
-  active: {
-    light: 'rgba(36, 41, 46, 0.04)',
-    dark: 'rgba(36, 41, 46, 0.04)',
+  font: {
+    light: '#F5FBFF',
+    dark: '#012032',
+  },
+  primary: {
+    main: '#167BFF',
+    tint1: '#E0EEFF',
+    tint2: '#7AB4FF',
+    shade1: '#0061E0',
+    shade2: '#004BAD',
+  },
+  secondary: {
+    main: '#FF9916',
+    tint1: '#FFF2E0',
+    tint2: '#FFC57A',
+    shade1: '#E07E00',
+    shade2: '#AD6100',
+  },
+  error: {
+    shade: '#F44336',
+    tint: '#FCC9C5',
   },
 }
 

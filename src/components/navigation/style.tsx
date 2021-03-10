@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 import { COLOR } from '@src/styling'
 import { MEDIA_BREAK, NAV_WIDTH } from '@src/layout'
-import { ReactElement } from 'react'
 
 export const NavWrapper = styled.div`
   grid-area: navigation;
@@ -12,6 +11,7 @@ export const NavWrapper = styled.div`
   height: 100vh;
   overflow: hidden;
   overflow-y: auto;
+  background: ${COLOR.bg.light};
   border-right: 1px solid ${COLOR.divider.light};
   @media (max-width: ${MEDIA_BREAK}px) {
     border-right: 0px;
@@ -44,21 +44,14 @@ export const NavigationGrid = styled.div`
   }
 `
 
-type Props = {
-  children: Array<ReactElement> | ReactElement
-}
-
-export const NavSection = styled.div`
-  ${(props: Props) => `
-    display: grid;
-    align-content: start;
-    grid-template-rows: auto;
-    @media (max-width: ${MEDIA_BREAK}px) {
-      max-width: fit-content;
-      grid-template-rows: none;
-      grid-template-columns: repeat(${props.children instanceof Array ? props.children.length : 1}, 72px);
-    }
-`}
+export const Divider = styled.div`
+  width: 100%;
+  height: 2px;
+  background: ${COLOR.divider.light};
+  margin: 5px 0 5px 0;
+  @media (max-width: ${MEDIA_BREAK}px) {
+    display: none;
+  }
 `
 
 // reference: spectrum/views/navigation/style.js

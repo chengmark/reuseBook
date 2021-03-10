@@ -6,7 +6,7 @@ type Props = {
 
 const SearchView = (props: Props): ReactElement => {
   const { children, ...rest } = props
-  return <>{children}</>
+  return <div {...rest}>{children}</div>
 }
 
 export default SearchView

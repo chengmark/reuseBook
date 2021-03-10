@@ -8,7 +8,7 @@ const MainContent = (props: Props): ReactElement => {
   const { children, ...rest } = props
   return (
     <>
-      <div>Main Content</div>
+      <div {...rest}>Main Content</div>
       {children}
     </>
   )

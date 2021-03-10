@@ -6,7 +6,7 @@ type Props = {
 
 const SettingsView = (props: Props): ReactElement => {
   const { children, ...rest } = props
-  return <>{children}</>
+  return <div {...rest}>{children}</div>
 }
 
 export default SettingsView

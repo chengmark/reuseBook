@@ -26,7 +26,7 @@ type Props = {
 const Tooltip = (props: Props): ReactElement => {
   const { title, placement = 'right', style, children, ...rest } = props
   const tagName = title.charAt(0).toUpperCase() + title.replace('_', ' ').slice(1)
-  const classes = makeStyles((theme) => ({
+  const classes = makeStyles(() => ({
     customToolTip: {
       ...style,
     },

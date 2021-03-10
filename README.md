@@ -13,8 +13,8 @@ This is CSCI3100 project
 
 ## UI libraries used
 
-- [styled-components](https://github.com/styled-components/styled-components)
-- [material ui](https://material-ui.com/)
+- [styled-components](https://github.com/styled-components/styled-components) for creating highly customized css-in-js componenets
+- [material ui](https://material-ui.com/) for creating material-styled components
 
 ## Main packages used
 
