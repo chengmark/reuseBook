@@ -25,7 +25,7 @@ const LoginForm = (props: Props): ReactElement => {
 
   const handleSubmit = () => {
     // integrity check
-    const username = checkIntegrity(input.username, [VALIDATORS.REQUIRED, VALIDATORS.LENGTH_EIGHT])
+    const username = checkIntegrity(input.username, [VALIDATORS.REQUIRED])
     const password = checkIntegrity(input.password, [VALIDATORS.REQUIRED])
     setInput({ ...input, username, password })
   }
