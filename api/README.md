@@ -44,8 +44,8 @@ assignment-1-chengmo23/
 
 ### Add new APIs
 
-- How to build the handlers?
-- Refer to the ./routes/user/index.ts
+- Q: How to build the handlers?
+- A: Refer to the ./routes/user/index.ts
 
-- How to register the handlers?
-- Refer to ./index.ts
+- Q: How to register the handlers?
+- A: Refer to ./index.ts
