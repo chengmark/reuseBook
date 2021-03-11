@@ -13,6 +13,7 @@ use `nodemon index.ts` or `ts-node index.ts` to run it directly without precompi
 ### Packages used
 
 - **express**
+- **mongoose**
 - **express-session**
 - **passport**( for authentication )
   - **passport-google-oauth2**
