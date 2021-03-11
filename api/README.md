@@ -19,8 +19,9 @@ use `nodemon index.ts` or `ts-node index.ts` to run it directly without precompi
   - **passport-google-oauth2**
 
 ### File structure
+
 ```
-assignment-1-chengmo23/
+CSCI3100_project/
 .                        # root
 ├── middlewares          # store middlewares e.g. 'passport', 'express-session' (you can also put express here)
 ├── models               # database models e.g. userModel, bookModel. (Like SQL table definition)
@@ -28,7 +29,7 @@ assignment-1-chengmo23/
 ├── routes               # modulize the APIs into different routes
 │   └── auth             # for oauth services (leave it alone first)
 │   └── user             # store the user route (all the user related APIs e.g. login, signup, list_users, etc. )
-│   └── index.ts         # general Route class. Whenever you want to add a new route, use this class 
+│   └── index.ts         # general Route class. Whenever you want to add a new route, use this class
 │   └── ...
 ├── types                # self defined types if necessary
 │   └── ...
