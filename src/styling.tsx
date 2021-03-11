@@ -62,6 +62,9 @@ export const COLOR = {
     shade: '#F44336',
     tint: '#FCC9C5',
   },
+  hover: {
+    grey: '#EEEEEE',
+  },
 }
 
 export const TRANSITION = {
