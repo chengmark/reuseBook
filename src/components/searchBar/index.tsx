@@ -63,7 +63,7 @@ const SearchBar = (props: Props): ReactElement => {
         <option value="Name">Name</option>
         <option value="Author">Author</option>
       </Select>
-      <Input onChange={handleInputChange}></Input>
+      <Input value={input} onChange={handleInputChange}></Input>
       <Submit>
         <SearchIcon></SearchIcon>
       </Submit>

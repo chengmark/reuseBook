@@ -2,7 +2,7 @@ import React, { ReactChild, ReactElement } from 'react'
 import { Route, Switch } from 'react-router-dom'
 import Navigation from '@components/navigation'
 import AppView from './views/appView'
-import MainView from './views/mainView'
+import HomeView from './views/homeView'
 import SearchView from './views/searchView'
 import ProfileView from './views/profileView'
 import CartView from './views/cartView'
@@ -44,7 +44,7 @@ const Routes = (props: Props): ReactElement => {
         <MainLayout>
           <Switch>
             <Route exact path={['/', toPath(LOCATIONS.home)]}>
-              <MainView></MainView>
+              <HomeView></HomeView>
             </Route>
             <Route exact path={toPath(LOCATIONS.search)}>
               <SearchView>

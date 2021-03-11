@@ -42,6 +42,7 @@ export const COLOR = {
   font: {
     light: '#F5FBFF',
     dark: '#012032',
+    grey: '#68696A',
   },
   primary: {
     main: '#167BFF',

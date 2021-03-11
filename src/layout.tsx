@@ -1,3 +1,4 @@
+import { ReactElement } from 'react'
 import styled from 'styled-components'
 import { COLOR } from './styling'
 
@@ -13,6 +14,10 @@ export const SEARCH_BAR_HEIGHT = 62
 export const FOOTER_HEIGHT = 100
 
 export const MEDIA_BREAK = MIN_MAIN_COLUMN_WIDTH + NAV_WIDTH * 2 // 572px
+
+type Props = {
+  children: Array<ReactElement>
+}
 
 export const AppLayout = styled.div`
   display: grid;
@@ -55,6 +60,7 @@ export const MainLayout = styled.div`
   max-height: 100vh;
   overflow: hidden;
   overflow-y: auto;
+  padding-top: 12px;
 `
 
 /*
@@ -87,5 +93,4 @@ export const CenteredLayout = styled.div`
 │             │
 └─────────────┘
 */
-
 // reference spectrum/src/component/layout/index.js
