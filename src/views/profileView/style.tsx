@@ -184,3 +184,11 @@ export const IconWrapper = styled.div`
     margin: 0 2px 0 2px;
   }
 `
+
+export const CenteredTabPanel = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+`
