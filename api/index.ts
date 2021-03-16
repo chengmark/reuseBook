@@ -38,10 +38,15 @@ app.use('/api', router)
 // })
 
 console.log(BUILD_PATH)
-app.use(express.static(path.join(__dirname, BUILD_PATH)))
+console.log(process.env.NODE_ENV)
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../../build')))
+} else {
+  app.use(express.static(path.join(__dirname, '../build')))
+}
 
 server.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`)
+  console.log(`Server running on port: ${PORT}`)
   console.log(`end point at /api`)
   routes.forEach((routes: Routes) => {
     console.log(`Routes configured for ${routes.getName()}`)

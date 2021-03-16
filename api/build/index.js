@@ -11,6 +11,8 @@ const user_1 = require("./routes/user");
 // import initPassport from './authentication'
 // import middlewares from './middlewares'
 const path_1 = __importDefault(require("path"));
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+require('dotenv').config();
 const app = express_1.default();
 const server = http_1.default.createServer(app);
 const PORT = process.env.PORT ? process.env.PORT : 3001;
@@ -31,9 +33,15 @@ app.use('/api', router);
 //   if(!req.session.logedin)
 // })
 console.log(BUILD_PATH);
-app.use(express_1.default.static(path_1.default.join(__dirname, '../../build')));
+console.log(process.env.NODE_ENV);
+if (process.env.NODE_ENV === 'production') {
+    app.use(express_1.default.static(path_1.default.join(__dirname, '../../build')));
+}
+else {
+    app.use(express_1.default.static(path_1.default.join(__dirname, '../build')));
+}
 server.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
+    console.log(`Server running on port: ${PORT}`);
     console.log(`end point at /api`);
     routes.forEach((routes) => {
         console.log(`Routes configured for ${routes.getName()}`);
