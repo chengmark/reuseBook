@@ -38,8 +38,7 @@ app.use('/api', router)
 // })
 
 console.log(BUILD_PATH)
-app.use(express.static(path.join(__dirname, '../build')))
-app.use(express.static('public'))
+app.use(express.static(path.join(__dirname, '../../build')))
 
 server.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`)
