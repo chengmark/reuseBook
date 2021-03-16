@@ -1,26 +1,18 @@
 {
   "compilerOptions": {
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "resolveJsonModule": true,
-    "module": "commonjs",
-    "esModuleInterop": true,
     "target": "es6",
-    "noImplicitAny": true,
-    "moduleResolution": "node",
-    "sourceMap": true,
-    "outDir": "dist",
-    "baseUrl": ".",
-    "paths": {
-      "*": [
-        "node_modules/*"
-      ]
-    },
-    "typeRoots": ["./types", "./node_modules/@types"],
-    "types": ["express-session"]
-
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "build"
   },
   "include": [
     "./**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "build"
   ]
 }

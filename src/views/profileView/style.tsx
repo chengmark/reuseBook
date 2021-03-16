@@ -7,11 +7,16 @@ const SECOND_COLUMN_MIN_WIDTH = 380
 const SECOND_COLUMN_MAX_WIDTH = 440
 
 export const useStyles = makeStyles(() => ({
-  avatar: {
+  userAvatar: {
     width: '96px',
     height: '96px',
     border: '2px solid white',
     fontSize: '48px',
+  },
+  bookAvatar: {
+    width: '64px',
+    height: '64px',
+    margin: '5px',
   },
   button: {
     margin: '5px 10px 5px 10px',
@@ -27,6 +32,10 @@ export const useStyles = makeStyles(() => ({
     border: `1px solid ${COLOR.primary.shade1}`,
     margin: '2.5px 5px 2.5px 5px',
   },
+  forwardIcon: {
+    marginLeft: 'auto',
+    color: COLOR.font.grey,
+  },
 }))
 
 type Props = {
@@ -35,7 +44,9 @@ type Props = {
 
 export const ProfileLayout = styled.div`
   display: grid;
-  width: 100%;
+  width: calc(100% - 48px);
+  grid-gap: 24px;
+  padding: 0 24px 0 24px;
   grid-template-columns: minmax(${SECOND_COLUMN_MIN_WIDTH}px, ${SECOND_COLUMN_MAX_WIDTH}px) 1fr;
   grid-template-areas: 'secondary main';
 `
@@ -54,7 +65,6 @@ export const SecondaryColumn = styled.div`
   grid-area: secondary;
   display: flex;
   flex-direction: column;
-  padding: 24px;
 `
 export const MainColumn = styled.div`
   grid-area: main;
@@ -68,6 +78,7 @@ export const Card = styled.div`
   border-radius: 5px;
   border: 1px solid ${COLOR.divider.light};
   margin-bottom: 15px;
+  width: 100%;
 `
 
 export const AvatarWrapper = styled.div`
@@ -117,4 +128,67 @@ export const InterestTitle = styled.div`
 
 export const InterestContainer = styled.div`
   display: inline-block;
+`
+
+type TabProps = {
+  currentTab: number
+  index: number
+}
+
+export const TabPanel = styled.div`
+  ${(props: TabProps) => `
+    display: ${props.currentTab !== props.index ? 'none' : 'block'};
+    height: calc(100vh - 12px - 48px - 5px);
+    overflow-y: auto;
+  `}
+`
+
+export const Tile = styled.div`
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 2.5px 5px 2.5px 5px;
+  border-bottom: 1px solid ${COLOR.divider.dark};
+  background: ${COLOR.bg.light};
+  transition: 0.2s;
+  &: hover {
+    background: ${COLOR.hover.grey};
+  }
+`
+
+export const TileInfoBlock = styled.div`
+  display: flex;
+  flex-direction: column;
+`
+
+export const TileTitle = styled.div`
+  font-weight: 700;
+  color: ${COLOR.font.dark};
+  font-size: 18px;
+`
+
+export const TileDetails = styled.div`
+  display: flex;
+  flex-direction: row;
+  & > * {
+    margin: 10px;
+  }
+`
+export const IconWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  & > * {
+    margin: 0 2px 0 2px;
+  }
+`
+
+export const CenteredTabPanel = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
 `

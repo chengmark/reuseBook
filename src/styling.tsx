@@ -19,7 +19,6 @@ export const GlobalStyles = createGlobalStyle`
     width: 100%;
     height: 100%;
   }
-
 `
 
 /**
@@ -61,6 +60,9 @@ export const COLOR = {
   error: {
     shade: '#F44336',
     tint: '#FCC9C5',
+  },
+  hover: {
+    grey: '#EEEEEE',
   },
 }
 
