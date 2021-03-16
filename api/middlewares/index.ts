@@ -1,11 +1,11 @@
 import { Router } from 'express'
-import passport from 'passport'
-import session from 'express-session'
+// import passport from 'passport'
+// import session from 'express-session'
 
 const middlewares = Router()
 
-middlewares.use(passport.initialize())
-middlewares.use(passport.session())
+// middlewares.use(passport.initialize())
+// middlewares.use(passport.session())
 
 const ONE_DAY = 86400000
 const ONE_WEEK = ONE_DAY * 7
