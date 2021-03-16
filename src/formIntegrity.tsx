@@ -70,3 +70,8 @@ export const VALIDATORS = {
   SPECIAL_CHAR,
   LENGTH_EIGHT,
 }
+
+/**
+ * Usage:
+ * const email = checkIntegrity(input.email, [VALIDATORS.REQUIRED, VALIDATORS.EMAIL])
+ */
