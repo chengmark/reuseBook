@@ -36,12 +36,12 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "start": "node api/build/index.js",
+    "start": "node server/build/index.js",
     "dev:start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
-    "heroku-postbuild": "npm install && npm run-script build && npm install --prefix ./api && npm run-script build --prefix ./api"
+    "heroku-postbuild": "npm install && npm run-script build && npm install --prefix ./server && npm run-script build --prefix ./server"
   },
   "eslintConfig": {
     "extends": [
