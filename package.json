@@ -41,7 +41,7 @@
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
-    "heroku-postbuild": "npm install && npm run-script build && cd api && npm install && npm run-script-build"
+    "heroku-postbuild": "npm install && npm run-script build && npm install --prefix ./api && npm run-script build --prefix ./api"
   },
   "eslintConfig": {
     "extends": [
