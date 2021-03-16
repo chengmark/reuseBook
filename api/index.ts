@@ -11,7 +11,6 @@ import path from 'path'
 const app: express.Application = express()
 const server: http.Server = http.createServer(app)
 const PORT = process.env.PORT ? process.env.PORT : 3001
-const BUILD_PATH = process.env.BUILD_PATH ? process.env.BUILD_PATH : '../build'
 
 const routes: Array<Routes> = []
 
