@@ -1,42 +1,13 @@
-import { makeStyles } from '@material-ui/core'
-import { MEDIA_BREAK } from '@src/layout'
+import { Avatar, Button, Chip, makeStyles } from '@material-ui/core'
+import { ArrowForwardIos } from '@material-ui/icons'
+import { MEDIA_BREAK, NAV_WIDTH } from '@src/layout'
 import { COLOR } from '@src/styling'
 import styled from 'styled-components'
 
 const SECOND_COLUMN_MIN_WIDTH = 380
 const SECOND_COLUMN_MAX_WIDTH = 440
 
-export const useStyles = makeStyles(() => ({
-  userAvatar: {
-    width: '96px',
-    height: '96px',
-    border: '2px solid white',
-    fontSize: '48px',
-  },
-  bookAvatar: {
-    width: '64px',
-    height: '64px',
-    margin: '5px',
-  },
-  button: {
-    margin: '5px 10px 5px 10px',
-    background: COLOR.primary.shade1,
-    color: COLOR.primary.tint1,
-    '&:hover': {
-      background: COLOR.primary.shade2,
-    },
-  },
-  chip: {
-    background: COLOR.primary.tint1,
-    color: COLOR.primary.shade1,
-    border: `1px solid ${COLOR.primary.shade1}`,
-    margin: '2.5px 5px 2.5px 5px',
-  },
-  forwardIcon: {
-    marginLeft: 'auto',
-    color: COLOR.font.grey,
-  },
-}))
+const APP_VIEW_ROW_HEIGHT = 62
 
 type Props = {
   coverPhoto?: string // path of the cover photo
@@ -49,6 +20,14 @@ export const ProfileLayout = styled.div`
   padding: 0 24px 0 24px;
   grid-template-columns: minmax(${SECOND_COLUMN_MIN_WIDTH}px, ${SECOND_COLUMN_MAX_WIDTH}px) 1fr;
   grid-template-areas: 'secondary main';
+  @media (max-width: ${MEDIA_BREAK}px) {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    width: 100vw;
+    height: calc(100vh - ${NAV_WIDTH}px);
+    grid-gap: 0;
+  }
 `
 
 /* second col on left, main col on right (desktop version)
@@ -65,10 +44,87 @@ export const SecondaryColumn = styled.div`
   grid-area: secondary;
   display: flex;
   flex-direction: column;
+  @media (max-width: ${MEDIA_BREAK}px) {
+    display: none;
+  }
 `
+
+export const AppViewRow = styled.div`
+  display: none;
+  @media (max-width: ${MEDIA_BREAK}px) {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0 12px 0 12px;
+    height: ${APP_VIEW_ROW_HEIGHT}px;
+    width: calc(100vw - 24px);
+    background: ${COLOR.bg.light};
+  }
+`
+
+export const AppViewName = styled.div`
+  font-weight: 700;
+  color: ${COLOR.font.dark};
+  font-size: 20px;
+  margin: 0 5px 0 5px;
+`
+
+export const OutlinedBtn = styled(Button)`
+  &.MuiButton-root {
+    margin-left: auto;
+  }
+`
+
 export const MainColumn = styled.div`
   grid-area: main;
   display: flex;
+  @media (max-width: ${MEDIA_BREAK}px) {
+    height: calc(100% - ${APP_VIEW_ROW_HEIGHT}px);
+  }
+`
+
+export const UserAvatar = styled(Avatar)`
+  &.MuiAvatar-root {
+    width: 96px;
+    height: 96px;
+    border: 2px solid white;
+    font-size: 48px;
+  }
+`
+
+export const BookAvatar = styled(Avatar)`
+  &.MuiAvatar-root {
+    width: 64px;
+    height: 64px;
+    margin: 5px;
+  }
+`
+
+export const StyledBtn = styled(Button)`
+  &.MuiButton-root {
+    margin: 5px 10px 5px 10px;
+    background: ${COLOR.primary.shade1};
+    color: ${COLOR.primary.tint1};
+  }
+  &.MuiButton-root:hover {
+    background: ${COLOR.primary.shade2};
+  }
+`
+
+export const StyledChip = styled(Chip)`
+  &.MuiChip-root {
+    background: ${COLOR.primary.tint1};
+    color: ${COLOR.primary.shade1};
+    border: 1px solid ${COLOR.primary.shade1};
+    margin: 2.5px 5px 2.5px 5px;
+  }
+`
+
+export const StyledForwardIcon = styled(ArrowForwardIos)`
+  &.MuiSvgIcon-root {
+    margin-left: auto;
+    color: ${COLOR.font.grey};
+  }
 `
 
 export const Card = styled.div`
@@ -79,6 +135,9 @@ export const Card = styled.div`
   border: 1px solid ${COLOR.divider.light};
   margin-bottom: 15px;
   width: 100%;
+  @media (max-width: ${MEDIA_BREAK}px) {
+    margin-bottom: 0;
+  }
 `
 
 export const AvatarWrapper = styled.div`
