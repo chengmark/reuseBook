@@ -1,46 +1,43 @@
-# API
+# Server
 
-This folder contains the api server
+This folder contains the integrated server, serving both APIs and Website
 
-## How to run it?
+## Development
 
-use `nodemon index.ts` or `ts-node index.ts` to run it directly without precompilation
+prerequisite refer to `README.md` in the root of this repo
 
-## Technologies
-
-- **typescript** (.ts extension)
+use `npm start` to run it directly without precompilation
 
 ### Packages used
 
-- **express**
-- **mongoose**
-- **express-session**
-- **passport**( for authentication )
-  - **passport-google-oauth2**
+- **express** ( popular web framework )
+- **mongoose** ( mongodb manipulation library )
+- **express-session** ( session manipulation library )
+- **passport** ( oauth services library )
+  - **passport-google-oauth2** ( google oauth support )
 
 ### File structure
 
 ```
 CSCI3100_project/
-.                        # root
-├── middlewares          # store middlewares e.g. 'passport', 'express-session' (you can also put express here)
-├── models               # database models e.g. userModel, bookModel. (Like SQL table definition)
-├── node_modules         # packages
-├── routes               # modulize the APIs into different routes
-│   └── auth             # for oauth services (leave it alone first)
-│   └── user             # store the user route (all the user related APIs e.g. login, signup, list_users, etc. )
-│   └── index.ts         # general Route class. Whenever you want to add a new route, use this class
+.                        # Root
+├── middlewares          # Middlewares e.g. 'passport', 'express-session' (you can also put express here)
+├── models               # Database models in form of mongoose schema e.g. userModel, bookModel. (Like SQL table definition)
+├── node_modules         # Packages
+├── routes               # Modulize the APIs into different routes
+│   └── auth             # Oauth API route (leave it alone first)
+│   └── user             # User API route (all the user related APIs e.g. login, signup, list_users, etc. )
+│   └── index.ts         # General Route class. Whenever you want to add a new route, use this class
 │   └── ...
-├── types                # self defined types if necessary
+├── types                # Self defined types if necessary
 │   └── ...
-├── utils                # put all common functions here e.g. parseDate, checkEmail
-├── .gitignore           # folders to be ignored
-├── authentication       # for oauth services (leave it alone first)
-├── index.ts            # the entry of the server, you can register routes here by creating a Route class
-├── package-lock.json    # package management
-├── package.json         # package management
-├── README.md            # description
-└── tsconfig.json        # typescript config
+├── utils                # Put all common functions here e.g. parseDate, checkEmail
+├── .gitignore           # Files to be ignored
+├── authentication       # Oauth services settings (leave it alone first)
+├── index.ts             # Entry of the server, you can register routes here by creating a Route class
+├── package.json         # Node project configs
+├── tsconfig.json        # Typescript configs
+└── ...
 ```
 
 ### Add new APIs
