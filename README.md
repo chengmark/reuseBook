@@ -50,7 +50,9 @@ react-template/
 │   └── ...                   # See details in server/README.md
 ├── src                       # Frontend SPA
 │   ├── components            # Common UI components shared between different views
+│   │   └── ...                   
 │   ├── views                 # UI views
+│   │   └── ...                   
 │   ├── formIntegrity.tsx     # Common form integrity checking functions
 │   ├── hot-routes.tsx        # Bridge of `react-hot-loader` and routes
 │   ├── index.tsx             # Entry of frontend
