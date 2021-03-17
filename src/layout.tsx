@@ -61,6 +61,9 @@ export const MainLayout = styled.div`
   overflow: hidden;
   overflow-y: auto;
   padding-top: 12px;
+  @media (max-width: ${MEDIA_BREAK}px) {
+    padding-top: 0;
+  }
 `
 
 /*

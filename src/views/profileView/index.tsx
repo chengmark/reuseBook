@@ -1,24 +1,9 @@
-import { Avatar, Button, Chip } from '@material-ui/core'
-import { Info, LockOpen } from '@material-ui/icons'
+import { Avatar } from '@material-ui/core'
 import React, { ReactElement } from 'react'
 import InfoCard from './infoCard'
 import InterestCard from './interestCard'
 import MainCard from './mainCard'
-import {
-  Card,
-  AvatarWrapper,
-  MainColumn,
-  ProfileLayout,
-  SecondaryColumn,
-  CoverPhoto,
-  useStyles,
-  Name,
-  Block,
-  Username,
-  Divider,
-  InterestTitle,
-  InterestContainer,
-} from './style'
+import { AppViewName, AppViewRow, OutlinedBtn, MainColumn, ProfileLayout, SecondaryColumn } from './style'
 
 type Props = {
   children?: ReactElement
@@ -33,9 +18,13 @@ const testUser = {
 
 const ProfileView = (props: Props): ReactElement => {
   const { children, ...rest } = props
-  const classes = useStyles()
   return (
     <ProfileLayout>
+      <AppViewRow>
+        <Avatar></Avatar>
+        <AppViewName>{testUser.firstName + ' ' + testUser.lastName}</AppViewName>
+        <OutlinedBtn variant="outlined">UPDATE INFO</OutlinedBtn>
+      </AppViewRow>
       <SecondaryColumn>
         <InfoCard user={testUser}></InfoCard>
         <InterestCard user={testUser}></InterestCard>

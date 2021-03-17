@@ -1,7 +1,7 @@
 import { Avatar, Button } from '@material-ui/core'
 import { Info, LockOpen } from '@material-ui/icons'
 import React, { ReactElement } from 'react'
-import { Card, CoverPhoto, AvatarWrapper, Block, Name, Username, Divider, useStyles } from '../style'
+import { Card, CoverPhoto, AvatarWrapper, Block, Name, Username, Divider, UserAvatar, StyledBtn } from '../style'
 
 type Props = {
   user: any // should change to specific user type, define in common types later
@@ -9,13 +9,12 @@ type Props = {
 
 const InfoCard = (props: Props): ReactElement => {
   const { user, ...rest } = props
-  const classes = useStyles()
 
   return (
     <Card>
       <CoverPhoto></CoverPhoto>
       <AvatarWrapper>
-        <Avatar className={classes.userAvatar}>{user.username.substr(0, 1)[0]}</Avatar>
+        <UserAvatar>{user.username.substr(0, 1)[0]}</UserAvatar>
       </AvatarWrapper>
       <Block>
         <Name>{user.firstName + ' ' + user.lastName}</Name>
@@ -23,12 +22,12 @@ const InfoCard = (props: Props): ReactElement => {
       </Block>
       <Block>
         <Divider></Divider>
-        <Button className={classes.button} size="small" variant="contained" startIcon={<LockOpen />}>
+        <StyledBtn size="small" variant="contained" startIcon={<LockOpen />}>
           Change password
-        </Button>
-        <Button className={classes.button} size="small" variant="contained" startIcon={<Info />}>
+        </StyledBtn>
+        <StyledBtn size="small" variant="contained" startIcon={<Info />}>
           Update Info
-        </Button>
+        </StyledBtn>
       </Block>
     </Card>
   )

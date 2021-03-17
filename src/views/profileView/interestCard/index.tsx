@@ -1,7 +1,7 @@
 import { Obj } from '@myTypes/Obj'
 import { Chip } from '@material-ui/core'
 import React, { ReactElement } from 'react'
-import { Card, Block, InterestTitle, Divider, InterestContainer, useStyles } from '../style'
+import { Card, Block, InterestTitle, Divider, InterestContainer, StyledChip } from '../style'
 
 type Props = {
   user: any // should change to specific user type, define in common types later
@@ -9,7 +9,6 @@ type Props = {
 
 const InterestCard = (props: Props): ReactElement => {
   const { user, ...rest } = props
-  const classes = useStyles()
 
   return (
     <Card>
@@ -20,7 +19,7 @@ const InterestCard = (props: Props): ReactElement => {
           {user.interests.map((
             interest: any, // should change any to string when user type is defined later
           ) => (
-            <Chip key={interest} className={classes.chip} label={interest}></Chip>
+            <StyledChip key={interest} label={interest}></StyledChip>
           ))}
         </InterestContainer>
       </Block>
