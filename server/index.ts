@@ -3,6 +3,7 @@ import bodyparser from 'body-parser'
 import http from 'http'
 import { Routes } from './routes'
 import { UserRoutes } from './routes/user'
+const CartRoutes = require('./routes/shoppingCart')
 // import { AuthRoutes } from './routes/auth'
 // import initPassport from './authentication'
 // import middlewares from './middlewares'
@@ -22,7 +23,7 @@ const router = express.Router()
 
 // create user routes to the router
 routes.push(new UserRoutes(router))
-
+routes.push(new CartRoutes (router))
 // create auth routes to the router
 // routes.push(new AuthRoutes(router))
 
