@@ -13,6 +13,8 @@ import {
   StyledForwardIcon,
 } from '../style'
 import { ChatBubbleOutline, FavoriteBorder, PostAdd, Visibility } from '@material-ui/icons'
+import { useHistory } from 'react-router'
+import { LOCATIONS, toPath } from '@src/routes'
 
 type Props = {
   currentTab: number
@@ -46,6 +48,11 @@ const testListings: any[] = [
 
 const ListingTab = (props: Props): ReactElement => {
   const { currentTab, index = 1, ...rest } = props
+  const history = useHistory()
+
+  const redirect = () => {
+    history.push(toPath(LOCATIONS.sell))
+  }
 
   return (
     <TabPanel currentTab={currentTab} index={0}>
@@ -85,7 +92,9 @@ const ListingTab = (props: Props): ReactElement => {
         <CenteredTabPanel>
           <TileInfoBlock>
             <TileTitle>{'Your posts will be displayed here.'}</TileTitle>
-            <StyledBtn startIcon={<PostAdd />}>Sell a book now</StyledBtn>
+            <StyledBtn startIcon={<PostAdd />} onClick={redirect}>
+              Sell a book now
+            </StyledBtn>
           </TileInfoBlock>
         </CenteredTabPanel>
       )}

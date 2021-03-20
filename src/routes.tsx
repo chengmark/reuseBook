@@ -10,6 +10,7 @@ import SettingsView from './views/settingsView'
 import { GlobalStyles } from './styling'
 import LoginView from './views/loginView'
 import { MainLayout } from './layout'
+import SellView from './views/sellView'
 // import LoadingView from './views/loadingView'
 
 // const Sample = Loadable({
@@ -28,6 +29,7 @@ export const LOCATIONS = {
   login: 'login',
   shoppingCart: 'shopping_cart',
   settings: 'settings',
+  sell: 'sell',
 }
 
 export const toPath = (location: string): string => {
@@ -68,6 +70,9 @@ const Routes = (props: Props): ReactElement => {
             </Route>
             <Route exact path={toPath(LOCATIONS.login)}>
               <LoginView></LoginView>
+            </Route>
+            <Route exact path={toPath(LOCATIONS.sell)}>
+              <SellView></SellView>
             </Route>
           </Switch>
         </MainLayout>

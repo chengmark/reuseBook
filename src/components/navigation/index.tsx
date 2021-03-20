@@ -8,6 +8,7 @@ import SettingsIcon from '@material-ui/icons/Settings'
 import { NavWrapper, NavigationGrid, Divider } from './style'
 import { LOCATIONS, toPath } from '@src/routes'
 import NavItem from './navItem'
+import { AddBox } from '@material-ui/icons'
 
 type Props = {
   history?: History
@@ -36,6 +37,9 @@ const Navigation = (props: Props): ReactElement => {
         <Divider></Divider>
         <Route exact path={toPath(LOCATIONS.login)}>
           {({ match }) => <NavItem title={LOCATIONS.login} isActive={!!match} icon={ExitToAppIcon}></NavItem>}
+        </Route>
+        <Route exact path={toPath(LOCATIONS.sell)}>
+          {({ match }) => <NavItem title={LOCATIONS.sell} isActive={!!match} icon={AddBox}></NavItem>}
         </Route>
         <Route exact path={toPath(LOCATIONS.settings)}>
           {({ match }) => (

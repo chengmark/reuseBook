@@ -5,19 +5,15 @@ import { COLOR } from './styling'
 export const NAV_WIDTH = 72
 export const NAV_EXPANDED_WIDTH = 256
 
-export const MIN_MAIN_COLUMN_WIDTH = 480
-export const MAX_MAIN_COLUMN_WIDTH = 580
+export const MIN_MAIN_COLUMN_WIDTH = 580
+export const MAX_MAIN_COLUMN_WIDTH = 780
 
 export const MAX_APP_COLUMN_WIDTH = 260 // for app view
 
 export const SEARCH_BAR_HEIGHT = 62
 export const FOOTER_HEIGHT = 100
 
-export const MEDIA_BREAK = MIN_MAIN_COLUMN_WIDTH + NAV_WIDTH * 2 // 572px
-
-type Props = {
-  children: Array<ReactElement>
-}
+export const MEDIA_BREAK = MIN_MAIN_COLUMN_WIDTH + NAV_WIDTH * 2
 
 export const AppLayout = styled.div`
   display: grid;

@@ -1,5 +1,3 @@
-import { Obj } from '@myTypes/Obj'
-
 type Validator = {
   id: number
   errMsg: string

@@ -3,6 +3,10 @@ import { createGlobalStyle } from 'styled-components'
 // global stylings
 export const GlobalStyles = createGlobalStyle`
 
+  * {
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  }
+
   html, body{
     width: 100%;
     height: 100%;
