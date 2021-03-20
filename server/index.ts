@@ -26,7 +26,7 @@ const router = express.Router()
 
 // create user routes to the router
 routes.push(new UserRoutes(router))
-routes.push(new CartRoutes(router))
+routes.push(new CartRoutes(router)  )
 // create auth routes to the router
 // routes.push(new AuthRoutes(router))
 
