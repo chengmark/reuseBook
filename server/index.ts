@@ -3,19 +3,22 @@ import bodyparser from 'body-parser'
 import http from 'http'
 import { Routes } from './routes'
 import { UserRoutes } from './routes/user'
-const CartRoutes = require('./routes/shoppingCart')
+import { CartRoutes } from './routes/shoppingCart'
 // import { AuthRoutes } from './routes/auth'
 // import initPassport from './authentication'
 // import middlewares from './middlewares'
 import path from 'path'
+import DB from './DB'
 
 const app: express.Application = express()
 const server: http.Server = http.createServer(app)
-const PORT = process.env.PORT ? process.env.PORT : 3001
+const PORT = process.env.PORT ? process.env.PORT : 3000
 
 const routes: Array<Routes> = []
 
 // initPassport()
+
+app.use(bodyparser.urlencoded({ extended: false }))
 
 app.use(bodyparser.json())
 
@@ -23,7 +26,7 @@ const router = express.Router()
 
 // create user routes to the router
 routes.push(new UserRoutes(router))
-routes.push(new CartRoutes (router))
+routes.push(new CartRoutes(router))
 // create auth routes to the router
 // routes.push(new AuthRoutes(router))
 
@@ -42,6 +45,8 @@ if (process.env.NODE_ENV === 'production') {
 } else {
   app.use(express.static(path.join(__dirname, '../build')))
 }
+
+DB.connect()
 
 server.listen(PORT, () => {
   console.log(`Server running on port: ${PORT}`)
