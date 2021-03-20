@@ -6,7 +6,30 @@ This folder contains the integrated server, serving both APIs and Website
 
 prerequisite refer to `README.md` in the root of this repo
 
-use `npm start` to run it directly without precompilation
+MongoDB config is in `./DB.ts` database name is `csci3100`
+
+`cd` to this folder first, then use `npm start` to run it directly without precompilation
+
+### Add new APIs ( 20/3/2021 updated )(MUST READ)
+
+- Naming convention:
+
+  1. camel case
+  2. capitalize first letter for files having default exports (except `index.ts`)
+
+- `./routes` contains all API routes, each subfolder is a new route
+
+- `./model` contians all DB models, each file represents a collection in MongoDB
+
+- each route has 3 files:
+
+  1. `index.ts` contains the API routing, entry of the route
+  2. `RouteController.ts` continas the all controller logics
+  3. `Params.ts` contains a list of params used in controller
+
+  you will have to mainly focus on these three files
+
+- after coding all the handlers, you can add the route in `./index.ts`
 
 ### Packages used
 
@@ -39,11 +62,3 @@ CSCI3100_project/
 ├── tsconfig.json        # Typescript configs
 └── ...
 ```
-
-### Add new APIs
-
-- Q: How to build the handlers?
-- A: Refer to the ./routes/user/index.ts
-
-- Q: How to register the handlers?
-- A: Refer to ./index.ts

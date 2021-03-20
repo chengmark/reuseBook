@@ -6,7 +6,9 @@
         "@views/*":["src/views/*"],
         "@components/*":["src/components/*"],
         "@common":["common/*"],
-        "@myTypes/*": ["common/types/*"]
+        "@myTypes/*": ["common/types/*"],
+        "@routes/*":["server/routes/*"],
+        "@models/*":["server/models/*"]
       }
     }
   }
