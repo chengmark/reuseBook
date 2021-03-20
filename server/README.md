@@ -10,6 +10,8 @@ MongoDB config is in `./DB.ts` database name is `csci3100`
 
 `cd` to this folder first, then use `npm start` to run it directly without precompilation
 
+**prettier will run in pre commit stage, for coding style consistency**
+
 ### Add new APIs ( 20/3/2021 updated )(MUST READ)
 
 - Naming convention:

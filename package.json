@@ -82,7 +82,7 @@
     ]
   },
   "lint-staged": {
-    "*.{tsx, ts}": [
+    "*.ts": [
       "prettier --write"
     ]
   },
