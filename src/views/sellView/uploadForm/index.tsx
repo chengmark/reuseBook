@@ -59,7 +59,7 @@ const UploadForm = (props: Props): ReactElement => {
                   <img src={images[1]?.dataURL} width="100%" />
                 </CoverPhoto>
               </CoverPhotoWrapper>
-              <BtnRow>
+              <BtnRow center>
                 <Btn
                   onClick={() => {
                     onImageUpdate(1)

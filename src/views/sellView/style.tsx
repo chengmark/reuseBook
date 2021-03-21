@@ -1,7 +1,8 @@
-import { Button } from '@material-ui/core'
+import { Button, Chip, TextField } from '@material-ui/core'
 import { COLOR } from '@src/styling'
 import styled from 'styled-components'
 import ImageOutlinedIcon from '@material-ui/icons/ImageOutlined'
+import Autocomplete from '@material-ui/lab/Autocomplete'
 
 export const Container = styled.div`
   display: flex;
@@ -10,6 +11,23 @@ export const Container = styled.div`
   background: ${COLOR.bg.light};
   border: 1px solid ${COLOR.divider.dark};
 `
+
+type PositionProps = {
+  center?: boolean
+}
+
+type ActiveProps = {
+  active: number // 0 | 1
+}
+
+export const Title = styled.div`
+  font-size: 24px;
+  font-weight: 600;
+  color: ${COLOR.font.dark};
+  text-align: ${(props: PositionProps) => (props.center ? `center` : ``)};
+  margin: 15px 0 0 0;
+`
+
 export const StepContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -88,8 +106,13 @@ export const CoverPhoto = styled.div`
 export const BtnRow = styled.div`
   display: flex;
   flex-direction: row;
+  ${(props: PositionProps) =>
+    props.center
+      ? `
   justify-content: center;
   align-items: center;
+  `
+      : ``}
 `
 export const Btn = styled(Button)`
   &.MuiButton-root {
@@ -99,5 +122,43 @@ export const Btn = styled(Button)`
   }
   &.MuiButton-root:hover {
     background: ${COLOR.primary.shade2};
+  }
+`
+
+export const FormContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: calc(100% - 48px);
+`
+
+export const CategoryInput = styled(Autocomplete)`
+  &.MuiFormControl-root {
+    margin: 0 0 10px 0;
+  }
+`
+
+export const TextInput = styled(TextField)`
+  &.MuiFormControl-root {
+    margin: 0 0 10px 0;
+  }
+`
+
+export const PriceType = styled(Chip)`
+  &.MuiChip-root {
+    background: ${(props: ActiveProps) => (props.active ? COLOR.primary.tint1 : COLOR.bg.light)};
+    color: ${(props: ActiveProps) => (props.active ? COLOR.primary.shade1 : COLOR.font.grey)};
+    border: 1px solid ${(props: ActiveProps) => (props.active ? COLOR.primary.shade1 : COLOR.divider.dark)};
+    margin: 2.5px 5px 2.5px 5px;
+    width: 64px;
+    cursor: pointer;
+    margin: 5px 5px 10px 5px;
+    &:hover {
+      background: ${COLOR.primary.tint1};
+      color: ${COLOR.primary.shade1};
+      border: 1px solid ${COLOR.primary.shade1};
+    }
+    &:focus {
+      background: ${COLOR.primary.tint1};
+    }
   }
 `

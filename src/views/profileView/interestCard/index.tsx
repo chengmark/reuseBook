@@ -19,7 +19,7 @@ const InterestCard = (props: Props): ReactElement => {
           {user.interests.map((
             interest: any, // should change any to string when user type is defined later
           ) => (
-            <StyledChip key={interest} label={interest}></StyledChip>
+            <StyledChip key={interest} label={interest} />
           ))}
         </InterestContainer>
       </Block>
