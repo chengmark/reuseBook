@@ -9,10 +9,11 @@ import { CartRoutes } from './routes/shoppingCart'
 // import middlewares from './middlewares'
 import path from 'path'
 import DB from './DB'
+import cors from 'cors'
 
 const app: express.Application = express()
 const server: http.Server = http.createServer(app)
-const PORT = process.env.PORT ? process.env.PORT : 3000
+const PORT = process.env.PORT ? process.env.PORT : 3001
 
 const routes: Array<Routes> = []
 
@@ -21,6 +22,8 @@ const routes: Array<Routes> = []
 app.use(bodyparser.urlencoded({ extended: false }))
 
 app.use(bodyparser.json())
+
+app.use(cors())
 
 const router = express.Router()
 

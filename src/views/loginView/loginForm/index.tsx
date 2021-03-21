@@ -1,9 +1,14 @@
 import { Button, TextField } from '@material-ui/core'
 import { AccountCircle } from '@material-ui/icons'
-import { checkIntegrity, VALIDATORS } from '@src/formIntegrity'
+import { useUserState } from '@src/context/UserContext'
+import { checkIntegrity, toData, VALIDATORS, formNoErr } from '@src/formIntegrity'
+import UserHelper from '@src/helpers/UserHelper'
+import { LOCATIONS, toPath } from '@src/routes'
 import React, { ChangeEvent, Dispatch, ReactElement, SetStateAction, useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import { SIGNUP, RESET_PW } from '..'
 import { CenteredRow, Container, DividerText, IconRow, Line, LinkText, useStyles } from '../style'
+import { useSnackbar } from 'notistack'
 
 type Props = {
   setOperation: Dispatch<SetStateAction<number>>
@@ -13,9 +18,12 @@ const LoginForm = (props: Props): ReactElement => {
   const { setOperation } = props
   const classes = useStyles()
   const [input, setInput] = useState({
-    username: { value: '', errMsg: '' },
+    emailOrUsername: { value: '', errMsg: '' },
     password: { value: '', errMsg: '' },
   })
+  const userState = useUserState()
+  const history = useHistory()
+  const { enqueueSnackbar } = useSnackbar()
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const nextState = input
@@ -25,9 +33,21 @@ const LoginForm = (props: Props): ReactElement => {
 
   const handleSubmit = () => {
     // integrity check
-    const username = checkIntegrity(input.username, [VALIDATORS.REQUIRED])
+    const emailOrUsername = checkIntegrity(input.emailOrUsername, [VALIDATORS.REQUIRED])
     const password = checkIntegrity(input.password, [VALIDATORS.REQUIRED])
-    setInput({ ...input, username, password })
+    setInput({ ...input, emailOrUsername, password })
+    if (formNoErr(input)) {
+      UserHelper.login(toData(input))
+        .then((res) => {
+          userState.updateState(res)
+          history.push(toPath(LOCATIONS.profile))
+          enqueueSnackbar('Successful login', { variant: 'success' })
+        })
+        .catch((err) => {
+          console.log(err.response)
+          enqueueSnackbar('Error', { variant: 'error' })
+        })
+    }
   }
 
   return (
@@ -39,15 +59,15 @@ const LoginForm = (props: Props): ReactElement => {
           <Line></Line>
         </IconRow>
         <TextField
-          id="username-input"
-          name="username"
-          label="Username"
+          id="username-or-email-input"
+          name="emailOrUsername"
+          label="Username or Email"
           type="text"
-          autoComplete="current-username"
+          autoComplete="current-emailOrUsername"
           variant="outlined"
           className={classes.textField}
-          error={!!input.username.errMsg}
-          helperText={input.username.errMsg}
+          error={!!input.emailOrUsername.errMsg}
+          helperText={input.emailOrUsername.errMsg}
           onChange={handleInputChange}
         />
         <TextField

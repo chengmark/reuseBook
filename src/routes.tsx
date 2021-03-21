@@ -1,5 +1,5 @@
 import React, { ReactChild, ReactElement } from 'react'
-import { Route, Switch } from 'react-router-dom'
+import { Redirect, Route, Switch } from 'react-router-dom'
 import Navigation from '@components/navigation'
 import AppView from './views/appView'
 import HomeView from './views/homeView'
@@ -10,6 +10,7 @@ import SettingsView from './views/settingsView'
 import { GlobalStyles } from './styling'
 import LoginView from './views/loginView'
 import { MainLayout } from './layout'
+import { useUserState } from './context/UserContext'
 // import LoadingView from './views/loadingView'
 
 // const Sample = Loadable({
@@ -36,6 +37,8 @@ export const toPath = (location: string): string => {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const Routes = (props: Props): ReactElement => {
+  const loggedIn = useUserState().loggedIn()
+
   return (
     <>
       <GlobalStyles />
@@ -52,9 +55,13 @@ const Routes = (props: Props): ReactElement => {
               </SearchView>
             </Route>
             <Route exact path={toPath(LOCATIONS.profile)}>
-              <ProfileView>
-                <div> Profile view </div>
-              </ProfileView>
+              {loggedIn ? (
+                <ProfileView>
+                  <div> Profile view </div>
+                </ProfileView>
+              ) : (
+                <Redirect to={toPath(LOCATIONS.login)} />
+              )}
             </Route>
             <Route exact path={toPath(LOCATIONS.shoppingCart)}>
               <CartView>

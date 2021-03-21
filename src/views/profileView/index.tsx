@@ -1,4 +1,5 @@
 import { Avatar } from '@material-ui/core'
+import { useUserState } from '@src/context/UserContext'
 import React, { ReactElement } from 'react'
 import InfoCard from './infoCard'
 import InterestCard from './interestCard'
@@ -18,16 +19,18 @@ const testUser = {
 
 const ProfileView = (props: Props): ReactElement => {
   const { children, ...rest } = props
+  const user = useUserState().state
+
   return (
     <ProfileLayout>
       <AppViewRow>
         <Avatar></Avatar>
-        <AppViewName>{testUser.firstName + ' ' + testUser.lastName}</AppViewName>
+        <AppViewName>{user.firstname + ' ' + user.lastname}</AppViewName>
         <OutlinedBtn variant="outlined">UPDATE INFO</OutlinedBtn>
       </AppViewRow>
       <SecondaryColumn>
-        <InfoCard user={testUser}></InfoCard>
-        <InterestCard user={testUser}></InterestCard>
+        <InfoCard user={user}></InfoCard>
+        <InterestCard user={user}></InterestCard>
       </SecondaryColumn>
       <MainColumn>
         <MainCard></MainCard>
