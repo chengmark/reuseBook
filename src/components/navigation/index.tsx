@@ -8,6 +8,7 @@ import SettingsIcon from '@material-ui/icons/Settings'
 import { NavWrapper, NavigationGrid, Divider } from './style'
 import { LOCATIONS, toPath } from '@src/routes'
 import NavItem from './navItem'
+import { useUserState } from '@src/context/UserContext'
 
 type Props = {
   history?: History
@@ -21,6 +22,8 @@ type Props = {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const Navigation = (props: Props): ReactElement => {
+  const userState = useUserState()
+
   return (
     <NavWrapper>
       <NavigationGrid>
@@ -30,13 +33,18 @@ const Navigation = (props: Props): ReactElement => {
         <Route exact path={toPath(LOCATIONS.shoppingCart)}>
           {({ match }) => <NavItem title={LOCATIONS.shoppingCart} isActive={!!match} icon={ShoppingCartIcon}></NavItem>}
         </Route>
-        <Route exact path={toPath(LOCATIONS.profile)}>
-          {({ match }) => <NavItem title={LOCATIONS.profile} isActive={!!match} icon={AccountCircleIcon}></NavItem>}
-        </Route>
         <Divider></Divider>
-        <Route exact path={toPath(LOCATIONS.login)}>
-          {({ match }) => <NavItem title={LOCATIONS.login} isActive={!!match} icon={ExitToAppIcon}></NavItem>}
-        </Route>
+
+        {userState.loggedIn() ? (
+          <Route exact path={toPath(LOCATIONS.profile)}>
+            {({ match }) => <NavItem title={LOCATIONS.profile} isActive={!!match} icon={AccountCircleIcon}></NavItem>}
+          </Route>
+        ) : (
+          <Route exact path={toPath(LOCATIONS.login)}>
+            {({ match }) => <NavItem title={LOCATIONS.login} isActive={!!match} icon={ExitToAppIcon}></NavItem>}
+          </Route>
+        )}
+
         <Route exact path={toPath(LOCATIONS.settings)}>
           {({ match }) => (
             <NavItem toBottom title={LOCATIONS.settings} isActive={!!match} icon={SettingsIcon}></NavItem>

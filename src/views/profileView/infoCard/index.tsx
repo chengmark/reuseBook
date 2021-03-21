@@ -17,7 +17,7 @@ const InfoCard = (props: Props): ReactElement => {
         <UserAvatar>{user.username.substr(0, 1)[0]}</UserAvatar>
       </AvatarWrapper>
       <Block>
-        <Name>{user.firstName + ' ' + user.lastName}</Name>
+        <Name>{user.firstname + ' ' + user.lastname}</Name>
         <Username>{'@' + user.username}</Username>
       </Block>
       <Block>

@@ -1,5 +1,3 @@
-import { Obj } from '@myTypes/Obj'
-
 type Validator = {
   id: number
   errMsg: string
@@ -61,6 +59,25 @@ export const checkIntegrity = (target: Target, validators: Array<Validator>): Ta
     if (!validator.check(target.value)) return (target.errMsg = validator.errMsg)
   })
   return target
+}
+
+export const formNoErr = (formState: Record<string, Target>): boolean => {
+  let flag = true
+  for (const key of Object.keys(formState)) {
+    if (formState[key].errMsg) {
+      flag = false
+      break
+    }
+  }
+  return flag
+}
+
+export const toData = (formState: Record<string, Target>): Record<string, string | number> => {
+  const data: Record<string, string | number> = {}
+  for (const key of Object.keys(formState)) {
+    data[key] = formState[key].value
+  }
+  return data
 }
 
 export const VALIDATORS = {

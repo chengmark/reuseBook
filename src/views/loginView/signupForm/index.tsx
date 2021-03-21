@@ -2,8 +2,13 @@ import React, { ChangeEvent, Dispatch, ReactElement, SetStateAction, useState } 
 import { AccountCircle } from '@material-ui/icons'
 import { Button, TextField } from '@material-ui/core'
 import { LOGIN, RESET_PW } from '..'
-import { Container, IconRow, Line, CenteredRow, DividerText, LinkText, useStyles } from '../style'
-import { VALIDATORS, checkIntegrity } from '@src/formIntegrity'
+import { Container, IconRow, Line, CenteredRow, DividerText, LinkText, useStyles, InputRow } from '../style'
+import { VALIDATORS, checkIntegrity, formNoErr, toData } from '@src/formIntegrity'
+import UserHelper from '@src/helpers/UserHelper'
+import { useUserState } from '@src/context/UserContext'
+import { useHistory } from 'react-router'
+import { LOCATIONS, toPath } from '@src/routes'
+import { useSnackbar } from 'notistack'
 
 type Props = {
   setOperation: Dispatch<SetStateAction<number>>
@@ -16,7 +21,12 @@ const SignupForm = (props: Props): ReactElement => {
     email: { value: '', errMsg: '' },
     username: { value: '', errMsg: '' },
     password: { value: '', errMsg: '' },
+    firstname: { value: '', errMsg: '' },
+    lastname: { value: '', errMsg: '' },
   })
+  const userState = useUserState()
+  const history = useHistory()
+  const { enqueueSnackbar } = useSnackbar()
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const nextState = input
@@ -29,7 +39,21 @@ const SignupForm = (props: Props): ReactElement => {
     const email = checkIntegrity(input.email, [VALIDATORS.REQUIRED, VALIDATORS.EMAIL])
     const username = checkIntegrity(input.username, [VALIDATORS.REQUIRED])
     const password = checkIntegrity(input.password, [VALIDATORS.REQUIRED])
-    setInput({ ...input, email, username, password })
+    const firstname = checkIntegrity(input.firstname, [VALIDATORS.REQUIRED])
+    const lastname = checkIntegrity(input.lastname, [VALIDATORS.REQUIRED])
+    setInput({ ...input, email, username, password, firstname, lastname })
+    if (formNoErr(input)) {
+      UserHelper.signup(toData(input))
+        .then((res) => {
+          userState.updateState(res)
+          history.push(toPath(LOCATIONS.profile))
+          enqueueSnackbar('Successful signup', { variant: 'success' })
+        })
+        .catch((err) => {
+          console.log(err.response)
+          enqueueSnackbar(err.response.toString(), { variant: 'error' })
+        })
+    }
   }
 
   return (
@@ -76,6 +100,32 @@ const SignupForm = (props: Props): ReactElement => {
           helperText={input.password.errMsg}
           onChange={handleInputChange}
         />
+        <InputRow>
+          <TextField
+            id="firstname-input"
+            name="firstname"
+            label="First Name"
+            type="firstname"
+            autoComplete="current-firstname"
+            variant="outlined"
+            className={classes.textField}
+            error={!!input.firstname.errMsg}
+            helperText={input.firstname.errMsg}
+            onChange={handleInputChange}
+          />
+          <TextField
+            id="lastname-input"
+            name="lastname"
+            label="Last Name"
+            type="lastname"
+            autoComplete="current-lastname"
+            variant="outlined"
+            className={classes.textField}
+            error={!!input.lastname.errMsg}
+            helperText={input.lastname.errMsg}
+            onChange={handleInputChange}
+          />
+        </InputRow>
         <Button variant="contained" color="primary" className={classes.button} onClick={handleSubmit}>
           SIGN UP
         </Button>

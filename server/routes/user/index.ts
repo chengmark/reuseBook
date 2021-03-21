@@ -24,6 +24,7 @@ export class UserRoutes extends Routes {
         UserController.listUsers(req, res)
       })
       .post((req: Request, res: Response) => {
+        console.log(req.body)
         UserController.createUser(req, res)
       })
 
