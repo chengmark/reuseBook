@@ -16,7 +16,7 @@ const InterestCard = (props: Props): ReactElement => {
         <InterestTitle>Interests</InterestTitle>
         <Divider></Divider>
         <InterestContainer>
-          {user.interests.map((
+          {user.interests?.map((
             interest: any, // should change any to string when user type is defined later
           ) => (
             <StyledChip key={interest} label={interest} />

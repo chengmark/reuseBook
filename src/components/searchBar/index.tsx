@@ -3,10 +3,6 @@ import React, { ChangeEvent, ReactElement, useState } from 'react'
 import SearchIcon from '@material-ui/icons/Search'
 import { Input, SearchWrapper, Submit, Select } from './style'
 
-type Props = {
-  children?: ReactElement
-}
-
 const useStyles = makeStyles((theme) => ({
   form: {
     display: 'flex',
@@ -37,12 +33,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const SearchBar = (props: Props): ReactElement => {
+const SearchBar = (): ReactElement => {
   const [input, setInput] = useState('')
   const [scope, setScope] = useState('All')
   const [isFocus, setIsFocus] = useState(false)
-  const { ...rest } = props
-  const classes = useStyles()
 
   const handleScopeChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setScope(e.target.value)
@@ -52,9 +46,9 @@ const SearchBar = (props: Props): ReactElement => {
     setInput(e.target.value)
   }
 
-  const toggleFocus = () => {
-    setIsFocus(!isFocus)
-  }
+  // const toggleFocus = () => {
+  //   setIsFocus(!isFocus)
+  // }
 
   return (
     <SearchWrapper>

@@ -97,3 +97,8 @@ export const LinkText = styled.div`
     color: ${COLOR.primary.shade2};
   }
 `
+export const InputRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+`

@@ -1,14 +1,8 @@
-import { GridList, GridListTile } from '@material-ui/core'
 import React, { ReactElement, useState } from 'react'
-import { ScrollableList, ContentContainer, useStyles, Tag } from '../style'
+import { ScrollableList, ContentContainer, Tag } from '../style'
 
-type Props = {
-  children?: ReactElement
-}
-
-const MainContent = (props: Props): ReactElement => {
-  const { children, ...rest } = props
-  const classes = useStyles()
+const MainContent = (): ReactElement => {
+  // const classes = useStyles()
   const [categories, setCategories] = useState([
     'Math',
     'Computer',
