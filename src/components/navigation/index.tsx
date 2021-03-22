@@ -9,6 +9,8 @@ import { NavWrapper, NavigationGrid, Divider } from './style'
 import { LOCATIONS, toPath } from '@src/routes'
 import NavItem from './navItem'
 import { useUserState } from '@src/context/UserContext'
+import { AddBox } from '@material-ui/icons'
+
 
 type Props = {
   history?: History
@@ -34,17 +36,18 @@ const Navigation = (props: Props): ReactElement => {
           {({ match }) => <NavItem title={LOCATIONS.shoppingCart} isActive={!!match} icon={ShoppingCartIcon}></NavItem>}
         </Route>
         <Divider></Divider>
-
         {userState.loggedIn() ? (
           <Route exact path={toPath(LOCATIONS.profile)}>
             {({ match }) => <NavItem title={LOCATIONS.profile} isActive={!!match} icon={AccountCircleIcon}></NavItem>}
+          </Route>
+          <Route exact path={toPath(LOCATIONS.sell)}>
+            {({ match }) => <NavItem title={LOCATIONS.sell} isActive={!!match} icon={AddBox}></NavItem>}
           </Route>
         ) : (
           <Route exact path={toPath(LOCATIONS.login)}>
             {({ match }) => <NavItem title={LOCATIONS.login} isActive={!!match} icon={ExitToAppIcon}></NavItem>}
           </Route>
         )}
-
         <Route exact path={toPath(LOCATIONS.settings)}>
           {({ match }) => (
             <NavItem toBottom title={LOCATIONS.settings} isActive={!!match} icon={SettingsIcon}></NavItem>
