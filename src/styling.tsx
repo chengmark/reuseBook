@@ -3,6 +3,10 @@ import { createGlobalStyle } from 'styled-components'
 // global stylings
 export const GlobalStyles = createGlobalStyle`
 
+  * {
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  }
+
   html, body{
     width: 100%;
     height: 100%;
@@ -58,8 +62,8 @@ export const COLOR = {
     shade2: '#AD6100',
   },
   error: {
-    shade: '#F44336',
-    tint: '#FCC9C5',
+    shade: '#e91b0c',
+    tint: '#F44336',
   },
   hover: {
     grey: '#EEEEEE',

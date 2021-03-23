@@ -5,6 +5,7 @@ type ContextType = {
   state: Obj
   updateState: (newState: Obj) => void
   loggedIn: () => boolean
+  logout: () => void
 }
 
 type Props = {
@@ -16,6 +17,8 @@ export const UserContext = createContext<ContextType>({
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   updateState: () => {},
   loggedIn: () => false,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  logout: () => {},
 })
 
 // an example of context hook
@@ -30,6 +33,10 @@ const UserProvider = ({ children }: Props): ReactElement => {
     return Object.keys(state).length > 0
   }
 
+  const logout = (): void => {
+    setState({})
+  }
+
   // const initState = async () => {
   //   updateState({})
   // }
@@ -40,6 +47,7 @@ const UserProvider = ({ children }: Props): ReactElement => {
         state,
         updateState,
         loggedIn,
+        logout,
       }}
     >
       {children}

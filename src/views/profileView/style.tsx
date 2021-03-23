@@ -100,7 +100,7 @@ export const BookAvatar = styled(Avatar)`
   }
 `
 
-export const StyledBtn = styled(Button)`
+export const Btn = styled(Button)`
   &.MuiButton-root {
     margin: 5px 10px 5px 10px;
     background: ${COLOR.primary.shade1};
@@ -108,6 +108,17 @@ export const StyledBtn = styled(Button)`
   }
   &.MuiButton-root:hover {
     background: ${COLOR.primary.shade2};
+  }
+`
+
+export const LogoutBtn = styled(Btn)`
+  &.MuiButton-root {
+    margin: 5px 10px 5px 10px;
+    background: ${COLOR.error.tint};
+    color: ${COLOR.font.light};
+  }
+  &.MuiButton-root:hover {
+    background: ${COLOR.error.shade};
   }
 `
 

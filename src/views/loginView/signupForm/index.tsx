@@ -38,7 +38,7 @@ const SignupForm = (props: Props): ReactElement => {
     // integrity check
     const email = checkIntegrity(input.email, [VALIDATORS.REQUIRED, VALIDATORS.EMAIL])
     const username = checkIntegrity(input.username, [VALIDATORS.REQUIRED])
-    const password = checkIntegrity(input.password, [VALIDATORS.REQUIRED])
+    const password = checkIntegrity(input.password, [VALIDATORS.REQUIRED, VALIDATORS.NUM_AND_LETTER])
     const firstname = checkIntegrity(input.firstname, [VALIDATORS.REQUIRED])
     const lastname = checkIntegrity(input.lastname, [VALIDATORS.REQUIRED])
     setInput({ ...input, email, username, password, firstname, lastname })
