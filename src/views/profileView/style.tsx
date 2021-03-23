@@ -1,4 +1,4 @@
-import { Avatar, Button, Chip, makeStyles } from '@material-ui/core'
+import { Avatar, Button, Chip } from '@material-ui/core'
 import { ArrowForwardIos } from '@material-ui/icons'
 import { MEDIA_BREAK, NAV_WIDTH } from '@src/layout'
 import { COLOR } from '@src/styling'

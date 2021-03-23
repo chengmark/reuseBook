@@ -1,17 +1,23 @@
-import { Avatar, Button } from '@material-ui/core'
 import { Info, LockOpen, ExitToApp } from '@material-ui/icons'
 import { useUserState } from '@src/context/UserContext'
+import { LOCATIONS, toPath } from '@src/routes'
 import React, { ReactElement } from 'react'
+import { useHistory } from 'react-router'
 import { Card, CoverPhoto, AvatarWrapper, Block, Name, Username, Divider, UserAvatar, Btn, LogoutBtn } from '../style'
+import { useSnackbar } from 'notistack'
 
 type Props = {
   user: any // should change to specific user type, define in common types later
 }
 
 const InfoCard = (props: Props): ReactElement => {
-  const { user, ...rest } = props
+  const { user } = props
   const userState = useUserState()
+  const history = useHistory()
+  const { enqueueSnackbar } = useSnackbar()
   const handleLogoutClick = () => {
+    history.push(toPath(LOCATIONS.home))
+    enqueueSnackbar('Successful logout', { variant: 'success' })
     userState.logout()
   }
 

@@ -3,18 +3,13 @@ import React, { ReactElement, useState } from 'react'
 import LoginForm from './loginForm'
 import ResetPwForm from './resetPwForm'
 import SignupForm from './signupForm'
-import { Container, Wrapper, LinkText } from './style'
-
-type Props = {
-  children?: ReactElement
-}
+import { Wrapper } from './style'
 
 export const LOGIN = 1
 export const SIGNUP = 2
 export const RESET_PW = 3
 
-const LoginView = (props: Props): ReactElement => {
-  const { children } = props
+const LoginView = (): ReactElement => {
   const [operation, setOperation] = useState(LOGIN)
 
   return (

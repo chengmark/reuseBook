@@ -6,19 +6,14 @@ import InterestCard from './interestCard'
 import MainCard from './mainCard'
 import { AppViewName, AppViewRow, OutlinedBtn, MainColumn, ProfileLayout, SecondaryColumn } from './style'
 
-type Props = {
-  children?: ReactElement
-}
+// const testUser = {
+//   username: 'TestUser',
+//   firstName: 'Test',
+//   lastName: 'User',
+//   interests: ['Math', 'Philosophy', 'Movie', 'Travel', 'Scocial Science'],
+// }
 
-const testUser = {
-  username: 'TestUser',
-  firstName: 'Test',
-  lastName: 'User',
-  interests: ['Math', 'Philosophy', 'Movie', 'Travel', 'Scocial Science'],
-}
-
-const ProfileView = (props: Props): ReactElement => {
-  const { children, ...rest } = props
+const ProfileView = (): ReactElement => {
   const user = useUserState().state
 
   return (

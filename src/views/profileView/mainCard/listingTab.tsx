@@ -47,7 +47,7 @@ const testListings: any[] = [
 ]
 
 const ListingTab = (props: Props): ReactElement => {
-  const { currentTab, index = 1, ...rest } = props
+  const { currentTab, index = 1 } = props
   const history = useHistory()
 
   const redirect = () => {

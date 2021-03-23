@@ -1,5 +1,3 @@
-import { Obj } from '@myTypes/Obj'
-import { Chip } from '@material-ui/core'
 import React, { ReactElement } from 'react'
 import { Card, Block, InterestTitle, Divider, InterestContainer, StyledChip } from '../style'
 
@@ -8,7 +6,7 @@ type Props = {
 }
 
 const InterestCard = (props: Props): ReactElement => {
-  const { user, ...rest } = props
+  const { user } = props
 
   return (
     <Card>
