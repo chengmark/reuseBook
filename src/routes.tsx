@@ -12,6 +12,7 @@ import LoginView from './views/loginView'
 import { MainLayout } from './layout'
 import { useUserState } from './context/UserContext'
 import SellView from './views/sellView'
+import { useSnackbar } from 'notistack'
 
 // import LoadingView from './views/loadingView'
 
@@ -41,6 +42,15 @@ export const toPath = (location: string): string => {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const Routes = (props: Props): ReactElement => {
   const loggedIn = useUserState().loggedIn()
+  const { enqueueSnackbar } = useSnackbar()
+
+  const requireLogin = (element: ReactElement): ReactElement => {
+    if (loggedIn) return element
+    else {
+      enqueueSnackbar('Please login', { variant: 'info' })
+      return <Redirect to={toPath(LOCATIONS.login)} />
+    }
+  }
 
   return (
     <>
@@ -50,7 +60,7 @@ const Routes = (props: Props): ReactElement => {
         <MainLayout>
           <Switch>
             <Route exact path={['/', toPath(LOCATIONS.home)]}>
-              <HomeView></HomeView>
+              <HomeView />
             </Route>
             <Route exact path={toPath(LOCATIONS.search)}>
               <SearchView>
@@ -58,13 +68,7 @@ const Routes = (props: Props): ReactElement => {
               </SearchView>
             </Route>
             <Route exact path={toPath(LOCATIONS.profile)}>
-              {loggedIn ? (
-                <ProfileView>
-                  <div> Profile view </div>
-                </ProfileView>
-              ) : (
-                <Redirect to={toPath(LOCATIONS.login)} />
-              )}
+              {requireLogin(<ProfileView />)}
             </Route>
             <Route exact path={toPath(LOCATIONS.shoppingCart)}>
               <CartView>
@@ -77,10 +81,10 @@ const Routes = (props: Props): ReactElement => {
               </SettingsView>
             </Route>
             <Route exact path={toPath(LOCATIONS.login)}>
-              <LoginView></LoginView>
+              <LoginView />
             </Route>
             <Route exact path={toPath(LOCATIONS.sell)}>
-              <SellView></SellView>
+              {requireLogin(<SellView />)}
             </Route>
           </Switch>
         </MainLayout>

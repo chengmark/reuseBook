@@ -3,6 +3,7 @@ import { COLOR } from '@src/styling'
 import styled from 'styled-components'
 import ImageOutlinedIcon from '@material-ui/icons/ImageOutlined'
 import Autocomplete from '@material-ui/lab/Autocomplete'
+import { MEDIA_BREAK } from '@src/layout'
 
 export const Container = styled.div`
   display: flex;
@@ -10,6 +11,11 @@ export const Container = styled.div`
   width: 100%;
   background: ${COLOR.bg.light};
   border: 1px solid ${COLOR.divider.dark};
+  @media (max-width: ${MEDIA_BREAK}px) {
+    height: calc(100% - 10px);
+    width: calc(100% - 10px);
+    padding: 5px;
+  }
 `
 
 type PositionProps = {
@@ -41,7 +47,9 @@ export const StepContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 24px;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 15px;
 `
 
 export const UploadArea = styled.button`
@@ -106,6 +114,9 @@ export const CoverPhotoWrapper = styled.div`
   color: ${COLOR.secondary.shade1};
   line-height: 38px;
   width: ${(props: SizeProps) => (props.width ? props.width : `75%`)};
+  @media (max-width: ${MEDIA_BREAK}px) {
+    width: calc(100% - 40px);
+  }
 `
 
 export const CoverPhoto = styled.div`
@@ -150,6 +161,9 @@ export const FormContainer = styled.div`
   flex-direction: ${(props: PositionProps) => props.direction};
   width: calc(100% - 48px);
   ${(props: PositionProps) => (props.center ? `justify-centent: center; align-items: center;` : ``)}
+  @media (max-width: ${MEDIA_BREAK}px) {
+    width: 100%;
+  }
 `
 
 export const CategoryInput = styled(Autocomplete)`
@@ -189,6 +203,9 @@ export const DetailsWrapper = styled.div`
   flex-direction: column;
   width: ${(props: SizeProps) => props.width ?? '100%'};
   padding: 20px;
+  @media (max-width: ${MEDIA_BREAK}px) {
+    width: calc(100% - 40px);
+  }
 `
 
 export const DetailTitle = styled.div`

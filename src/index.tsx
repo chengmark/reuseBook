@@ -12,7 +12,7 @@ const App = () => {
     <div className="App">
       <BrowserRouter>
         <UserProvider>
-          <SnackbarProvider>
+          <SnackbarProvider preventDuplicate>
             <Routes />
           </SnackbarProvider>
         </UserProvider>

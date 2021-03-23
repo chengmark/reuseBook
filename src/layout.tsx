@@ -78,8 +78,10 @@ export const CenteredLayout = styled.div`
   max-width: ${MAX_MAIN_COLUMN_WIDTH}px;
   grid-template-columns: minmax(${MIN_MAIN_COLUMN_WIDTH}px, ${MAX_MAIN_COLUMN_WIDTH}px);
   @media (max-width: ${MEDIA_BREAK}px) {
-    max-width: ${MAX_APP_COLUMN_WIDTH}px;
-    grid-template-columns: ${MAX_APP_COLUMN_WIDTH}px;
+    display: flex;
+    flex-direction: column;
+    place-self: normal;
+    height: calc(100vh - ${NAV_WIDTH}px);
   }
 `
 
