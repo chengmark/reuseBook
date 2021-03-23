@@ -31,7 +31,7 @@ const User = new mongoose.Schema(
     }, // active or pending
     interest: [String],
   },
-  { timestamps: { createdAt: 'created_at' } },
+  { timestamps: { createdAt: 'createdAt' } },
 )
 
 export default mongoose.model('User', User)

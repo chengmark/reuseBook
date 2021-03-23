@@ -43,11 +43,21 @@ const SPECIAL_CHAR: Validator = {
     return regex.test(target)
   },
 }
+
 const LENGTH_EIGHT: Validator = {
   id: 5,
   errMsg: 'At least 8 characters required.',
   check: (target: string): boolean => {
     return target.length > 7
+  },
+}
+
+const NUM_ONLY: Validator = {
+  id: 6,
+  errMsg: 'Only number is allowed.',
+  check: (target: string): boolean => {
+    const regex = /^[0-9]*$/
+    return regex.test(target)
   },
 }
 
@@ -86,6 +96,7 @@ export const VALIDATORS = {
   NUM_AND_LETTER,
   SPECIAL_CHAR,
   LENGTH_EIGHT,
+  NUM_ONLY,
 }
 
 /**

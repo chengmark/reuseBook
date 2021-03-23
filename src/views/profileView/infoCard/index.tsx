@@ -1,7 +1,8 @@
 import { Avatar, Button } from '@material-ui/core'
-import { Info, LockOpen } from '@material-ui/icons'
+import { Info, LockOpen, ExitToApp } from '@material-ui/icons'
+import { useUserState } from '@src/context/UserContext'
 import React, { ReactElement } from 'react'
-import { Card, CoverPhoto, AvatarWrapper, Block, Name, Username, Divider, UserAvatar, StyledBtn } from '../style'
+import { Card, CoverPhoto, AvatarWrapper, Block, Name, Username, Divider, UserAvatar, Btn, LogoutBtn } from '../style'
 
 type Props = {
   user: any // should change to specific user type, define in common types later
@@ -9,6 +10,10 @@ type Props = {
 
 const InfoCard = (props: Props): ReactElement => {
   const { user, ...rest } = props
+  const userState = useUserState()
+  const handleLogoutClick = () => {
+    userState.logout()
+  }
 
   return (
     <Card>
@@ -22,12 +27,15 @@ const InfoCard = (props: Props): ReactElement => {
       </Block>
       <Block>
         <Divider></Divider>
-        <StyledBtn size="small" variant="contained" startIcon={<LockOpen />}>
+        <Btn size="small" variant="contained" startIcon={<LockOpen />}>
           Change password
-        </StyledBtn>
-        <StyledBtn size="small" variant="contained" startIcon={<Info />}>
+        </Btn>
+        <Btn size="small" variant="contained" startIcon={<Info />}>
           Update Info
-        </StyledBtn>
+        </Btn>
+        <LogoutBtn size="small" variant="contained" startIcon={<ExitToApp />} onClick={handleLogoutClick}>
+          Log out
+        </LogoutBtn>
       </Block>
     </Card>
   )

@@ -62,8 +62,8 @@ export const COLOR = {
     shade2: '#AD6100',
   },
   error: {
-    shade: '#F44336',
-    tint: '#FCC9C5',
+    shade: '#e91b0c',
+    tint: '#F44336',
   },
   hover: {
     grey: '#EEEEEE',

@@ -1,20 +1,21 @@
-import { MenuItem } from '@material-ui/core'
-import { checkIntegrity, VALIDATORS } from '@src/formIntegrity'
-import React, { ChangeEvent, ReactElement, useState } from 'react'
-import { FormContainer, TextInput, BtnRow, Title, PriceType, CategoryInput, Btn } from '../style'
+import { checkIntegrity, formNoErr, VALIDATORS } from '@src/formIntegrity'
+import React, { ChangeEvent, ReactElement, useEffect, useState } from 'react'
+import { FormContainer, TextInput, BtnRow, Title, PriceType, Btn } from '../style'
+import { Autocomplete } from '@material-ui/lab'
+import CategoryHelper from '@src/helpers/CategoryHelper'
+import { useSnackbar } from 'notistack'
+import { Category } from '@myTypes/Category'
 
 type Props = {
   goStep3: (details: any) => void
 }
 
-type CategoryType = {
-  title: string
-}
-const testCategories = [{ title: 'Math' }, { title: 'Art' }, { title: 'Bio' }, { title: 'CS' }, { title: 'Eng' }]
+// const testCategories = [{ title: 'Math' }, { title: 'Art' }, { title: 'Bio' }, { title: 'CS' }, { title: 'Eng' }]
 
 const DetailsForm = (props: Props): ReactElement => {
   const { goStep3, ...rest } = props
-  const [input, setInput] = useState({
+  const { enqueueSnackbar } = useSnackbar()
+  const [input, setInput] = useState<Record<string, any>>({
     category: { value: '', errMsg: '' },
     title: { value: '', errMsg: '' },
     listType: { value: 'sell', errMsg: '' },
@@ -23,6 +24,23 @@ const DetailsForm = (props: Props): ReactElement => {
     condition: { value: '', errMsg: '' },
     description: { value: '', errMsg: '' },
   })
+  const [categories, setCategories] = useState<Category[]>([
+    {
+      _id: '',
+      name: '',
+    },
+  ])
+
+  useEffect(() => {
+    CategoryHelper.listCategories()
+      .then((res: Category[]) => {
+        setCategories(res)
+      })
+      .catch((err) => {
+        console.log(err.response)
+        enqueueSnackbar(err.response.data.message, { variant: 'error' })
+      })
+  }, [])
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const nextState = input
@@ -31,18 +49,57 @@ const DetailsForm = (props: Props): ReactElement => {
   }
 
   const handlePriceTypeClick = (type: string) => {
-    setInput({ ...input, listType: { value: type, errMsg: '' } })
+    setInput({
+      ...input,
+      listType: { value: type, errMsg: '' },
+      price: { value: '', errMsg: '' },
+      tradeOption: { value: '', errMsg: '' },
+    })
   }
 
   const handleSubmit = () => {
     const category = checkIntegrity(input.category, [VALIDATORS.REQUIRED])
     const title = checkIntegrity(input.title, [VALIDATORS.REQUIRED])
-    setInput({ ...input, category, title })
-    if (!(category.errMsg || title.errMsg)) goStep3(input)
+    if (input.listType.value == 'sell') {
+      const price = checkIntegrity(input.price, [VALIDATORS.REQUIRED, VALIDATORS.NUM_ONLY])
+      setInput({ ...input, category, title, price })
+    } else {
+      const tradeOption = checkIntegrity(input.tradeOption, [VALIDATORS.REQUIRED])
+      setInput({ ...input, category, tradeOption })
+    }
+    if (formNoErr(input)) {
+      const details: Record<string, any> = {}
+      Object.keys(input).forEach((key: string) => {
+        details[key] = input[key].value
+        if (key == 'category') details[key] = categories.find((category) => category._id == input[key].value)
+      })
+      goStep3(details)
+    }
   }
 
   return (
-    <FormContainer>
+    <FormContainer direction="column">
+      <Autocomplete
+        onChange={(event: any, newValue: Category | null) => {
+          setInput({ ...input, category: { value: newValue?._id ?? '', errMsg: '' } })
+        }}
+        // inputValue={input.category.value.name}
+        // onInputChange={(event, newInputValue) => {
+        //   setInputValue(newInputValue)
+        // }}
+        id="categories"
+        getOptionLabel={(option) => option.name}
+        options={categories}
+        renderInput={(params) => (
+          <TextInput
+            {...params}
+            label="Category"
+            variant="outlined"
+            error={!!input.category.errMsg}
+            helperText={input.category.errMsg}
+          />
+        )}
+      />
       <TextInput
         id="title-input"
         name="title"
@@ -100,6 +157,18 @@ const DetailsForm = (props: Props): ReactElement => {
           onChange={handleInputChange}
         ></TextInput>
       )}
+      <TextInput
+        id="description-input"
+        name="description"
+        label="Description (optional)"
+        type="text"
+        autoComplete="current-description"
+        variant="outlined"
+        error={!!input.description.errMsg}
+        helperText={input.description.errMsg}
+        onChange={handleInputChange}
+        multiline
+      ></TextInput>
       <Btn onClick={handleSubmit}>next step</Btn>
     </FormContainer>
   )

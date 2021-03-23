@@ -14,10 +14,19 @@ export const Container = styled.div`
 
 type PositionProps = {
   center?: boolean
+  direction?: 'row' | 'column'
 }
 
 type ActiveProps = {
-  active: number // 0 | 1
+  active: number // 0 | 1, boolean will cause error
+}
+
+type SizeProps = {
+  width?: string
+}
+
+type BtnProps = {
+  secondary?: boolean
 }
 
 export const Title = styled.div`
@@ -96,7 +105,7 @@ export const CoverPhotoWrapper = styled.div`
   padding: 25px 0 10px 0;
   color: ${COLOR.secondary.shade1};
   line-height: 38px;
-  width: 75%;
+  width: ${(props: SizeProps) => (props.width ? props.width : `75%`)};
 `
 
 export const CoverPhoto = styled.div`
@@ -115,20 +124,32 @@ export const BtnRow = styled.div`
       : ``}
 `
 export const Btn = styled(Button)`
-  &.MuiButton-root {
+  ${(props: BtnProps) =>
+    props.secondary
+      ? `&.MuiButton-root {
+        margin: 5px 10px 5px 10px;
+        background: ${COLOR.bg.light};
+        color: ${COLOR.font.dark};
+        border: 1px solid ${COLOR.divider.dark};
+      }
+      &.MuiButton-root:hover {
+        background: ${COLOR.bg.grey};
+      }`
+      : `&.MuiButton-root {
     margin: 5px 10px 5px 10px;
     background: ${COLOR.primary.shade1};
     color: ${COLOR.primary.tint1};
   }
   &.MuiButton-root:hover {
     background: ${COLOR.primary.shade2};
-  }
+  }`}
 `
 
 export const FormContainer = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: ${(props: PositionProps) => props.direction};
   width: calc(100% - 48px);
+  ${(props: PositionProps) => (props.center ? `justify-centent: center; align-items: center;` : ``)}
 `
 
 export const CategoryInput = styled(Autocomplete)`
@@ -161,4 +182,21 @@ export const PriceType = styled(Chip)`
       background: ${COLOR.primary.tint1};
     }
   }
+`
+
+export const DetailsWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: ${(props: SizeProps) => props.width ?? '100%'};
+  padding: 20px;
+`
+
+export const DetailTitle = styled.div`
+  font-weight: 600;
+  display: inline-block;
+`
+
+export const TextRow = styled.div`
+  width: 75%;
+  margin: 5px 0 5px 0;
 `

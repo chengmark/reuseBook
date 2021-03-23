@@ -1,7 +1,7 @@
 import { Obj } from '@myTypes/Obj'
 import axios from 'axios'
 
-const URL = process.env.NODE_ENV == 'production' ? `${process.env.PUBLIC_URL}/api` : `http://localhost:3001/api`
+const URL = process.env.NODE_ENV == 'production' ? `${process.env.PUBLIC_URL}/api` : `http://localhost:3002/api`
 
 const UserHelper = {
   login: async (input: Obj): Promise<Obj> => {

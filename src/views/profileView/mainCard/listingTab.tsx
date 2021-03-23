@@ -9,7 +9,7 @@ import {
   IconWrapper,
   CenteredTabPanel,
   BookAvatar,
-  StyledBtn,
+  Btn,
   StyledForwardIcon,
 } from '../style'
 import { ChatBubbleOutline, FavoriteBorder, PostAdd, Visibility } from '@material-ui/icons'
@@ -92,9 +92,9 @@ const ListingTab = (props: Props): ReactElement => {
         <CenteredTabPanel>
           <TileInfoBlock>
             <TileTitle>{'Your posts will be displayed here.'}</TileTitle>
-            <StyledBtn startIcon={<PostAdd />} onClick={redirect}>
+            <Btn startIcon={<PostAdd />} onClick={redirect}>
               Sell a book now
-            </StyledBtn>
+            </Btn>
           </TileInfoBlock>
         </CenteredTabPanel>
       )}
