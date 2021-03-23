@@ -4,17 +4,12 @@ import React, { ReactElement, useState } from 'react'
 import DetailsForm from './detailsForm'
 import { Container, StepContentWrapper, Title } from './style'
 import UploadForm from './uploadForm'
-import { Category } from '@myTypes/Category'
 import { Details, Image } from '@myTypes/Product'
 import ConfirmForm from './confirmForm'
 
-type Props = {
-  children?: ReactElement
-}
-
 type loadType = {
   goStep2: (image: { dataURL: string; file: File }) => void
-  goStep3: (details: any) => void
+  goStep3: (details: Details) => void
   goStep1: () => void
   submitForm: () => void
   image: Image
@@ -40,8 +35,7 @@ const getStepContent = (index: number, load: loadType) => {
   }
 }
 
-const SellView = (props: Props): ReactElement => {
-  const { children, ...rest } = props
+const SellView = (): ReactElement => {
   const [activeStep, setActiveStep] = useState(0)
   const [image, setImage] = useState<Image>({ dataURL: '', file: new File([''], '') })
   const [details, setDetails] = useState<Details>({

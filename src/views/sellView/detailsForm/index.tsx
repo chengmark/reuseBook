@@ -1,21 +1,22 @@
-import { checkIntegrity, formNoErr, VALIDATORS } from '@src/formIntegrity'
+import { checkIntegrity, formNoErr, VALIDATORS, Target } from '@src/formIntegrity'
 import React, { ChangeEvent, ReactElement, useEffect, useState } from 'react'
 import { FormContainer, TextInput, BtnRow, Title, PriceType, Btn } from '../style'
 import { Autocomplete } from '@material-ui/lab'
 import CategoryHelper from '@src/helpers/CategoryHelper'
 import { useSnackbar } from 'notistack'
 import { Category } from '@myTypes/Category'
+import { Details } from '@myTypes/Product'
 
 type Props = {
-  goStep3: (details: any) => void
+  goStep3: (details: Details) => void
 }
 
 // const testCategories = [{ title: 'Math' }, { title: 'Art' }, { title: 'Bio' }, { title: 'CS' }, { title: 'Eng' }]
 
 const DetailsForm = (props: Props): ReactElement => {
-  const { goStep3, ...rest } = props
+  const { goStep3 } = props
   const { enqueueSnackbar } = useSnackbar()
-  const [input, setInput] = useState<Record<string, any>>({
+  const [input, setInput] = useState<Record<string, Target>>({
     category: { value: '', errMsg: '' },
     title: { value: '', errMsg: '' },
     listType: { value: 'sell', errMsg: '' },
@@ -68,11 +69,14 @@ const DetailsForm = (props: Props): ReactElement => {
       setInput({ ...input, category, tradeOption })
     }
     if (formNoErr(input)) {
-      const details: Record<string, any> = {}
-      Object.keys(input).forEach((key: string) => {
-        details[key] = input[key].value
-        if (key == 'category') details[key] = categories.find((category) => category._id == input[key].value)
-      })
+      const details: Details = {
+        category: categories.find((category) => category._id == input.category.value) as Category,
+        title: input.title.value,
+        listType: input.listType.value,
+        price: input.price.value,
+        tradeOption: input.tradeOption.value,
+        description: input.description.value,
+      }
       goStep3(details)
     }
   }

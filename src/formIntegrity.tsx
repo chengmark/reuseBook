@@ -4,7 +4,7 @@ type Validator = {
   check: (target: string) => boolean
 }
 
-type Target = {
+export type Target = {
   value: string
   errMsg: string
 }
