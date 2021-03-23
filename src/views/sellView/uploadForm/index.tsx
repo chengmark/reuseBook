@@ -11,15 +11,13 @@ import {
   UploadIcon,
   UploadText,
 } from '../style'
-import ImageIcon from '@material-ui/icons/Image'
 
 type Props = {
-  children?: ReactElement
   goStep2: (image: { dataURL: string; file: File }) => void
 }
 
 const UploadForm = (props: Props): ReactElement => {
-  const { children, goStep2, ...rest } = props
+  const { goStep2 } = props
   const [images, setImages] = useState([{ dataURL: '', file: new File([''], '') }]) // images[0] is the shape of this state
   const maxNumber = 2
 
@@ -30,8 +28,9 @@ const UploadForm = (props: Props): ReactElement => {
 
   return (
     <ImageUploading multiple value={images} onChange={handleUploadingChange} maxNumber={maxNumber}>
-      {({ imageList, onImageUpload, onImageRemoveAll, onImageUpdate, onImageRemove, isDragging, dragProps }) => (
+      {({ imageList, onImageUpload, onImageUpdate, dragProps }) => (
         // write your building UI
+        // onImageRemoveAll, onImageRemove(index), isDragging
         <>
           {/* <button onClick={onImageRemoveAll}>Remove all images</button> */}
           {/* {imageList.map((image, index) => (

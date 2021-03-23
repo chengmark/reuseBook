@@ -15,9 +15,11 @@ export const NavWrapper = styled.div`
   border-right: 1px solid ${COLOR.divider.light};
   @media (max-width: ${MEDIA_BREAK}px) {
     border-right: 0px;
-    border-top: 1px solid ${COLOR.divider.light};
-    height: ${NAV_WIDTH}px;
-    width: 100%;
+    border: 1px solid ${COLOR.divider.dark};
+    border-radius: 15px;
+    height: calc(${NAV_WIDTH}px - 5px);
+    width: calc(100% - 10px);
+    margin: 0 5px 0 5px;
   }
 `
 export const NavigationGrid = styled.div`

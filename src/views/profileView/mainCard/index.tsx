@@ -4,12 +4,7 @@ import React, { ChangeEvent, ReactElement, useState } from 'react'
 import { Card, TabPanel } from '../style'
 import ListingTab from './listingTab'
 
-type Props = {
-  children?: ReactElement
-}
-
-const MainCard = (props: Props): ReactElement => {
-  const { children, ...rest } = props
+const MainCard = (): ReactElement => {
   const [currentTab, setCurrentTab] = useState(0)
 
   const handleTabChange = (e: ChangeEvent<Obj>, newTab: number) => {

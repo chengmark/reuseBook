@@ -1,4 +1,3 @@
-import { Obj } from '@myTypes/Obj'
 import axios from 'axios'
 
 const URL = process.env.NODE_ENV == 'production' ? `${process.env.PUBLIC_URL}/api` : `http://localhost:3002/api`

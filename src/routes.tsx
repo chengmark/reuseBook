@@ -68,7 +68,8 @@ const Routes = (props: Props): ReactElement => {
               </SearchView>
             </Route>
             <Route exact path={toPath(LOCATIONS.profile)}>
-              {requireLogin(<ProfileView />)}
+              {/* {({ match }) => !!match && requireLogin(<ProfileView />)} */}
+              {() => requireLogin(<ProfileView />)}
             </Route>
             <Route exact path={toPath(LOCATIONS.shoppingCart)}>
               <CartView>
@@ -84,7 +85,7 @@ const Routes = (props: Props): ReactElement => {
               <LoginView />
             </Route>
             <Route exact path={toPath(LOCATIONS.sell)}>
-              {requireLogin(<SellView />)}
+              {() => requireLogin(<SellView />)}
             </Route>
           </Switch>
         </MainLayout>

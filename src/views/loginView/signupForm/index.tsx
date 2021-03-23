@@ -1,14 +1,14 @@
 import React, { ChangeEvent, Dispatch, ReactElement, SetStateAction, useState } from 'react'
 import { AccountCircle } from '@material-ui/icons'
-import { Button, TextField } from '@material-ui/core'
 import { LOGIN, RESET_PW } from '..'
-import { Container, IconRow, Line, CenteredRow, DividerText, LinkText, useStyles, InputRow } from '../style'
+import { Container, IconRow, Line, CenteredRow, DividerText, LinkText, InputRow, Input } from '../style'
 import { VALIDATORS, checkIntegrity, formNoErr, toData } from '@src/formIntegrity'
 import UserHelper from '@src/helpers/UserHelper'
 import { useUserState } from '@src/context/UserContext'
 import { useHistory } from 'react-router'
 import { LOCATIONS, toPath } from '@src/routes'
 import { useSnackbar } from 'notistack'
+import { Btn } from '@src/views/sellView/style'
 
 type Props = {
   setOperation: Dispatch<SetStateAction<number>>
@@ -16,7 +16,6 @@ type Props = {
 
 const SignupForm = (props: Props): ReactElement => {
   const { setOperation } = props
-  const classes = useStyles()
   const [input, setInput] = useState({
     email: { value: '', errMsg: '' },
     username: { value: '', errMsg: '' },
@@ -64,71 +63,66 @@ const SignupForm = (props: Props): ReactElement => {
           <AccountCircle fontSize="inherit" color="inherit"></AccountCircle>
           <Line></Line>
         </IconRow>
-        <TextField
+        <Input
           id="email-input"
           name="email"
           label="Email"
           type="text"
           autoComplete="current-email"
           variant="outlined"
-          className={classes.textField}
           error={!!input.email.errMsg}
           helperText={input.email.errMsg}
           onChange={handleInputChange}
         />
-        <TextField
+        <Input
           id="username-input"
           name="username"
           label="Username"
           type="text"
           autoComplete="current-username"
           variant="outlined"
-          className={classes.textField}
           error={!!input.username.errMsg}
           helperText={input.username.errMsg}
           onChange={handleInputChange}
         />
-        <TextField
+        <Input
           id="password-input"
           name="password"
           label="Password"
           type="password"
           autoComplete="current-password"
           variant="outlined"
-          className={classes.textField}
           error={!!input.password.errMsg}
           helperText={input.password.errMsg}
           onChange={handleInputChange}
         />
         <InputRow>
-          <TextField
+          <Input
             id="firstname-input"
             name="firstname"
             label="First Name"
             type="firstname"
             autoComplete="current-firstname"
             variant="outlined"
-            className={classes.textField}
             error={!!input.firstname.errMsg}
             helperText={input.firstname.errMsg}
             onChange={handleInputChange}
           />
-          <TextField
+          <Input
             id="lastname-input"
             name="lastname"
             label="Last Name"
             type="lastname"
             autoComplete="current-lastname"
             variant="outlined"
-            className={classes.textField}
             error={!!input.lastname.errMsg}
             helperText={input.lastname.errMsg}
             onChange={handleInputChange}
           />
         </InputRow>
-        <Button variant="contained" color="primary" className={classes.button} onClick={handleSubmit}>
+        <Btn variant="contained" color="primary" onClick={handleSubmit}>
           SIGN UP
-        </Button>
+        </Btn>
         <CenteredRow>
           <Line></Line>
           <DividerText>OR</DividerText>
@@ -138,7 +132,7 @@ const SignupForm = (props: Props): ReactElement => {
           <LinkText onClick={() => setOperation(RESET_PW)}>Forgot password?</LinkText>
         </CenteredRow>
       </Container>
-      <Container>
+      <Container secondary>
         <div>{'Already have an account?'}</div>
         <LinkText onClick={() => setOperation(LOGIN)}>Log in here.</LinkText>
       </Container>

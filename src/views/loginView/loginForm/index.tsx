@@ -1,13 +1,12 @@
-import { Button, TextField } from '@material-ui/core'
 import { AccountCircle } from '@material-ui/icons'
 import { useUserState } from '@src/context/UserContext'
 import { checkIntegrity, toData, VALIDATORS, formNoErr } from '@src/formIntegrity'
 import UserHelper from '@src/helpers/UserHelper'
 import { LOCATIONS, toPath } from '@src/routes'
-import React, { ChangeEvent, Dispatch, ReactElement, SetStateAction, useState } from 'react'
+import React, { useState, ChangeEvent, Dispatch, ReactElement, SetStateAction } from 'react'
 import { useHistory } from 'react-router-dom'
 import { SIGNUP, RESET_PW } from '..'
-import { CenteredRow, Container, DividerText, IconRow, Line, LinkText, useStyles } from '../style'
+import { Btn, CenteredRow, Container, DividerText, IconRow, Input, Line, LinkText } from '../style'
 import { useSnackbar } from 'notistack'
 
 type Props = {
@@ -16,7 +15,6 @@ type Props = {
 
 const LoginForm = (props: Props): ReactElement => {
   const { setOperation } = props
-  const classes = useStyles()
   const [input, setInput] = useState({
     emailOrUsername: { value: '', errMsg: '' },
     password: { value: '', errMsg: '' },
@@ -58,33 +56,31 @@ const LoginForm = (props: Props): ReactElement => {
           <AccountCircle fontSize="inherit" color="inherit"></AccountCircle>
           <Line></Line>
         </IconRow>
-        <TextField
+        <Input
           id="username-or-email-input"
           name="emailOrUsername"
           label="Username or Email"
           type="text"
           autoComplete="current-emailOrUsername"
           variant="outlined"
-          className={classes.textField}
           error={!!input.emailOrUsername.errMsg}
           helperText={input.emailOrUsername.errMsg}
           onChange={handleInputChange}
         />
-        <TextField
+        <Input
           id="password-input"
           name="password"
           label="Password"
           type="password"
           autoComplete="current-password"
           variant="outlined"
-          className={classes.textField}
           error={!!input.password.errMsg}
           helperText={input.password.errMsg}
           onChange={handleInputChange}
         />
-        <Button variant="contained" color="primary" className={classes.button} onClick={handleSubmit}>
+        <Btn variant="contained" color="primary" onClick={handleSubmit}>
           Log in
-        </Button>
+        </Btn>
         <CenteredRow>
           <Line></Line>
           <DividerText>OR</DividerText>
@@ -94,7 +90,7 @@ const LoginForm = (props: Props): ReactElement => {
           <LinkText onClick={() => setOperation(RESET_PW)}>Forgot password?</LinkText>
         </CenteredRow>
       </Container>
-      <Container>
+      <Container secondary>
         <div>{"Don't have an account yet?"}</div>
         <LinkText onClick={() => setOperation(SIGNUP)}>Sign up here.</LinkText>
       </Container>

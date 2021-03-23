@@ -84,7 +84,7 @@ const DetailsForm = (props: Props): ReactElement => {
   return (
     <FormContainer direction="column">
       <Autocomplete
-        onChange={(event: any, newValue: Category | null) => {
+        onChange={(event: unknown, newValue: Category | null) => {
           setInput({ ...input, category: { value: newValue?._id ?? '', errMsg: '' } })
         }}
         // inputValue={input.category.value.name}

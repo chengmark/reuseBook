@@ -19,7 +19,7 @@ type Props = {
 }
 
 const ConfirmForm = (props: Props): ReactElement => {
-  const { goStep1, submitForm, image, details, ...rest } = props
+  const { goStep1, submitForm, image, details } = props
 
   return (
     <FormContainer center direction="column">
