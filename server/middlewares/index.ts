@@ -23,7 +23,7 @@ middlewares.use(
   session({
     secret: SESSION_SECRET,
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
     store: MongoStore.create({ mongoUrl: MONGODB_URL }),
     // doc of set-cookie header
     // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
