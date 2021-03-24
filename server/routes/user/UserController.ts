@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import User from '../../models/User'
-import { CreateUser, DeleteUser, GetUser, ListUsers, Login } from './params'
+import { CreateUser, DeleteUser, GetUser, ListUsers, Login, AddInterests } from './params'
 import bcrypt from 'bcrypt'
 import { isEmail, ONE_DAY } from '../../utils'
 import mongoose from 'mongoose'
@@ -61,29 +61,33 @@ const UserController = {
   login: async (req: Request, res: Response): Promise<void> => {
     const { emailOrUsername, password } = <Login>(<unknown>req.body)
     const query = isEmail(emailOrUsername) ? { email: emailOrUsername } : { username: emailOrUsername }
-    User.findOne(query, (err: any, data: any) => {
-      if (err) return res.status(500).send(err)
-      if (!data) return res.status(404).send({ message: 'User not found' })
-      bcrypt.compare(password, data.password, (err, result) => {
-        if (err) return res.status(500).send({ message: 'Password comparison error' })
-        if (!result) return res.status(403).send({ message: 'Invalid password' })
-        // if cookie is modified or not set yet,
-        // then set the session and cookie with SID
-        if (!req.signedCookies['SID'] || req.signedCookies['SID'] != req.session.userId) {
-          req.session.userId = data._id
-          res
-            .status(200)
-            .cookie('SID', req.sessionID, {
-              maxAge: ONE_DAY,
-              signed: true,
-              secure: SECURE_COOKIE,
-              sameSite: 'lax',
-              httpOnly: true,
-            })
-            .send(data)
-        } else res.status(200).send(data)
+    User.findOne(query)
+      .populate('interests')
+      .then((data: any) => {
+        if (!data) return res.status(404).send({ message: 'User not found' })
+        bcrypt.compare(password, data.password, (err, result) => {
+          if (err) return res.status(500).send({ message: 'Password comparison error' })
+          if (!result) return res.status(403).send({ message: 'Invalid password' })
+          // if cookie is modified or not set yet,
+          // then set the session and cookie with SID
+          if (!req.signedCookies['SID'] || req.signedCookies['SID'] != req.session.userId) {
+            req.session.userId = data._id
+            res
+              .status(200)
+              .cookie('SID', req.sessionID, {
+                maxAge: ONE_DAY,
+                signed: true,
+                secure: SECURE_COOKIE,
+                sameSite: 'lax',
+                httpOnly: true,
+              })
+              .send(data)
+          } else res.status(200).send(data)
+        })
       })
-    })
+      .catch((err) => {
+        if (err) return res.status(500).send(err)
+      })
   },
   logout: async (req: Request, res: Response): Promise<void> => {
     req.session.destroy(() => {
@@ -116,6 +120,19 @@ const UserController = {
     } catch (e) {
       res.status(500).send({ message: 'invalid userId' })
     }
+  },
+  // add interests
+  setInterests: async (req: Request, res: Response): Promise<void> => {
+    const { userId } = req.params
+    const { interestIds } = <AddInterests>(<unknown>req.body)
+    const newIds: mongoose.Types.ObjectId[] = []
+    interestIds.forEach((interestId) => {
+      newIds.push(mongoose.Types.ObjectId(interestId))
+    })
+    User.updateOne({ _id: userId }, { $set: { interests: newIds } }, {}, (err, result) => {
+      if (err) return res.status(500).send({ message: 'Error in updating interests' })
+      res.status(200).send({ message: 'Interests updated' })
+    })
   },
 }
 

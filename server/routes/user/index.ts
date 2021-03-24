@@ -55,12 +55,12 @@ export class UserRoutes extends Routes {
       })
 
     this.router
-      .route(`/users/:userId/settings`)
+      .route(`/users/:userId/interests`)
       .get((req: Request, res: Response) => {
-        res.status(200).json({ msg: 'list user settings' })
+        res.status(200).json({ msg: 'get user interests' })
       })
       .post((req: Request, res: Response) => {
-        res.status(200).json({ msg: 'post user settings' })
+        UserController.setInterests(req, res)
       })
   }
 }

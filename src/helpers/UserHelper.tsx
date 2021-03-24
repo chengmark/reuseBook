@@ -46,6 +46,16 @@ const UserHelper = {
     // })
     return await response.data
   },
+  setInterests: async (input: Obj): Promise<Obj> => {
+    const { userId, interestIds } = input
+    const response = await axios({
+      method: 'post',
+      url: `${URL}/users/${userId}/interests`,
+      headers: { 'Content-Type': 'application/json;charset=utf-8' },
+      data: { interestIds: interestIds },
+    })
+    return await response.data
+  },
 }
 
 export default UserHelper
