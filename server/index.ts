@@ -9,7 +9,7 @@ import { CategoryRoutes } from './routes/category'
 import middlewares from './middlewares'
 import path from 'path'
 import DB from './DB'
-import initDB from './init'
+import initDB from './InitDB'
 
 const app: express.Application = express()
 const server: http.Server = http.createServer(app)
