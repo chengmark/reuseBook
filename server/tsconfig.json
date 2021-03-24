@@ -9,7 +9,7 @@
     "outDir": "build",
     "allowJs": true,
     "noImplicitAny": false,
-    "typeRoots": ["./types", "./node_module/@types"]
+    "typeRoots": ["./types", "./node_modules/@types"]
   },
   "include": [
     "./**/*"
