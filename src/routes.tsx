@@ -1,4 +1,4 @@
-import React, { ReactChild, ReactElement } from 'react'
+import React, { ReactChild, ReactElement, useEffect, useState } from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
 import Navigation from '@components/navigation'
 import AppView from './views/appView'
@@ -13,6 +13,7 @@ import { MainLayout } from './layout'
 import { useUserState } from './context/UserContext'
 import SellView from './views/sellView'
 import { useSnackbar } from 'notistack'
+import UserHelper from './helpers/UserHelper'
 
 // import LoadingView from './views/loadingView'
 
@@ -41,16 +42,30 @@ export const toPath = (location: string): string => {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const Routes = (props: Props): ReactElement => {
-  const loggedIn = useUserState().loggedIn()
+  const userState = useUserState()
+  const [loading, setLoading] = useState(true)
   const { enqueueSnackbar } = useSnackbar()
 
   const requireLogin = (element: ReactElement): ReactElement => {
-    if (loggedIn) return element
+    if (userState.loggedIn()) return element
     else {
       enqueueSnackbar('Please login', { variant: 'info' })
       return <Redirect to={toPath(LOCATIONS.login)} />
     }
   }
+
+  useEffect(() => {
+    UserHelper.auth()
+      .then((res) => {
+        console.log(res)
+        userState.updateState(res)
+        setLoading(false)
+      })
+      .catch((err) => {
+        console.log(err)
+        setLoading(false)
+      })
+  }, [])
 
   return (
     <>
@@ -69,7 +84,7 @@ const Routes = (props: Props): ReactElement => {
             </Route>
             <Route exact path={toPath(LOCATIONS.profile)}>
               {/* {({ match }) => !!match && requireLogin(<ProfileView />)} */}
-              {() => requireLogin(<ProfileView />)}
+              {() => !loading && requireLogin(<ProfileView />)}
             </Route>
             <Route exact path={toPath(LOCATIONS.shoppingCart)}>
               <CartView>
@@ -85,7 +100,7 @@ const Routes = (props: Props): ReactElement => {
               <LoginView />
             </Route>
             <Route exact path={toPath(LOCATIONS.sell)}>
-              {() => requireLogin(<SellView />)}
+              {() => !loading && requireLogin(<SellView />)}
             </Route>
           </Switch>
         </MainLayout>
