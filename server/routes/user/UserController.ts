@@ -64,7 +64,6 @@ const UserController = {
     User.findOne(query)
       .populate('interests')
       .then((data: any) => {
-        console.log(data)
         if (!data) return res.status(404).send({ message: 'User not found' })
         bcrypt.compare(password, data.password, (err, result) => {
           if (err) return res.status(500).send({ message: 'Password comparison error' })
@@ -127,11 +126,9 @@ const UserController = {
     const { userId } = req.params
     const { interestIds } = <AddInterests>(<unknown>req.body)
     const newIds: mongoose.Types.ObjectId[] = []
-    console.log(interestIds)
     interestIds.forEach((interestId) => {
       newIds.push(mongoose.Types.ObjectId(interestId))
     })
-    console.log(newIds)
     User.updateOne({ _id: userId }, { $set: { interests: newIds } }, {}, (err, result) => {
       if (err) return res.status(500).send({ message: 'Error in updating interests' })
       res.status(200).send({ message: 'Interests updated' })
