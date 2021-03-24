@@ -43,7 +43,7 @@ const LoginForm = (props: Props): ReactElement => {
         })
         .catch((err) => {
           console.log(err.response)
-          enqueueSnackbar('Error', { variant: 'error' })
+          enqueueSnackbar(err.response.data.message, { variant: 'error' })
         })
     }
   }
