@@ -9,26 +9,26 @@ const SECURE_COOKIE = process.env.NODE_ENV == 'production'
 
 const UserController = {
   auth: (req: Request, res: Response) => {
-    if (req.signedCookies['SID']) {
-      console.log(req.signedCookies['SID'])
-      console.log(req.session.userId)
-      User.findOne({ _id: req.session.userId }, (err: any, data: any) => {
-        if (err) return res.status(500).send({ message: 'Cannot get user' })
-        if (!data) return res.status(403).send({ message: 'invalid user id' })
-        res.status(200).send(data)
-      })
-    } else {
-      res
-        .status(403)
-        .cookie('SID', req.sessionID, {
-          maxAge: ONE_DAY,
-          signed: true,
-          secure: !SECURE_COOKIE,
-          sameSite: 'lax',
-          httpOnly: true,
-        })
-        .send({ message: 'no session' })
-    }
+    // if (req.signedCookies['SID']) {
+    //   console.log(req.signedCookies['SID'])
+    //   console.log(req.session.userId)
+    //   User.findOne({ _id: req.session.userId }, (err: any, data: any) => {
+    //     if (err) return res.status(500).send({ message: 'Cannot get user' })
+    //     if (!data) return res.status(403).send({ message: 'invalid user id' })
+    //     res.status(200).send(data)
+    //   })
+    // } else {
+    //   res
+    //     .status(403)
+    //     .cookie('SID', req.sessionID, {
+    //       maxAge: ONE_DAY,
+    //       signed: true,
+    //       secure: !SECURE_COOKIE,
+    //       sameSite: 'lax',
+    //       httpOnly: true,
+    //     })
+    //     .send({ message: 'no session' })
+    // }
   },
   // list all users
   listUsers: async (req: Request, res: Response): Promise<void> => {
@@ -64,29 +64,29 @@ const UserController = {
         if (!result) return res.status(403).send({ message: 'invalid password' })
         // if cookie is modified or not set yet,
         // then set the session and cookie with SID
-        console.log(req.signedCookies['SID'])
-        console.log(req.session.userId)
-        if (!req.signedCookies['SID'] || req.signedCookies['SID'] != req.session.userId) {
-          req.session.userId = data._id
-          console.log('save cookie', req.session.userId)
-          res
-            .status(200)
-            .cookie('SID', req.sessionID, {
-              maxAge: ONE_DAY,
-              signed: true,
-              secure: SECURE_COOKIE,
-              sameSite: 'lax',
-              httpOnly: true,
-            })
-            .send(data)
-        } else res.status(200).send(data)
+        // console.log(req.signedCookies['SID'])
+        // console.log(req.session.userId)
+        // if (!req.signedCookies['SID'] || req.signedCookies['SID'] != req.session.userId) {
+        //   req.session.userId = data._id
+        //   console.log('save cookie', req.session.userId)
+        //   res
+        //     .status(200)
+        //     .cookie('SID', req.sessionID, {
+        //       maxAge: ONE_DAY,
+        //       signed: true,
+        //       secure: SECURE_COOKIE,
+        //       sameSite: 'lax',
+        //       httpOnly: true,
+        //     })
+        //     .send(data)
+        // } else res.status(200).send(data)
       })
     })
   },
   logout: async (req: Request, res: Response): Promise<void> => {
-    req.session.destroy(() => {
-      res.status(200).clearCookie('SID').send({ message: 'logout successfully' })
-    })
+    // req.session.destroy(() => {
+    //   res.status(200).clearCookie('SID').send({ message: 'logout successfully' })
+    // })
   },
   // get a user
   getUser: async (req: Request, res: Response): Promise<void> => {
