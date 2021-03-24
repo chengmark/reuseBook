@@ -10,8 +10,8 @@ const SECURE_COOKIE = process.env.NODE_ENV == 'production'
 const UserController = {
   auth: (req: Request, res: Response) => {
     if (req.signedCookies['SID']) {
-      console.log(req.signedCookies['SID'])
-      console.log(req.session.userId)
+      console.log('auth: signedCookies[SID]:', req.signedCookies['SID'])
+      console.log('auth: req.session.userId', req.session.userId)
       User.findOne({ _id: req.session.userId }, (err: any, data: any) => {
         if (err) return res.status(500).send({ message: 'Cannot get user' })
         if (!data) return res.status(403).send({ message: 'invalid user id' })
