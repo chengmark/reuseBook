@@ -15,10 +15,11 @@ const app: express.Application = express()
 const server: http.Server = http.createServer(app)
 const PORT = process.env.PORT ? process.env.PORT : 3002
 
-const routes: Array<Routes> = []
-
+// use middlewares
+app.use(middlewares)
 // initPassport()
 
+const routes: Array<Routes> = []
 const router = express.Router()
 
 // create user routes to the router
@@ -28,15 +29,8 @@ routes.push(new CategoryRoutes(router))
 // create auth routes to the router
 // routes.push(new AuthRoutes(router))
 
-// use middlewares
-app.use(middlewares)
-
 // all routes start with '/api'
 app.use('/api', router)
-
-// app.get('/', (req: Request, res: Response) => {
-//   if(!req.session.logedin)
-// })
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../../build')))

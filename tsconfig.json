@@ -21,7 +21,10 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "typeRoots": ["./server/types","./server/node_modules/@types"]
+    "typeRoots": [
+      "./server/types",
+      "./server/node_modules/@types"
+    ]
   },
   "include": [
     "src",

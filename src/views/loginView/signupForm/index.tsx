@@ -50,7 +50,7 @@ const SignupForm = (props: Props): ReactElement => {
         })
         .catch((err) => {
           console.log(err.response)
-          enqueueSnackbar(err.response.toString(), { variant: 'error' })
+          enqueueSnackbar(err.response.data.message, { variant: 'error' })
         })
     }
   }

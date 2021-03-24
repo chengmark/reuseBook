@@ -91,7 +91,7 @@ const ListingTab = (props: Props): ReactElement => {
       {testListings.length === 0 && (
         <CenteredTabPanel>
           <TileInfoBlock>
-            <TileTitle>{'Your posts will be displayed here.'}</TileTitle>
+            <TileTitle>{'Your listings will be displayed here.'}</TileTitle>
             <Btn startIcon={<PostAdd />} onClick={redirect}>
               Sell a book now
             </Btn>

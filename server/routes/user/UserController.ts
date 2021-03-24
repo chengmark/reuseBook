@@ -8,26 +8,16 @@ import mongoose from 'mongoose'
 const SECURE_COOKIE = process.env.NODE_ENV == 'production'
 
 const UserController = {
+  // session checking
   auth: (req: Request, res: Response) => {
     if (req.signedCookies['SID']) {
-      console.log(req.signedCookies['SID'])
-      console.log(req.session.userId)
       User.findOne({ _id: req.session.userId }, (err: any, data: any) => {
         if (err) return res.status(500).send({ message: 'Cannot get user' })
-        if (!data) return res.status(403).send({ message: 'invalid user id' })
+        if (!data) return res.status(403).send({ message: 'Invalid user id' })
         res.status(200).send(data)
       })
     } else {
-      res
-        .status(403)
-        .cookie('SID', req.sessionID, {
-          maxAge: ONE_DAY,
-          signed: true,
-          secure: !SECURE_COOKIE,
-          sameSite: 'lax',
-          httpOnly: true,
-        })
-        .send({ message: 'no session' })
+      res.status(204).send({ message: 'no session' })
     }
   },
   // list all users
@@ -35,7 +25,7 @@ const UserController = {
     const { status } = <ListUsers>(<unknown>req.body)
     const query = status ? { status: status } : {}
     User.find(query, (err, data) => {
-      if (err) return res.status(500).send(err)
+      if (err) return res.status(500).send({ message: 'Error in getting users from DB' })
       res.status(200).send(data)
     })
   },
@@ -46,8 +36,23 @@ const UserController = {
       bcrypt.hash(newUser.password, salt, (err, hash) => {
         newUser.password = hash
         User.create(newUser, (err, data) => {
-          if (err) return res.status(500).send(err)
-          res.status(200).send(data)
+          if (err) {
+            if (err.message.match('duplicate key')) {
+              if (err.message.match('email')) return res.status(500).send({ message: 'Duplicate email' })
+              if (err.message.match('username')) return res.status(500).send({ message: 'Duplicate username' })
+            } else return res.status(500).send({ message: 'Error in creating new user' })
+          }
+          req.session.userId = data._id
+          res
+            .status(200)
+            .cookie('SID', req.sessionID, {
+              maxAge: ONE_DAY,
+              signed: true,
+              secure: SECURE_COOKIE,
+              sameSite: 'lax',
+              httpOnly: true,
+            })
+            .send(data)
         })
       })
     })
@@ -58,17 +63,14 @@ const UserController = {
     const query = isEmail(emailOrUsername) ? { email: emailOrUsername } : { username: emailOrUsername }
     User.findOne(query, (err: any, data: any) => {
       if (err) return res.status(500).send(err)
-      if (!data) return res.status(500).send({ message: 'user not found' })
+      if (!data) return res.status(404).send({ message: 'User not found' })
       bcrypt.compare(password, data.password, (err, result) => {
-        if (err) return res.status(500).send({ message: 'password comparison error' })
-        if (!result) return res.status(403).send({ message: 'invalid password' })
+        if (err) return res.status(500).send({ message: 'Password comparison error' })
+        if (!result) return res.status(403).send({ message: 'Invalid password' })
         // if cookie is modified or not set yet,
         // then set the session and cookie with SID
-        console.log(req.signedCookies['SID'])
-        console.log(req.session.userId)
         if (!req.signedCookies['SID'] || req.signedCookies['SID'] != req.session.userId) {
           req.session.userId = data._id
-          console.log('save cookie', req.session.userId)
           res
             .status(200)
             .cookie('SID', req.sessionID, {
@@ -85,7 +87,7 @@ const UserController = {
   },
   logout: async (req: Request, res: Response): Promise<void> => {
     req.session.destroy(() => {
-      res.status(200).clearCookie('SID').send({ message: 'logout successfully' })
+      res.status(200).clearCookie('SID').send({ message: 'Logout successfully' })
     })
   },
   // get a user
