@@ -9,6 +9,14 @@ export class UserRoutes extends Routes {
   }
 
   configureRoutes(): void {
+    this.router.route('/auth').post((req: Request, res: Response) => {
+      UserController.auth(req, res)
+    })
+
+    this.router.route('/logout').post((req: Request, res: Response) => {
+      UserController.logout(req, res)
+    })
+
     this.router
       .route(`/login`)
       // .all((req: Request, res: Response) => {

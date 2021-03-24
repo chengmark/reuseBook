@@ -1,10 +1,10 @@
 import mongoose from 'mongoose'
 
-const URL = process.env.MONGODB_URI ? process.env.MONGODB_URI : 'mongodb://localhost:27017/csci3100'
+export const MONGODB_URL = process.env.MONGODB_URI ? process.env.MONGODB_URI : 'mongodb://localhost:27017/csci3100'
 
 const DB = {
   connect: (): void => {
-    mongoose.connect(URL)
+    mongoose.connect(MONGODB_URL)
     const db = mongoose.connection
 
     db.on('error', (err) => {
