@@ -18,16 +18,7 @@ const UserController = {
         res.status(200).send(data)
       })
     } else {
-      res
-        .status(403)
-        .cookie('SID', req.sessionID, {
-          maxAge: ONE_DAY,
-          signed: true,
-          secure: !SECURE_COOKIE,
-          sameSite: 'lax',
-          httpOnly: true,
-        })
-        .send({ message: 'no session' })
+      res.status(403).send({ message: 'no session' })
     }
   },
   // list all users
