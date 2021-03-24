@@ -84,9 +84,9 @@ const UserController = {
     })
   },
   logout: async (req: Request, res: Response): Promise<void> => {
-    // req.session.destroy(() => {
-    //   res.status(200).clearCookie('SID').send({ message: 'logout successfully' })
-    // })
+    req.session.destroy(() => {
+      res.status(200).clearCookie('SID').send({ message: 'logout successfully' })
+    })
   },
   // get a user
   getUser: async (req: Request, res: Response): Promise<void> => {
