@@ -17,14 +17,13 @@ const COOKIE_SECRET = process.env.COOKIE_SECRET || '2dccd1ab3e03990aea77359831c8
 middlewares.use(cookieParser(COOKIE_SECRET))
 middlewares.use(bodyParser.urlencoded({ extended: false }))
 middlewares.use(bodyParser.json())
-middlewares.use(cors())
+middlewares.use(cors({ credentials: true, origin: true }))
 
 middlewares.use(
   session({
     secret: SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    rolling: false,
     store: MongoStore.create({ mongoUrl: MONGODB_URL }),
     // doc of set-cookie header
     // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
