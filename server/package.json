@@ -11,7 +11,7 @@
     "mongoose-id-validator": "^0.6.0",
     "passport": "^0.4.1",
     "passport-google-oauth2": "^0.2.0",
-    "@types/express-session": "^1.17.3",
+    "@types/express-session": "^1.17.3"
   },
   "scripts": {
     "start": "nodemon index.ts",
