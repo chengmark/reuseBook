@@ -4,7 +4,7 @@ import { COLOR } from './styling'
 export const NAV_WIDTH = 72
 export const NAV_EXPANDED_WIDTH = 256
 
-export const MIN_MAIN_COLUMN_WIDTH = 580
+export const MIN_MAIN_COLUMN_WIDTH = 600
 export const MAX_MAIN_COLUMN_WIDTH = 780
 
 export const MAX_APP_COLUMN_WIDTH = 260 // for app view

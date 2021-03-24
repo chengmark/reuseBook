@@ -25,7 +25,7 @@ const ProfileView = (): ReactElement => {
       </AppViewRow>
       <SecondaryColumn>
         <InfoCard user={user}></InfoCard>
-        <InterestCard user={user}></InterestCard>
+        <InterestCard></InterestCard>
       </SecondaryColumn>
       <MainColumn>
         <MainCard></MainCard>

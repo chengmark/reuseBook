@@ -29,7 +29,7 @@ const User = new mongoose.Schema(
         message: (props) => `${props.value} is not a valid status`,
       },
     }, // active or pending
-    interest: [String],
+    interests: [{ type: mongoose.Types.ObjectId, ref: 'Category' }],
   },
   { timestamps: { createdAt: 'createdAt' } },
 )

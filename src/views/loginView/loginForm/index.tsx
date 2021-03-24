@@ -42,8 +42,8 @@ const LoginForm = (props: Props): ReactElement => {
           enqueueSnackbar('Successful login', { variant: 'success' })
         })
         .catch((err) => {
-          console.log(err.response)
-          enqueueSnackbar(err.response.data.message, { variant: 'error' })
+          console.log(err)
+          enqueueSnackbar(err.response.message, { variant: 'error' })
         })
     }
   }

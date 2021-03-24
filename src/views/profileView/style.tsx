@@ -1,10 +1,11 @@
-import { Avatar, Button, Chip } from '@material-ui/core'
+import { Avatar, Button, Chip, Dialog } from '@material-ui/core'
 import { ArrowForwardIos } from '@material-ui/icons'
+import EditIcon from '@material-ui/icons/Edit'
 import { MEDIA_BREAK, NAV_WIDTH } from '@src/layout'
 import { COLOR } from '@src/styling'
 import styled from 'styled-components'
 
-const SECOND_COLUMN_MIN_WIDTH = 380
+const SECOND_COLUMN_MIN_WIDTH = 280
 const SECOND_COLUMN_MAX_WIDTH = 440
 
 const APP_VIEW_ROW_HEIGHT = 62
@@ -122,12 +123,24 @@ export const LogoutBtn = styled(Btn)`
   }
 `
 
+type ChipProps = {
+  selected: boolean
+}
+
 export const StyledChip = styled(Chip)`
   &.MuiChip-root {
-    background: ${COLOR.primary.tint1};
-    color: ${COLOR.primary.shade1};
-    border: 1px solid ${COLOR.primary.shade1};
+    background: ${(props: ChipProps) => (props.selected ? COLOR.primary.tint1 : COLOR.bg.light)};
+    color: ${(props: ChipProps) => (props.selected ? COLOR.primary.shade1 : COLOR.font.grey)};
+    border: 1px solid ${(props: ChipProps) => (props.selected ? COLOR.primary.shade1 : COLOR.divider.dark)};
     margin: 2.5px 5px 2.5px 5px;
+    &:hover {
+      background: ${COLOR.primary.tint1};
+      color: ${COLOR.primary.shade1};
+      border: 1px solid ${COLOR.primary.shade1};
+    }
+    &:focus {
+      background: ${(props: ChipProps) => (props.selected ? COLOR.primary.tint1 : COLOR.bg.light)};
+    }
   }
 `
 
@@ -194,6 +207,16 @@ export const InterestTitle = styled.div`
   font-weight: 700;
   color: ${COLOR.font.dark};
   font-size: 16px;
+  display: flex;
+  flex-direction: row;
+  line-height: 26px;
+`
+
+export const PenIcon = styled(EditIcon)`
+  &.MuiSvgIcon-root {
+    margin-left: auto;
+    cursor: pointer;
+  }
 `
 
 export const InterestContainer = styled.div`
@@ -262,3 +285,5 @@ export const CenteredTabPanel = styled.div`
   width: 100%;
   height: 100%;
 `
+
+export const InterestDialog = styled(Dialog)``

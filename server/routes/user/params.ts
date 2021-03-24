@@ -1,4 +1,5 @@
 // clear listing of params for APIs
+import mongoose from 'mongoose'
 
 export type ListUsers = {
   status?: string
@@ -11,7 +12,7 @@ export type CreateUser = {
   lastname: string
   password: string
   status: string
-  interest: Array<string>
+  interests: Array<string>
 }
 
 export type Login = {
@@ -25,4 +26,9 @@ export type GetUser = {
 
 export type DeleteUser = {
   userId: string
+}
+
+export type AddInterests = {
+  userId: string
+  interestIds: string[]
 }
