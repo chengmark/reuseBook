@@ -1,11 +1,11 @@
 import { Category } from '@myTypes/Category'
 import { Button, DialogActions, DialogContent, DialogTitle } from '@material-ui/core'
 import Tooltip from '@src/components/tooltip'
-import CategoryHelper from '@src/helpers/CategoryHelper'
+import CategoryHelper from '@src/services/CategoryService'
 import React, { ReactElement, useState } from 'react'
 import { Card, Block, InterestTitle, Divider, InterestContainer, StyledChip, PenIcon, InterestDialog } from '../style'
 import { useSnackbar } from 'notistack'
-import UserHelper from '@src/helpers/UserHelper'
+import UserHelper from '@src/services/UserService'
 import { useUserState } from '@src/context/UserContext'
 
 interface Selectable extends Category {

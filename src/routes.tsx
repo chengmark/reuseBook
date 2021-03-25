@@ -13,7 +13,7 @@ import { MainLayout } from './layout'
 import { useUserState } from './context/UserContext'
 import SellView from './views/sellView'
 import { useSnackbar } from 'notistack'
-import UserHelper from './helpers/UserHelper'
+import UserHelper from './services/UserService'
 
 // import LoadingView from './views/loadingView'
 

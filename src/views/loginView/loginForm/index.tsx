@@ -1,7 +1,7 @@
 import { AccountCircle } from '@material-ui/icons'
 import { useUserState } from '@src/context/UserContext'
 import { checkIntegrity, toData, VALIDATORS, formNoErr } from '@src/formIntegrity'
-import UserHelper from '@src/helpers/UserHelper'
+import UserHelper from '@src/services/UserService'
 import { LOCATIONS, toPath } from '@src/routes'
 import React, { useState, ChangeEvent, Dispatch, ReactElement, SetStateAction } from 'react'
 import { useHistory } from 'react-router-dom'

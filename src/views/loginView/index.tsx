@@ -1,7 +1,7 @@
 import { CenteredLayout } from '@src/layout'
 import React, { ReactElement, useState } from 'react'
 import LoginForm from './loginForm'
-import ResetPwForm from './resetPwForm'
+import ForgotPwForm from './forgotPwForm'
 import SignupForm from './signupForm'
 import { Wrapper } from './style'
 
@@ -26,7 +26,7 @@ const LoginView = (): ReactElement => {
       )}
       {operation === RESET_PW && (
         <Wrapper>
-          <ResetPwForm setOperation={setOperation}></ResetPwForm>
+          <ForgotPwForm setOperation={setOperation}></ForgotPwForm>
         </Wrapper>
       )}
     </CenteredLayout>

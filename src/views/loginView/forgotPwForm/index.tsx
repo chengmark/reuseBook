@@ -8,7 +8,7 @@ type Props = {
   setOperation: Dispatch<SetStateAction<number>>
 }
 
-const ResetPwForm = (props: Props): ReactElement => {
+const ForgotPwForm = (props: Props): ReactElement => {
   const { setOperation } = props
   const [input, setInput] = useState({
     email: { value: '', errMsg: '' },
@@ -56,4 +56,4 @@ const ResetPwForm = (props: Props): ReactElement => {
   )
 }
 
-export default ResetPwForm
+export default ForgotPwForm
