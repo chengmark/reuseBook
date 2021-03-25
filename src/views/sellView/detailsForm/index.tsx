@@ -38,8 +38,7 @@ const DetailsForm = (props: Props): ReactElement => {
         setCategories(res)
       })
       .catch((err) => {
-        console.log(err.response)
-        enqueueSnackbar(err.response.data.message, { variant: 'error' })
+        if (err.response) enqueueSnackbar(err.response.data.message, { variant: 'error' })
       })
   }, [])
 

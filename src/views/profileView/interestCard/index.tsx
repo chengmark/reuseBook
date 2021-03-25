@@ -5,7 +5,7 @@ import CategoryHelper from '@src/services/CategoryService'
 import React, { ReactElement, useState } from 'react'
 import { Card, Block, InterestTitle, Divider, InterestContainer, StyledChip, PenIcon, InterestDialog } from '../style'
 import { useSnackbar } from 'notistack'
-import UserHelper from '@src/services/UserService'
+import UserService from '@src/services/UserService'
 import { useUserState } from '@src/context/UserContext'
 
 interface Selectable extends Category {
@@ -48,7 +48,7 @@ const InterestCard = (): ReactElement => {
   const handleSubmit = () => {
     const selected = interests.filter((interest) => interest.selected)
     const selectedIds = selected.map((interest) => interest._id)
-    UserHelper.setInterests({ userId: user._id, interestIds: selectedIds })
+    UserService.setInterests({ userId: user._id, interestIds: selectedIds })
       .then((res) => {
         userState.updateState({ interests: selected })
         handleDialogClose()

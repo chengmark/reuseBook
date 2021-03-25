@@ -1,9 +1,12 @@
 import { Request, Response } from 'express'
 import User from '../../models/User'
-import { CreateUser, DeleteUser, GetUser, ListUsers, Login, AddInterests } from './params'
+import { CreateUser, DeleteUser, GetUser, ListUsers, Login, AddInterests, ResetPassword, SetPassword } from './params'
 import bcrypt from 'bcrypt'
-import { isEmail, ONE_DAY } from '../../utils'
+import { isEmail, ONE_DAY, SHA256 } from '../../utils'
 import mongoose from 'mongoose'
+import Token from '../../models/Token'
+import sendMail, { resetPwTemplate } from '../../Mailer'
+import nodemailer from 'nodemailer'
 
 const SECURE_COOKIE = process.env.NODE_ENV == 'production'
 
@@ -132,6 +135,43 @@ const UserController = {
     User.updateOne({ _id: userId }, { $set: { interests: newIds } }, {}, (err, result) => {
       if (err) return res.status(500).send({ message: 'Error in updating interests' })
       res.status(200).send({ message: 'Interests updated' })
+    })
+  },
+  createResetPwToken: async (req: Request, res: Response): Promise<void> => {
+    const { email } = <ResetPassword>(<unknown>req.body)
+    User.findOne({ email: email }, (err, data) => {
+      if (err) return res.status(500).send({ message: 'Cannot find user' })
+      if (!data) return res.status(403).send({ message: 'Email not found' })
+      const tokenId = SHA256(data._id + Date.now())
+      // create or update the token
+      Token.updateOne(
+        { refId: data._id },
+        { type: 'resetPw', tokenId: tokenId, refId: data._id, createdAt: Date.now() },
+        { upsert: true },
+        (err, result) => {
+          if (err) return res.status(500).send({ message: 'Cannot create token' })
+          const resetURL = 'https://' + req.headers.host + `/reset?token=${tokenId}`
+          sendMail(email, resetPwTemplate(data.username, resetURL)).then((info) => {
+            res.status(200).send(info)
+          })
+        },
+      )
+    })
+  },
+  resetPassword: async (req: Request, res: Response): Promise<void> => {
+    const { tokenId, password } = <SetPassword>(<unknown>req.body)
+    Token.findOne({ tokenId: tokenId }, (err, token) => {
+      if (err) return res.status(500).send({ message: 'Cannot validate token' })
+      if (!token)
+        return res.status(403).send({ message: 'Request expried or does not exist, please send the request again' })
+      bcrypt.genSalt(10, (err, salt) => {
+        bcrypt.hash(password, salt, (err, hash) => {
+          User.updateOne({ _id: token.refId }, { password: hash }, { upsert: false }, (err, result) => {
+            if (err) return res.status(500).send({ message: 'Cannot reset password' })
+            res.status(200).send({ message: 'Password reset successfully' })
+          })
+        })
+      })
     })
   },
 }

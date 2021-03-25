@@ -25,6 +25,7 @@ export const AppLayout = styled.div`
     grid-template-columns: none;
     grid-template-rows: auto ${NAV_WIDTH}px;
     grid-template-areas: 'main' 'navigation';
+    background: ${COLOR.bg.light};
   }
 `
 

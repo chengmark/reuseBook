@@ -161,6 +161,7 @@ export const Card = styled.div`
   width: 100%;
   @media (max-width: ${MEDIA_BREAK}px) {
     margin-bottom: 0;
+    border-bottom: 0px;
   }
 `
 

@@ -3,7 +3,7 @@ import axios from 'axios'
 
 const URL = process.env.NODE_ENV == 'production' ? `${process.env.PUBLIC_URL}/api` : `http://localhost:3002/api`
 
-const UserHelper = {
+const UserService = {
   auth: async (): Promise<Obj> => {
     const response = await axios({
       method: 'post',
@@ -36,14 +36,6 @@ const UserHelper = {
       headers: { 'Content-Type': 'application/json;charset=utf-8' },
       data: input,
     })
-    // .then((res) => {
-    //   console.log(res)
-    //   console.log(res.data)
-    // })
-    // .catch((err) => {
-    //   console.log(err)
-    //   console.log(err.response)
-    // })
     return await response.data
   },
   setInterests: async (input: Obj): Promise<Obj> => {
@@ -56,6 +48,26 @@ const UserHelper = {
     })
     return await response.data
   },
+  createResetToken: async (input: Obj): Promise<Obj> => {
+    const { email } = input
+    const response = await axios({
+      method: 'post',
+      url: `${URL}/token`,
+      headers: { 'Content-Type': 'application/json;charset=utf-8' },
+      data: { email: email },
+    })
+    return await response.data
+  },
+  resetPassword: async (input: Obj): Promise<Obj> => {
+    const { tokenId, password } = input
+    const response = await axios({
+      method: 'post',
+      url: `${URL}/reset`,
+      headers: { 'Content-Type': 'application/json;charset=utf-8' },
+      data: input,
+    })
+    return await response.data
+  },
 }
 
-export default UserHelper
+export default UserService
