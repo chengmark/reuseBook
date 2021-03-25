@@ -17,14 +17,17 @@ export class UserRoutes extends Routes {
       UserController.logout(req, res)
     })
 
-    this.router
-      .route(`/login`)
-      // .all((req: Request, res: Response) => {
-      //   // restrict to only from our site
-      // })
-      .post((req: Request, res: Response) => {
-        UserController.login(req, res)
-      })
+    this.router.route(`/login`).post((req: Request, res: Response) => {
+      UserController.login(req, res)
+    })
+
+    this.router.route('/token').post((req: Request, res: Response) => {
+      UserController.createResetPwToken(req, res)
+    })
+
+    this.router.route('/reset').post((req: Request, res: Response) => {
+      UserController.resetPassword(req, res)
+    })
 
     this.router
       .route(`/users`)

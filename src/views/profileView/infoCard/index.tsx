@@ -5,7 +5,7 @@ import React, { ReactElement } from 'react'
 import { useHistory } from 'react-router'
 import { Card, CoverPhoto, AvatarWrapper, Block, Name, Username, Divider, UserAvatar, Btn, LogoutBtn } from '../style'
 import { useSnackbar } from 'notistack'
-import UserHelper from '@src/helpers/UserHelper'
+import UserService from '@src/services/UserService'
 
 type Props = {
   user: any // should change to specific user type, define in common types later
@@ -20,7 +20,7 @@ const InfoCard = (props: Props): ReactElement => {
     history.push(toPath(LOCATIONS.home))
     enqueueSnackbar('Successful logout', { variant: 'success' })
     userState.logout()
-    UserHelper.logout()
+    UserService.logout()
       .then((res) => {
         console.log(res)
       })

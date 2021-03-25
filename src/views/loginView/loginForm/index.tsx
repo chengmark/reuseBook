@@ -1,7 +1,7 @@
 import { AccountCircle } from '@material-ui/icons'
 import { useUserState } from '@src/context/UserContext'
 import { checkIntegrity, toData, VALIDATORS, formNoErr } from '@src/formIntegrity'
-import UserHelper from '@src/helpers/UserHelper'
+import UserService from '@src/services/UserService'
 import { LOCATIONS, toPath } from '@src/routes'
 import React, { useState, ChangeEvent, Dispatch, ReactElement, SetStateAction } from 'react'
 import { useHistory } from 'react-router-dom'
@@ -35,7 +35,7 @@ const LoginForm = (props: Props): ReactElement => {
     const password = checkIntegrity(input.password, [VALIDATORS.REQUIRED])
     setInput({ ...input, emailOrUsername, password })
     if (formNoErr(input)) {
-      UserHelper.login(toData(input))
+      UserService.login(toData(input))
         .then((res) => {
           userState.updateState(res)
           history.push(toPath(LOCATIONS.profile))
@@ -43,7 +43,7 @@ const LoginForm = (props: Props): ReactElement => {
         })
         .catch((err) => {
           console.log(err)
-          enqueueSnackbar(err.response.message, { variant: 'error' })
+          enqueueSnackbar(err.response.data.message, { variant: 'error' })
         })
     }
   }

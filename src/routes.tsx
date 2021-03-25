@@ -13,7 +13,8 @@ import { MainLayout } from './layout'
 import { useUserState } from './context/UserContext'
 import SellView from './views/sellView'
 import { useSnackbar } from 'notistack'
-import UserHelper from './helpers/UserHelper'
+import UserService from './services/UserService'
+import ResetPwView from './views/resetPwView'
 
 // import LoadingView from './views/loadingView'
 
@@ -34,6 +35,7 @@ export const LOCATIONS = {
   shoppingCart: 'shopping_cart',
   settings: 'settings',
   sell: 'sell',
+  reset: 'reset', // reset pw
 }
 
 export const toPath = (location: string): string => {
@@ -55,7 +57,7 @@ const Routes = (props: Props): ReactElement => {
   }
 
   useEffect(() => {
-    UserHelper.auth()
+    UserService.auth()
       .then((res) => {
         console.log(res)
         userState.updateState(res)
@@ -101,6 +103,9 @@ const Routes = (props: Props): ReactElement => {
             </Route>
             <Route exact path={toPath(LOCATIONS.sell)}>
               {() => !loading && requireLogin(<SellView />)}
+            </Route>
+            <Route exact path={toPath(LOCATIONS.reset)}>
+              <ResetPwView />
             </Route>
           </Switch>
         </MainLayout>

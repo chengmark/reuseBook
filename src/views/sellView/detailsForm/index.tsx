@@ -2,7 +2,7 @@ import { checkIntegrity, formNoErr, VALIDATORS, Target } from '@src/formIntegrit
 import React, { ChangeEvent, ReactElement, useEffect, useState } from 'react'
 import { FormContainer, TextInput, BtnRow, Title, PriceType, Btn } from '../style'
 import { Autocomplete } from '@material-ui/lab'
-import CategoryHelper from '@src/helpers/CategoryHelper'
+import CategoryHelper from '@src/services/CategoryService'
 import { useSnackbar } from 'notistack'
 import { Category } from '@myTypes/Category'
 import { Details } from '@myTypes/Product'
@@ -38,8 +38,7 @@ const DetailsForm = (props: Props): ReactElement => {
         setCategories(res)
       })
       .catch((err) => {
-        console.log(err.response)
-        enqueueSnackbar(err.response.data.message, { variant: 'error' })
+        if (err.response) enqueueSnackbar(err.response.data.message, { variant: 'error' })
       })
   }, [])
 

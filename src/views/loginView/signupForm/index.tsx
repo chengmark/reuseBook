@@ -3,7 +3,7 @@ import { AccountCircle } from '@material-ui/icons'
 import { LOGIN, RESET_PW } from '..'
 import { Container, IconRow, Line, CenteredRow, DividerText, LinkText, InputRow, Input } from '../style'
 import { VALIDATORS, checkIntegrity, formNoErr, toData } from '@src/formIntegrity'
-import UserHelper from '@src/helpers/UserHelper'
+import UserService from '@src/services/UserService'
 import { useUserState } from '@src/context/UserContext'
 import { useHistory } from 'react-router'
 import { LOCATIONS, toPath } from '@src/routes'
@@ -42,15 +42,14 @@ const SignupForm = (props: Props): ReactElement => {
     const lastname = checkIntegrity(input.lastname, [VALIDATORS.REQUIRED])
     setInput({ ...input, email, username, password, firstname, lastname })
     if (formNoErr(input)) {
-      UserHelper.signup(toData(input))
+      UserService.signup(toData(input))
         .then((res) => {
           userState.updateState(res)
           history.push(toPath(LOCATIONS.profile))
           enqueueSnackbar('Successful signup', { variant: 'success' })
         })
         .catch((err) => {
-          console.log(err.response)
-          enqueueSnackbar(err.response.data.message, { variant: 'error' })
+          if (err.response) enqueueSnackbar(err.response.data.message, { variant: 'error' })
         })
     }
   }

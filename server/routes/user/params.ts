@@ -32,3 +32,12 @@ export type AddInterests = {
   userId: string
   interestIds: string[]
 }
+
+export type ResetPassword = {
+  email: string
+}
+
+export type SetPassword = {
+  tokenId: string
+  password: string
+}

@@ -7,3 +7,9 @@ export const ONE_DAY = 86400000
 export const ONE_WEEK = ONE_DAY * 7
 export const ONE_MONTH = ONE_DAY * 30
 export const ONE_YEAR = ONE_DAY * 365
+
+import * as crypto from 'crypto'
+
+export const SHA256 = (message: string): string => {
+  return crypto.createHash('sha256').update(message).digest('hex')
+}
