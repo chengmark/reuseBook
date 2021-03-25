@@ -7,6 +7,7 @@ import { Container, IconRow, Line, Input, Btn, LinkText } from './style'
 import { useSnackbar } from 'notistack'
 import UserService from '@src/services/UserService'
 import { LOCATIONS, toPath } from '@src/routes'
+import { Wrapper } from '../loginView/style'
 
 type Props = {
   children?: ReactElement
@@ -43,40 +44,42 @@ const ResetPwView = (props: Props): ReactElement => {
 
   return (
     <CenteredLayout>
-      <Container>
-        <IconRow>
-          <Line />
-          <AccountCircle fontSize="inherit" color="inherit"></AccountCircle>
-          <Line />
-        </IconRow>
-        {resetSuccess ? (
-          <>
-            <span>{`You have reset your password.`}</span>
-            <LinkText
-              onClick={() => {
-                history.push(toPath(LOCATIONS.login))
-              }}
-            >{`Login here`}</LinkText>
-          </>
-        ) : (
-          <>
-            <Input
-              id="password-input"
-              name="password"
-              label="New Password"
-              type="text"
-              autoComplete="current-password"
-              variant="outlined"
-              error={!!input.password.errMsg}
-              helperText={input.password.errMsg}
-              onChange={handleInputChange}
-            />
-            <Btn variant="contained" color="primary" onClick={handleSubmit}>
-              RESET PASSWORD
-            </Btn>
-          </>
-        )}
-      </Container>
+      <Wrapper>
+        <Container secondary>
+          <IconRow>
+            <Line />
+            <AccountCircle fontSize="inherit" color="inherit"></AccountCircle>
+            <Line />
+          </IconRow>
+          {resetSuccess ? (
+            <>
+              <span>{`You have reset your password.`}</span>
+              <LinkText
+                onClick={() => {
+                  history.push(toPath(LOCATIONS.login))
+                }}
+              >{`Login here`}</LinkText>
+            </>
+          ) : (
+            <>
+              <Input
+                id="password-input"
+                name="password"
+                label="New Password"
+                type="password"
+                autoComplete="current-password"
+                variant="outlined"
+                error={!!input.password.errMsg}
+                helperText={input.password.errMsg}
+                onChange={handleInputChange}
+              />
+              <Btn variant="contained" color="primary" onClick={handleSubmit}>
+                RESET PASSWORD
+              </Btn>
+            </>
+          )}
+        </Container>
+      </Wrapper>
     </CenteredLayout>
   )
 }
