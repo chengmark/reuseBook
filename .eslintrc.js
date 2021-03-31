@@ -18,6 +18,7 @@ module.exports = {
     'comma-dangle': ['error', 'always-multiline'],
     'react/display-name': 0,
     'no-var-requires': 0,
+    '@typescript-eslint/no-var-requires': false,
   },
   settings: {
     react: {
