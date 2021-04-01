@@ -8,8 +8,9 @@ class SearchRoutes extends Routes {
   configureRoutes() {
     this.router
       .route(`/search/:searchTitle`)
-      .get((req, res) => {
-        res.send(Search.normal(req,res))
+      .get(async (req, res) => {
+        Search.normal(req,res);
+        //res.send(Search.normal(req,res))
       })
   }
 }
