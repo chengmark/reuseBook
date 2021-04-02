@@ -5,7 +5,7 @@ const Product = new mongoose.Schema({
   name: { type: String, required: true },
   price: { type: String, required: true },
   image: { type: String, required: true },
-  categoryId: { type: mongoose.Schema.Types.ObjectId, ref: 'Category', require: true },
+  categoryId: { type: mongoose.Schema.Types.ObjectId, ref: 'Category', require: true, unique: true },
 })
 
 Product.plugin(idValidator)

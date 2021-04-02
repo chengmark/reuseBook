@@ -9,8 +9,12 @@ class SearchRoutes extends Routes {
     this.router
       .route(`/search/:searchTitle`)
       .get(async (req, res) => {
-        Search.normal(req,res);
-        //res.send(Search.normal(req,res))
+        /*if (req.type=="book")
+        {
+          Search.Book(req,res);
+        }
+        else*/
+         Search.Category(req,res);
       })
   }
 }
