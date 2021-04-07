@@ -29,7 +29,7 @@ const ForgotPwForm = (props: Props): ReactElement => {
     const email = checkIntegrity(input.email, [VALIDATORS.REQUIRED, VALIDATORS.EMAIL])
     setInput({ ...input, email })
     UserService.createResetToken({ email: email.value })
-      .then((res) => {
+      .then(() => {
         setSentRequest(true)
       })
       .catch((err) => {
