@@ -4,6 +4,7 @@ import { Routes } from './routes'
 import { UserRoutes } from './routes/user'
 import { CartRoutes } from './routes/shoppingCart'
 import { CategoryRoutes } from './routes/category'
+const SearchRoutes = require('./routes/searchBar')
 // import { AuthRoutes } from './routes/auth'
 // import initPassport from './authentication'
 import middlewares from './middlewares'
@@ -26,13 +27,14 @@ const router = express.Router()
 routes.push(new UserRoutes(router))
 routes.push(new CartRoutes(router))
 routes.push(new CategoryRoutes(router))
+routes.push(new SearchRoutes(router))
 // create auth routes to the router
 // routes.push(new AuthRoutes(router))
 
 // all routes start with '/api'
 app.use('/api', router)
 
-if (process.env.NODE_ENV === 'production') {
+/*if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../../build')))
   app.get('*', (req: Request, res: Response) => {
     res.sendFile(path.join(__dirname, '../../', 'build', 'index.html'))
@@ -42,7 +44,7 @@ if (process.env.NODE_ENV === 'production') {
   app.get('*', (req: Request, res: Response) => {
     res.sendFile(path.join(__dirname, '../', 'build', 'index.html'))
   })
-}
+}*/
 
 DB.connect()
 
