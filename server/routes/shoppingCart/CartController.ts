@@ -1,5 +1,4 @@
 import { Request, Response } from 'express'
-import Cart from '../../models/ShoppingCart'
 import { ListUserProduct, AddProduct } from './params'
 
 const CartController = {

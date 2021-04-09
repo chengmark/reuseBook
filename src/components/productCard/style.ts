@@ -1,10 +1,17 @@
 import { Avatar, Card, CardMedia } from '@material-ui/core'
+import { MEDIA_BREAK } from '@src/layout'
 import styled from 'styled-components'
 
 export const CardWrapper = styled(Card)`
   &.MuiCard-root {
     width: 345px;
     margin: 10px;
+  }
+  @media (max-width: ${MEDIA_BREAK}px) {
+    &.MuiCard-root {
+      width: 300px;
+      margin: 10px;
+    }
   }
 `
 

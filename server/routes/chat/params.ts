@@ -12,9 +12,8 @@ export type CreateChatRoom = {
 }
 
 export type ListUserChatRooms = {
-    userId: string
+  userId: string
 }
-
 
 export type GetChatRoom = {
   roomId: string
@@ -24,36 +23,26 @@ export type DeleteChatRoom = {
   roomId: string
 }
 
-
 export type AddMessage = {
-    roomId: string
-    body: string
-    author: string
+  roomId: string
+  body: string
+  author: string
 }
 
 export type AddUser = {
-    userId: string
-    roomId: string
+  userId: string
+  roomId: string
 }
 
 export type DeleteMessage = {
-    messageId: string
-    roomId: string
+  messageId: string
+  roomId: string
 }
 
 export type ListMessages = {
-    roomId: string
+  roomId: string
 }
 
 export type ListUsers = {
-    roomId: string
-} 
-
-
-
-
-
-
-
-
-
+  roomId: string
+}
