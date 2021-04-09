@@ -72,7 +72,7 @@ const ChatController = {
     const _userId = mongoose.Types.ObjectId(userId)
     const _chatRoomId = mongoose.Types.ObjectId(roomId)
 
-    Chat.updateOne({ _id: _chatRoomId }, { $push: { users: _userId } }, {}, (err, result) => {
+    Chat.updateOne({ _id: _chatRoomId }, { $push: { users: _userId as any } }, {}, (err, result) => {
       if (err) {
         return res.status(400).send({ message: 'Error adding user to chat room' })
       }

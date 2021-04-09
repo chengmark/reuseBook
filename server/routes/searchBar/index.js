@@ -6,16 +6,14 @@ class SearchRoutes extends Routes {
     super(router, 'SearchRoutes')
   }
   configureRoutes() {
-    this.router
-      .route(`/search/:searchTitle`)
-      .get(async (req, res) => {
-        /*if (req.type=="book")
+    this.router.route(`/search/:searchTitle`).get(async (req, res) => {
+      /*if (req.type=="book")
         {
           Search.Book(req,res);
         }
         else*/
-         Search.Category(req,res);
-      })
+      Search.Category(req, res)
+    })
   }
 }
-module.exports=SearchRoutes
+module.exports = SearchRoutes
