@@ -38,8 +38,3 @@ export type FindByCategory = {
 export type DeleteByCategory = {
   category: string
 }
-
-export type CreateChatRoom = {
-  name: string
-  Id: string
-}
