@@ -15,6 +15,7 @@ import SellView from './views/sellView'
 import { useSnackbar } from 'notistack'
 import UserService from './services/UserService'
 import ResetPwView from './views/resetPwView'
+import ProductView from './views/productView'
 
 // import LoadingView from './views/loadingView'
 
@@ -35,6 +36,7 @@ export const LOCATIONS = {
   settings: 'settings',
   sell: 'sell',
   reset: 'reset', // reset pw
+  product: 'product/:bookId',
 }
 
 export const toPath = (location: string): string => {
@@ -82,6 +84,9 @@ const Routes = (props: Props): ReactElement => {
               <SearchView>
                 <div>Search View</div>
               </SearchView>
+            </Route>
+            <Route exact path={toPath(LOCATIONS.product)}>
+              <ProductView />
             </Route>
             <Route exact path={toPath(LOCATIONS.profile)}>
               {/* {({ match }) => !!match && requireLogin(<ProfileView />)} */}

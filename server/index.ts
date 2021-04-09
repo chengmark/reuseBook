@@ -2,7 +2,6 @@ import express, { Request, Response } from 'express'
 import http from 'http'
 import { Routes } from './routes'
 import { UserRoutes } from './routes/user'
-import { CartRoutes } from './routes/shoppingCart'
 import { CategoryRoutes } from './routes/category'
 import { ChatRoutes } from './routes/chat'
 import { BookRoutes } from './routes/book'
@@ -27,7 +26,6 @@ const router = express.Router()
 
 // create user routes to the router
 routes.push(new UserRoutes(router))
-routes.push(new CartRoutes(router))
 routes.push(new CategoryRoutes(router))
 routes.push(new SearchRoutes(router))
 routes.push(new BookRoutes(router))

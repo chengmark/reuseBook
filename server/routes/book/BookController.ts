@@ -1,16 +1,6 @@
 import { Request, Response } from 'express'
 import Book from '../../models/Book'
-import {
-  CreateBook,
-  DeleteBook,
-  GetBook,
-  ListBooks,
-  Search,
-  AdvancedSearch,
-  FindByCategory,
-  DeleteByCategory,
-  CreateChatRoom,
-} from './params'
+import { CreateBook, DeleteBook, GetBook, ListBooks, Search, AdvancedSearch, FindByCategory } from './params'
 import mongoose from 'mongoose'
 import Chat from '../../models/Chat'
 
@@ -75,7 +65,7 @@ const BookController = {
 
   search: async (req: Request, res: Response): Promise<void> => {
     const { name, author } = <Search>(<unknown>req.body)
-    var query
+    let query = {}
     if (name && author) {
       query = { name: name, author: author }
     } else if (name) {

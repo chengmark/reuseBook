@@ -2,6 +2,7 @@ import { SvgIconTypeMap } from '@material-ui/core'
 import { OverridableComponent } from '@material-ui/core/OverridableComponent'
 import { Obj } from '@myTypes/Obj'
 import Tooltip from '@src/components/tooltip'
+import { toPath } from '@src/routes'
 import React, { ReactElement } from 'react'
 import { navIconStyle, NavItemContainer, NavItemLink } from './style'
 
@@ -18,7 +19,7 @@ const NavItem = (props: Props): ReactElement => {
   return (
     <Tooltip title={title} style={{ fontSize: '16px' }}>
       <NavItemContainer isActive={isActive} toBottom={toBottom} {...rest}>
-        <NavItemLink to={title}>
+        <NavItemLink to={toPath(title)}>
           <Icon style={navIconStyle}></Icon>
         </NavItemLink>
       </NavItemContainer>

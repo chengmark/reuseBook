@@ -59,7 +59,7 @@ export const MainLayout = styled.div`
   padding: 12px 0 0 0;
   margin: 0 0 12px 0;
   @media (max-width: ${MEDIA_BREAK}px) {
-    padding-top: 0;
+    padding-top: 5px;
   }
 `
 
