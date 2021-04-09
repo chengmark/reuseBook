@@ -32,12 +32,6 @@ const BookController = {
       if (err) {
         return res.status(500).send({ message: 'Error in creating new book' })
       }
-    })
-    const newChatRoom = <CreateChatRoom>(<unknown>req.body)
-    Chat.create(newChatRoom, (err: any, data: any) => {
-      if (err) {
-        return res.status(500).send({ message: 'Error creating chat room for book' })
-      }
       res.status(200).send(data)
     })
   },
