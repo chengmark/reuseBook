@@ -56,7 +56,8 @@ export const MainLayout = styled.div`
   max-height: 100vh;
   overflow: hidden;
   overflow-y: auto;
-  padding-top: 12px;
+  padding: 12px 0 0 0;
+  margin: 0 0 12px 0;
   @media (max-width: ${MEDIA_BREAK}px) {
     padding-top: 0;
   }

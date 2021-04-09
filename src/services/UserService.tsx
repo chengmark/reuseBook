@@ -59,7 +59,7 @@ const UserService = {
     return await response.data
   },
   resetPassword: async (input: Obj): Promise<Obj> => {
-    const { tokenId, password } = input
+    // const { tokenId, password } = input
     const response = await axios({
       method: 'post',
       url: `${URL}/reset`,

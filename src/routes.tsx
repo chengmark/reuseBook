@@ -32,7 +32,6 @@ export const LOCATIONS = {
   search: 'search',
   profile: 'profile',
   login: 'login',
-  shoppingCart: 'shopping_cart',
   settings: 'settings',
   sell: 'sell',
   reset: 'reset', // reset pw
@@ -87,11 +86,6 @@ const Routes = (props: Props): ReactElement => {
             <Route exact path={toPath(LOCATIONS.profile)}>
               {/* {({ match }) => !!match && requireLogin(<ProfileView />)} */}
               {() => !loading && requireLogin(<ProfileView />)}
-            </Route>
-            <Route exact path={toPath(LOCATIONS.shoppingCart)}>
-              <CartView>
-                <div> Shopping cart view </div>
-              </CartView>
             </Route>
             <Route exact path={toPath(LOCATIONS.settings)}>
               <SettingsView>

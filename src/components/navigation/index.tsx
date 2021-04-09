@@ -31,9 +31,6 @@ const Navigation = (props: Props): ReactElement => {
         <Route exact path={['/', toPath(LOCATIONS.home)]}>
           {({ match }) => <NavItem title={LOCATIONS.home} isActive={!!match} icon={HomeIcon}></NavItem>}
         </Route>
-        <Route exact path={toPath(LOCATIONS.shoppingCart)}>
-          {({ match }) => <NavItem title={LOCATIONS.shoppingCart} isActive={!!match} icon={ShoppingCartIcon}></NavItem>}
-        </Route>
         <Divider></Divider>
         {userState.loggedIn() ? (
           <>

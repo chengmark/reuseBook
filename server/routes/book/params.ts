@@ -26,22 +26,20 @@ export type DeleteBook = {
 }
 
 export type AdvancedSearch = {
-    name: string
-    price: string
-    category: string
+  name: string
+  price: string
+  category: string
 }
 
 export type FindByCategory = {
-    category: string
+  category: string
 }
 
 export type DeleteByCategory = {
-    category: string
+  category: string
 }
 
 export type CreateChatRoom = {
-    name: string
-    Id: string
+  name: string
+  Id: string
 }
-
-

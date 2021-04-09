@@ -10,41 +10,36 @@ export class BookRoutes extends Routes {
 
   configureRoutes(): void {
     this.router.route('/books/search').post((req: Request, res: Response) => {
-        BookController.search(req, res)
+      BookController.search(req, res)
     })
     this.router.route('/books/advancedsearch').post((req: Request, res: Response) => {
-        BookController.advancedSearch(req, res)
+      BookController.advancedSearch(req, res)
     })
 
     this.router
-        .route('/books')
-        .post((req: Request, res: Response) => {
-            BookController.createBook(req, res)
-        })
-        .get((req: Request, res: Response) => {
-            BookController.listBooks(req, res)
-        })
+      .route('/books')
+      .post((req: Request, res: Response) => {
+        BookController.createBook(req, res)
+      })
+      .get((req: Request, res: Response) => {
+        BookController.listBooks(req, res)
+      })
 
     this.router
-        .route('/books/:bookId')
-        .delete((req: Request, res: Response) => {
-            BookController.deleteBook(req, res)
-        })
-        .get((req: Request, res: Response) => {
-            BookController.getBook(req, res)
-        })
+      .route('/books/:bookId')
+      .delete((req: Request, res: Response) => {
+        BookController.deleteBook(req, res)
+      })
+      .get((req: Request, res: Response) => {
+        BookController.getBook(req, res)
+      })
     this.router
-        .route('/books/:category')
-        //.delete((req: Request, res: Response) => {
-            //BookController.deleteByCategory(req, res)
-        //})
-        .get((req: Request, res: Response) => {
-            BookController.findByCategory(req, res)
-        })      
+      .route('/books/:category')
+      //.delete((req: Request, res: Response) => {
+      //BookController.deleteByCategory(req, res)
+      //})
+      .get((req: Request, res: Response) => {
+        BookController.findByCategory(req, res)
+      })
   }
 }
-
-
-
-
-

@@ -29,7 +29,7 @@ const InterestCard = (): ReactElement => {
         })
         setInterests(res as Selectable[])
       })
-      .catch((err) => {
+      .catch(() => {
         enqueueSnackbar('Cannot get interests', { variant: 'error' })
       })
     setOpen(true)
@@ -49,12 +49,12 @@ const InterestCard = (): ReactElement => {
     const selected = interests.filter((interest) => interest.selected)
     const selectedIds = selected.map((interest) => interest._id)
     UserService.setInterests({ userId: user._id, interestIds: selectedIds })
-      .then((res) => {
+      .then(() => {
         userState.updateState({ interests: selected })
         handleDialogClose()
         enqueueSnackbar('Interests updated', { variant: 'success' })
       })
-      .catch((err) => {
+      .catch(() => {
         enqueueSnackbar('Cannot update interests', { variant: 'error' })
       })
   }
