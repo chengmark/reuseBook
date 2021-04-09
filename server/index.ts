@@ -4,6 +4,8 @@ import { Routes } from './routes'
 import { UserRoutes } from './routes/user'
 import { CartRoutes } from './routes/shoppingCart'
 import { CategoryRoutes } from './routes/category'
+import { BookRoutes } from './routes/book'
+import { ChatRoutes } from './routes/chat'
 const SearchRoutes = require('./routes/searchBar')
 // import { AuthRoutes } from './routes/auth'
 // import initPassport from './authentication'
@@ -28,6 +30,8 @@ routes.push(new UserRoutes(router))
 routes.push(new CartRoutes(router))
 routes.push(new CategoryRoutes(router))
 routes.push(new SearchRoutes(router))
+routes.push(new BookRoutes(router))
+routes.push(new ChatRoutes(router))
 // create auth routes to the router
 // routes.push(new AuthRoutes(router))
 
