@@ -7,13 +7,8 @@ export class SearchRoutes extends Routes {
     super(router, 'SearchRoutes')
   }
   configureRoutes() {
-    this.router.route(`/search/:searchTitle`).get(async (req, res) => {
-      /*if (req.type=="book")
-        {
-          Search.Book(req,res);
-        }
-        else*/
-      SearchController.Category(req, res)
+    this.router.route(`/search`).post(async (req, res) => {
+      SearchController.Search(req, res)
     })
   }
 }
