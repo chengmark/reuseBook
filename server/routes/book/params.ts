@@ -7,9 +7,13 @@ export type ListBooks = {
 
 export type CreateBook = {
   name: string
-  author: string
+  type: string
   price: string
+  tradeOption: string
+  author: string
   category: string
+  description: string
+  condition: string
 }
 
 export type Search = {
@@ -42,4 +46,9 @@ export type DeleteByCategory = {
 export type CreateChatRoom = {
   name: string
   Id: string
+}
+
+export type Pagination = {
+  pageNo: string
+  pageSize: string
 }
