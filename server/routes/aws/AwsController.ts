@@ -2,9 +2,10 @@ import { Request, Response } from 'express'
 import aws from 'aws-sdk'
 import { signS3 } from './params'
 
-const S3_BUCKET = process.env.S3_BUCKET_NAME
+const S3_BUCKET = process.env.S3_BUKCET_NAME
+aws.config.region = 'ap-southeast-1'
 
-const BookController = {
+const AwsController = {
   signS3: async (req: Request, res: Response): Promise<void> => {
     const { fileName, fileType } = <signS3>(<unknown>req.body)
     const s3 = new aws.S3()
@@ -29,4 +30,4 @@ const BookController = {
   },
 }
 
-export default BookController
+export default AwsController

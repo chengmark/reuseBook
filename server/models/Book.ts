@@ -22,6 +22,7 @@ const Book = new mongoose.Schema({
       content: { type: String },
     },
   ],
+  img: { type: String },
 })
 
 export default mongoose.model('Book', Book)

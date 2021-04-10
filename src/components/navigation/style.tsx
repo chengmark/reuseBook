@@ -21,6 +21,7 @@ export const NavWrapper = styled.div`
     width: calc(100% - 10px);
     margin: 0 5px 0 5px;
   }
+  z-index: 100;
 `
 export const NavigationGrid = styled.div`
   display: flex;

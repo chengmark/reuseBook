@@ -19,10 +19,11 @@ const DetailsForm = (props: Props): ReactElement => {
   const [input, setInput] = useState<Record<string, Target>>({
     category: { value: '', errMsg: '' },
     title: { value: '', errMsg: '' },
-    listType: { value: 'sell', errMsg: '' },
+    author: { value: '', errMsg: '' },
+    type: { value: 'sell', errMsg: '' },
     price: { value: '', errMsg: '' },
     tradeOption: { value: '', errMsg: '' },
-    condition: { value: '', errMsg: '' },
+    condition: { value: 'used', errMsg: '' },
     description: { value: '', errMsg: '' },
   })
   const [categories, setCategories] = useState<Category[]>([
@@ -51,30 +52,40 @@ const DetailsForm = (props: Props): ReactElement => {
   const handlePriceTypeClick = (type: string) => {
     setInput({
       ...input,
-      listType: { value: type, errMsg: '' },
+      type: { value: type, errMsg: '' },
       price: { value: '', errMsg: '' },
       tradeOption: { value: '', errMsg: '' },
+    })
+  }
+
+  const handleConditionClick = (condition: string) => {
+    setInput({
+      ...input,
+      condition: { value: condition, errMsg: '' },
     })
   }
 
   const handleSubmit = () => {
     const category = checkIntegrity(input.category, [VALIDATORS.REQUIRED])
     const title = checkIntegrity(input.title, [VALIDATORS.REQUIRED])
-    if (input.listType.value == 'sell') {
+    const author = checkIntegrity(input.author, [VALIDATORS.REQUIRED])
+    if (input.type.value == 'sell') {
       const price = checkIntegrity(input.price, [VALIDATORS.REQUIRED, VALIDATORS.NUM_ONLY])
-      setInput({ ...input, category, title, price })
+      setInput({ ...input, category, title, author, price })
     } else {
       const tradeOption = checkIntegrity(input.tradeOption, [VALIDATORS.REQUIRED])
-      setInput({ ...input, category, tradeOption })
+      setInput({ ...input, category, title, author, tradeOption })
     }
     if (formNoErr(input)) {
       const details: Details = {
         category: categories.find((category) => category._id == input.category.value) as Category,
         title: input.title.value,
-        listType: input.listType.value,
+        type: input.type.value,
         price: input.price.value,
         tradeOption: input.tradeOption.value,
         description: input.description.value,
+        author: input.author.value,
+        condition: input.condition.value,
       }
       goStep3(details)
     }
@@ -106,7 +117,7 @@ const DetailsForm = (props: Props): ReactElement => {
       <TextInput
         id="title-input"
         name="title"
-        label="Listing Title"
+        label="Book Name"
         type="text"
         autoComplete="current-title"
         variant="outlined"
@@ -114,12 +125,42 @@ const DetailsForm = (props: Props): ReactElement => {
         helperText={input.title.errMsg}
         onChange={handleInputChange}
       ></TextInput>
+      <TextInput
+        id="author-input"
+        name="author"
+        label="Author"
+        type="text"
+        autoComplete="current-author"
+        variant="outlined"
+        error={!!input.author.errMsg}
+        helperText={input.author.errMsg}
+        onChange={handleInputChange}
+      ></TextInput>
+      <Title>Condition</Title>
+      <BtnRow>
+        <PriceType
+          key="used"
+          label="Used"
+          active={+(input.condition.value == 'used')}
+          onClick={() => {
+            handleConditionClick('used')
+          }}
+        />
+        <PriceType
+          key="new"
+          label="New"
+          active={+(input.condition.value == 'new')}
+          onClick={() => {
+            handleConditionClick('new')
+          }}
+        />
+      </BtnRow>
       <Title>Type</Title>
       <BtnRow>
         <PriceType
           key="sell"
           label="Sell"
-          active={+(input.listType.value == 'sell')}
+          active={+(input.type.value == 'sell')}
           onClick={() => {
             handlePriceTypeClick('sell')
           }}
@@ -127,13 +168,13 @@ const DetailsForm = (props: Props): ReactElement => {
         <PriceType
           key="trade"
           label="Trade"
-          active={+(input.listType.value == 'trade')}
+          active={+(input.type.value == 'trade')}
           onClick={() => {
             handlePriceTypeClick('trade')
           }}
         />
       </BtnRow>
-      {input.listType.value == 'sell' && (
+      {input.type.value == 'sell' && (
         <TextInput
           id="price-input"
           name="price"
@@ -147,10 +188,10 @@ const DetailsForm = (props: Props): ReactElement => {
           onChange={handleInputChange}
         ></TextInput>
       )}
-      {input.listType.value == 'trade' && (
+      {input.type.value == 'trade' && (
         <TextInput
           id="trade-option-input"
-          name="trade-option"
+          name="tradeOption"
           label="What kind of book do you want to trade?"
           type="text"
           autoComplete="current-trade-option"

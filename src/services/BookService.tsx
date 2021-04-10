@@ -30,6 +30,15 @@ const BookService = {
     })
     return await response.data
   },
+  createBook: async (input: Obj): Promise<Obj> => {
+    const response = await axios({
+      method: 'post',
+      url: `${URL}/books`,
+      headers: { 'Content-Type': 'application/json;charset=utf-8' },
+      data: input,
+    })
+    return await response.data
+  },
 }
 
 export default BookService
