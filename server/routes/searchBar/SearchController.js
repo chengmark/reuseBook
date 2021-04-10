@@ -8,31 +8,36 @@ exports.Search = async (req, res) => {
   var pageNum = Number(req.query.pageNum)
   var pageSize = Number(req.query.pageSize)
   var persist = req.query.persist === 'true'
-  console.log(keyword + ' ' + pageNum + ' ' + pageSize + ' ' + persist)
   var suggestion
   if (!keyword) {
     return res.status(400).send({ message: 'Enter something' })
   }
-  console.log('keyword->' + keyword)
-  console.log('persist -> ' + persist)
-  if (persist) {
+  if (!persist) {
     let misspelled = SpellChecker.isMisspelled(keyword)
     if (misspelled) {
-      suggestion = SpellChecker.getCorrectionsForMisspelling(keyword)[0]
-      if (suggestion) keyword = suggestion
+      suggestion = keyword.split(' ')
+      for (let i = 0; i < suggestion.length; i++) {
+        let s = SpellChecker.getCorrectionsForMisspelling(suggestion[i])[0]
+        if (s) suggestion[i] = s
+      }
+      if (suggestion) {
+        suggestion = suggestion.join(' ')
+      }
     }
   }
-  console.log('keyword after check ->')
-  console.log(keyword)
   const bookList = await bookDB.find().exec()
   if (bookList) {
     var foundBooks = await findBooks(bookList, keyword)
     if (foundBooks) {
-      if (!(foundBooks.length < (pageNum - 1) * 10)) {
-        console.log('books =>' + foundBooks)
+      if (!(foundBooks.length < (pageNum - 1) * pageSize)) {
         return res.status(200).send({
-          book: foundBooks.slice((pageNum - 1) * 10, Math.min(foundBooks.length, pageNum * 20)),
+          book: foundBooks.slice((pageNum - 1) * pageSize, Math.min(foundBooks.length, pageNum * pageSize)),
           suggestion: suggestion,
+        })
+      } else {
+        return res.status(200).send({
+          book: [],
+          suggestion: '',
         })
       }
     }
@@ -43,33 +48,27 @@ exports.Search = async (req, res) => {
   })
 }
 async function findBooks(bookList, keyword) {
-  console.log('keyword -> ' + keyword)
   var foundBooks
   let foundCategory = await categoryDB.findOne({ name: keyword }).exec()
   if (foundCategory) foundBooks = await bookDB.find({ categoryId: foundCategory.id }).exec()
-  console.log('books->' + foundBooks)
   if (!foundBooks) {
-    console.log('foundBooks')
     keyword = keyword.split(' ')
     for (let i = 0; i < bookList.length; i++) {
       let cnt = 0
+      let s = bookList[i].name.toLowerCase().split(' ')
+      let used = new Array(s.length).fill(false)
       for (let j = 0; j < keyword.length; j++) {
-        let s = bookList[i].name.toLowerCase().split(' ')
-        let used = new Array(s.length).fill(false)
         for (let k = 0; k < s.length; k++) {
           let jw = 0
           if (used[k]) continue
           jw = await jaro_winkler(keyword[j], s[k])
-          //console.log(jw + ' ' + keyword[j] + ' ' + s[k])
           if (jw > 0.7) {
-            console.log('wtf?? ' + jw)
             used[k] = true
             cnt++
             break
           }
         }
       }
-      console.log(cnt + '  ----  ' + keyword.length / 3)
       if (cnt > keyword.length / 3) {
         if (!foundBooks) foundBooks = []
         foundBooks.push(bookList[i])
