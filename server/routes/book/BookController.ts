@@ -1,17 +1,30 @@
 import { Request, Response } from 'express'
 import Book from '../../models/Book'
-import { CreateBook, DeleteBook, GetBook, ListBooks, Search, AdvancedSearch, FindByCategory } from './params'
+import {
+  CreateBook,
+  DeleteBook,
+  GetBook,
+  ListBooks,
+  Search,
+  AdvancedSearch,
+  FindByCategory,
+  DeleteByCategory,
+  Pagination,
+} from './params'
 import mongoose from 'mongoose'
-import Chat from '../../models/Chat'
 
 const BookController = {
   listBooks: async (req: Request, res: Response): Promise<void> => {
     const { status } = <ListBooks>(<unknown>req.body)
     const query = status ? { status: status } : {}
-    Book.find(query, (err: any, data: any) => {
-      if (err) return res.status(500).send({ message: 'Error in getting books from DB' })
-      res.status(200).send(data)
-    })
+    Book.find(query)
+      .sort({ createdAt: -1 })
+      .exec((err, data) => {
+        if (err) {
+          return res.status(500).send({ message: 'Error in getting books from DB' })
+        }
+        res.status(200).send(data)
+      })
   },
 
   createBook: async (req: Request, res: Response) => {
@@ -65,7 +78,7 @@ const BookController = {
 
   search: async (req: Request, res: Response): Promise<void> => {
     const { name, author } = <Search>(<unknown>req.body)
-    let query = {}
+    var query
     if (name && author) {
       query = { name: name, author: author }
     } else if (name) {
@@ -75,13 +88,16 @@ const BookController = {
       console.log(req.body)
       query = { author: author }
     } else query = {}
-    Book.find(query, (err: any, data: any) => {
-      if (err) {
-        return res.status(500).send({ message: 'Error finding the books' })
-      }
-      res.status(200).send(data)
-    })
+    Book.find(query)
+      .sort({ createdAt: -1 })
+      .exec((err, data) => {
+        if (err) {
+          return res.status(500).send({ message: 'Error in getting books from DB' })
+        }
+        res.status(200).send(data)
+      })
   },
+
   advancedSearch: async (req: Request, res: Response) => {
     console.log(req.body)
     const { name, price, category } = <AdvancedSearch>(<unknown>req.body)
@@ -90,12 +106,27 @@ const BookController = {
       res.status(404).send({ message: 'Book name and price must be entered' })
     }
     const query = { name: name, price: price, category: category }
-    Book.find(query, (err: any, data: any) => {
-      if (err) {
-        return res.status(500).send({ message: 'Error finding the books' })
-      }
-      res.status(200).send(data)
-    })
+    Book.find(query)
+      .sort({ createdAt: -1 })
+      .exec((err, data) => {
+        if (err) {
+          return res.status(500).send({ message: 'Error in getting books from DB' })
+        }
+        res.status(200).send(data)
+      })
+  },
+
+  pagination: async (req: Request, res: Response): Promise<void> => {
+    const { pageNo, pageSize } = <Pagination>(<unknown>req.params)
+    const pageNoInt = parseInt(pageNo)
+    const pageSizeInt = parseInt(pageSize)
+    Book.find()
+      .sort({ createdAt: -1 })
+      .skip(pageNoInt * pageSizeInt - pageSizeInt)
+      .limit(pageSizeInt)
+      .exec(function (err, data) {
+        res.status(200).send(data)
+      })
   },
 }
 
