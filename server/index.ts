@@ -6,6 +6,8 @@ import { CategoryRoutes } from './routes/category'
 import { ChatRoutes } from './routes/chat'
 import { BookRoutes } from './routes/book'
 const SearchRoutes = require('./routes/searchBar')
+const SuggestionRoutes = require('./routes/suggestion')
+
 // import { AuthRoutes } from './routes/auth'
 // import initPassport from './authentication'
 import middlewares from './middlewares'
@@ -30,6 +32,7 @@ routes.push(new CategoryRoutes(router))
 routes.push(new SearchRoutes(router))
 routes.push(new BookRoutes(router))
 routes.push(new ChatRoutes(router))
+routes.push(new SuggestionRoutes(router))
 // create auth routes to the router
 // routes.push(new AuthRoutes(router))
 
