@@ -1,7 +1,8 @@
 import express, { Request, Response } from 'express'
 import { Routes } from '..'
-const SearchController = require('./SearchController')
-class SearchRoutes extends Routes {
+import SearchController from './SearchController'
+
+export class SearchRoutes extends Routes {
   constructor(router = express.Router) {
     super(router, 'SearchRoutes')
   }
@@ -11,4 +12,3 @@ class SearchRoutes extends Routes {
     })
   }
 }
-module.exports = SearchRoutes

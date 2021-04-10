@@ -27,3 +27,5 @@ export const toDDMMYYYY = (time: number): string => {
 export const toStandardTime = (time: number): string => {
   return `${toRelativeTime(time)} (${toDDMMYYYY(time)})`
 }
+
+export const capFirst = (string: string): string => string.charAt(0).toUpperCase() + string.slice(1)
