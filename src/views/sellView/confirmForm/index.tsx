@@ -1,4 +1,13 @@
+import { List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core'
 import { Details, Image } from '@myTypes/Product'
+import Tooltip from '@src/components/tooltip'
+import RepeatIcon from '@material-ui/icons/Repeat'
+import AttachMoneyIcon from '@material-ui/icons/AttachMoney'
+import LabelOutlinedIcon from '@material-ui/icons/LabelOutlined'
+import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined'
+import BorderColorIcon from '@material-ui/icons/BorderColor'
+import TitleIcon from '@material-ui/icons/Title'
+import CategoryOutlinedIcon from '@material-ui/icons/CategoryOutlined'
 import React, { ReactElement } from 'react'
 import {
   Btn,
@@ -7,9 +16,13 @@ import {
   CoverPhotoWrapper,
   DetailsWrapper,
   DetailTitle,
+  FlexRow,
   FormContainer,
+  SellIcon,
   TextRow,
+  TradeIcon,
 } from '../style'
+import { capFirst } from '@src/utils'
 
 type Props = {
   goStep1: () => void
@@ -22,48 +35,80 @@ const ConfirmForm = (props: Props): ReactElement => {
   const { goStep1, submitForm, image, details } = props
 
   return (
-    <FormContainer center direction="column">
+    <FormContainer center direction="row">
       <CoverPhotoWrapper width="60%">
         Cover Photo
         <CoverPhoto>
           <img src={image.dataURL} width="100%" />
         </CoverPhoto>
       </CoverPhotoWrapper>
-      <DetailsWrapper width="60%">
-        <TextRow>
-          <DetailTitle>Category:</DetailTitle> {details.category.name}
-        </TextRow>
-        <TextRow>
-          <DetailTitle>Title: </DetailTitle>
-          {details.title}
-        </TextRow>
-        {details.listType == 'sell' ? (
-          <>
-            <TextRow>
-              <DetailTitle>Type: </DetailTitle>for sell
-            </TextRow>
-            <TextRow>
-              <DetailTitle>Price:</DetailTitle> ${details.price}
-            </TextRow>
-          </>
-        ) : (
-          <>
-            <TextRow>Type: for trade</TextRow>
-            <TextRow>Price: ${details.tradeOption}</TextRow>
-          </>
-        )}
-        {details.description && (
-          <TextRow>
-            <DetailTitle>Description: </DetailTitle> {details.description}
-          </TextRow>
-        )}
+      <DetailsWrapper width="40%">
+        <List dense>
+          <ListItem>
+            <ListItemIcon>
+              <CategoryOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText primary={details.category.name} secondary="Category" style={{ wordBreak: 'break-word' }} />
+          </ListItem>
+          <ListItem>
+            <ListItemIcon>
+              <TitleIcon />
+            </ListItemIcon>
+            <ListItemText primary={details.title} secondary="Book Name" style={{ wordBreak: 'break-word' }} />
+          </ListItem>
+          <ListItem>
+            <ListItemIcon>
+              <BorderColorIcon />
+            </ListItemIcon>
+            <ListItemText primary={details.author} secondary="Author" style={{ wordBreak: 'break-word' }} />
+          </ListItem>
+          <ListItem>
+            <ListItemIcon>
+              <LabelOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary={capFirst(details.condition)}
+              secondary="Condition"
+              style={{ wordBreak: 'break-word' }}
+            />
+          </ListItem>
+          {details.type == 'sell' ? (
+            <ListItem>
+              <ListItemIcon>
+                <AttachMoneyIcon />
+              </ListItemIcon>
+              <ListItemText primary={`$ ${details.price}`} secondary="Price" style={{ wordBreak: 'break-word' }} />
+            </ListItem>
+          ) : (
+            <ListItem>
+              <ListItemIcon>
+                <RepeatIcon />
+              </ListItemIcon>
+              <ListItemText
+                primary={`${details.tradeOption}`}
+                secondary="Trade Option"
+                style={{ wordBreak: 'break-word' }}
+              />
+            </ListItem>
+          )}
+          <ListItem>
+            <ListItemIcon>
+              <DescriptionOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary={`${details.description}`}
+              secondary="Description"
+              style={{ wordBreak: 'break-word' }}
+            />
+          </ListItem>
+        </List>
+        <BtnRow>
+          <Btn onClick={goStep1} secondary>
+            discard
+          </Btn>
+          <Btn onClick={submitForm}>Confirm</Btn>
+        </BtnRow>
       </DetailsWrapper>
-      <BtnRow>
-        <Btn onClick={goStep1} secondary>
-          discard
-        </Btn>
-        <Btn onClick={submitForm}>Confirm</Btn>
-      </BtnRow>
     </FormContainer>
   )
 }

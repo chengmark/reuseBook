@@ -2,6 +2,11 @@ import { Button, Chip, TextField } from '@material-ui/core'
 import { COLOR } from '@src/styling'
 import styled from 'styled-components'
 import ImageOutlinedIcon from '@material-ui/icons/ImageOutlined'
+import RepeatIcon from '@material-ui/icons/Repeat'
+import AttachMoneyIcon from '@material-ui/icons/AttachMoney'
+import LabelOutlinedIcon from '@material-ui/icons/LabelOutlined'
+import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined'
+import CategoryOutlinedIcon from '@material-ui/icons/CategoryOutlined'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import { MEDIA_BREAK } from '@src/layout'
 
@@ -217,4 +222,35 @@ export const DetailTitle = styled.div`
 export const TextRow = styled.div`
   width: 75%;
   margin: 5px 0 5px 0;
+`
+
+export const TradeIcon = styled(RepeatIcon)`
+  color: ${COLOR.secondary.shade1};
+`
+
+export const SellIcon = styled(AttachMoneyIcon)`
+  color: ${COLOR.secondary.shade1};
+`
+
+export const ConditionIcon = styled(LabelOutlinedIcon)`
+  margin-right: 3px;
+  color: ${COLOR.font.grey};
+`
+
+export const DescriptionIcon = styled(DescriptionOutlinedIcon)`
+  margin-right: 3px;
+  color: ${COLOR.font.grey};
+  margin-bottom: auto;
+`
+
+export const CategoryIcon = styled(CategoryOutlinedIcon)`
+  margin-right: 3px;
+  color: ${COLOR.font.grey};
+`
+export const FlexRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: fit-content;
+  padding: 5px 0 5px 0;
 `
