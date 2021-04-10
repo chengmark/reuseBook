@@ -12,6 +12,11 @@ export class BookRoutes extends Routes {
     this.router.route('/books/search').post((req: Request, res: Response) => {
       BookController.search(req, res)
     })
+
+    this.router.route('/books/search/:pageNo/:pageSize').get((req: Request, res: Response) => {
+      BookController.pagination(req, res)
+    })
+
     this.router.route('/books/advancedsearch').post((req: Request, res: Response) => {
       BookController.advancedSearch(req, res)
     })
