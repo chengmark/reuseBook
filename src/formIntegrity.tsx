@@ -1,5 +1,4 @@
 type Validator = {
-  id: number
   errMsg: string
   check: (target: string) => boolean
 }
@@ -10,7 +9,6 @@ export type Target = {
 }
 
 const REQUIRED: Validator = {
-  id: 1,
   errMsg: 'This field cannot be empty.',
   check: (target: string): boolean => {
     return target.length !== 0
@@ -18,7 +16,6 @@ const REQUIRED: Validator = {
 }
 
 const EMAIL: Validator = {
-  id: 2,
   errMsg: 'Please enter a valid email.',
   check: (target: string): boolean => {
     const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -27,16 +24,14 @@ const EMAIL: Validator = {
 }
 
 const NUM_AND_LETTER: Validator = {
-  id: 3,
   errMsg: 'Mixture of number and letter is required.',
   check: (target: string): boolean => {
-    const regex = /^[0-9a-zA-Z]+$/
+    const regex = /^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/
     return regex.test(target)
   },
 }
 
 const SPECIAL_CHAR: Validator = {
-  id: 4,
   errMsg: 'Inclusion of special character, e.g. ! @ # ? ] is required.',
   check: (target: string): boolean => {
     const regex = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/
@@ -45,7 +40,6 @@ const SPECIAL_CHAR: Validator = {
 }
 
 const LENGTH_EIGHT: Validator = {
-  id: 5,
   errMsg: 'At least 8 characters required.',
   check: (target: string): boolean => {
     return target.length > 7
@@ -53,7 +47,6 @@ const LENGTH_EIGHT: Validator = {
 }
 
 const NUM_ONLY: Validator = {
-  id: 6,
   errMsg: 'Only number is allowed.',
   check: (target: string): boolean => {
     const regex = /^[0-9]*$/
@@ -69,6 +62,13 @@ export const checkIntegrity = (target: Target, validators: Array<Validator>): Ta
     if (!validator.check(target.value)) return (target.errMsg = validator.errMsg)
   })
   return target
+}
+
+export const checkSameValue = (target1: Target, target2: Target): Array<Target> => {
+  if (target1.value != target2.value) {
+    target1.errMsg = target2.errMsg = 'Please enter the same value'
+  }
+  return [target1, target2]
 }
 
 export const formNoErr = (formState: Record<string, Target>): boolean => {

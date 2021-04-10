@@ -28,7 +28,7 @@ export const NavItemContainer = styled.div`
     ${props.toBottom ? `margin-top: auto;` : ``}
 
     @media (max-width: ${MEDIA_BREAK}px) {
-      ${props.isActive ? ` box-shadow: 0px -3px 0px ${COLOR.font.dark} inset; ` : ``}
+      ${props.isActive ? ` box-shadow: 0px -3px 0px ${COLOR.primary.shade2} inset; ` : ``}
       margin-top:0;
       flex:1;
     }

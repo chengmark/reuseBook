@@ -2,7 +2,6 @@ import React, { ReactElement } from 'react'
 import { Route } from 'react-router-dom'
 import HomeIcon from '@material-ui/icons/Home'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import SettingsIcon from '@material-ui/icons/Settings'
 import { NavWrapper, NavigationGrid, Divider } from './style'
@@ -30,9 +29,6 @@ const Navigation = (props: Props): ReactElement => {
       <NavigationGrid>
         <Route exact path={['/', toPath(LOCATIONS.home)]}>
           {({ match }) => <NavItem title={LOCATIONS.home} isActive={!!match} icon={HomeIcon}></NavItem>}
-        </Route>
-        <Route exact path={toPath(LOCATIONS.shoppingCart)}>
-          {({ match }) => <NavItem title={LOCATIONS.shoppingCart} isActive={!!match} icon={ShoppingCartIcon}></NavItem>}
         </Route>
         <Divider></Divider>
         {userState.loggedIn() ? (

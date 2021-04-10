@@ -1,4 +1,4 @@
-import { Avatar, Button, Chip, Dialog } from '@material-ui/core'
+import { Avatar, Button, Chip, Dialog, TextField } from '@material-ui/core'
 import { ArrowForwardIos } from '@material-ui/icons'
 import EditIcon from '@material-ui/icons/Edit'
 import { MEDIA_BREAK, NAV_WIDTH } from '@src/layout'
@@ -288,3 +288,40 @@ export const CenteredTabPanel = styled.div`
 `
 
 export const InterestDialog = styled(Dialog)``
+
+export const InfoDialog = styled(Dialog)``
+
+export const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: ${COLOR.bg.light};
+  padding: 35px;
+  margin: 10px 0px 10px 0px;
+  @media (max-width: ${MEDIA_BREAK}px) {
+    padding: 15px;
+    margin: 0;
+  }
+`
+
+export const InputRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+`
+
+export const Input = styled(TextField)`
+  &.MuiFormControl-root {
+    margin: 10px 0 10px 0;
+    width: fill-available;
+    &.MuiOutlinedInput-root {
+      &.Mui-focused fieldset {
+        border-color: ${COLOR.primary.shade1};
+      }
+      &.Mui-error fieldset {
+        border-color: ${COLOR.error.shade};
+      }
+    }
+  }
+`

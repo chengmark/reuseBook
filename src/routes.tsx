@@ -5,7 +5,6 @@ import AppView from './views/appView'
 import HomeView from './views/homeView'
 import SearchView from './views/searchView'
 import ProfileView from './views/profileView'
-import CartView from './views/cartView'
 import SettingsView from './views/settingsView'
 import { GlobalStyles } from './styling'
 import LoginView from './views/loginView'
@@ -15,6 +14,7 @@ import SellView from './views/sellView'
 import { useSnackbar } from 'notistack'
 import UserService from './services/UserService'
 import ResetPwView from './views/resetPwView'
+import ProductView from './views/productView'
 
 // import LoadingView from './views/loadingView'
 
@@ -32,10 +32,10 @@ export const LOCATIONS = {
   search: 'search',
   profile: 'profile',
   login: 'login',
-  shoppingCart: 'shopping_cart',
   settings: 'settings',
   sell: 'sell',
   reset: 'reset', // reset pw
+  product: 'product/:bookId',
 }
 
 export const toPath = (location: string): string => {
@@ -84,14 +84,12 @@ const Routes = (props: Props): ReactElement => {
                 <div>Search View</div>
               </SearchView>
             </Route>
+            <Route exact path={toPath(LOCATIONS.product)}>
+              <ProductView />
+            </Route>
             <Route exact path={toPath(LOCATIONS.profile)}>
               {/* {({ match }) => !!match && requireLogin(<ProfileView />)} */}
               {() => !loading && requireLogin(<ProfileView />)}
-            </Route>
-            <Route exact path={toPath(LOCATIONS.shoppingCart)}>
-              <CartView>
-                <div> Shopping cart view </div>
-              </CartView>
             </Route>
             <Route exact path={toPath(LOCATIONS.settings)}>
               <SettingsView>
