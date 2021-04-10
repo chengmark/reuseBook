@@ -28,7 +28,7 @@ const ChatController = {
 
   createChatRoom: async (req: Request, res: Response): Promise<void> => {
     const { buyerId, sellerId, roomname } = <CreateChatRoom>(<unknown>req.body)
-    const newRoom = { name: roomname }
+    const newRoom = { name: mongoose.Types.ObjectId(roomname) }
     const newIds: mongoose.Types.ObjectId[] = []
     newIds.push(mongoose.Types.ObjectId(buyerId))
     newIds.push(mongoose.Types.ObjectId(sellerId))

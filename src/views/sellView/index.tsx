@@ -6,6 +6,8 @@ import { Container, StepContentWrapper, Title } from './style'
 import UploadForm from './uploadForm'
 import { Details, Image } from '@myTypes/Product'
 import ConfirmForm from './confirmForm'
+import BookService from '@src/services/BookService'
+import { Obj } from '@myTypes/Obj'
 
 type loadType = {
   goStep2: (image: { dataURL: string; file: File }) => void
@@ -64,7 +66,16 @@ const SellView = (): ReactElement => {
 
   const submitForm = () => {
     console.log(details)
-    console.log(image)
+    console.log(image.file)
+    BookService.getSignedRequest({ fileName: image.file.name, fileType: image.file.type })
+      .then((res) => {
+        BookService.uploadImage(image.file, res.signedRequest as Obj, res.url as string).then((res) => {
+          console.log(res)
+        })
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
 
   return (
