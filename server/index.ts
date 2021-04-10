@@ -38,7 +38,7 @@ routes.push(new AWSRoutes(router))
 // all routes start with '/api'
 app.use('/api', router)
 
-/*if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../../build')))
   app.get('*', (req: Request, res: Response) => {
     res.sendFile(path.join(__dirname, '../../', 'build', 'index.html'))
@@ -48,7 +48,7 @@ app.use('/api', router)
   app.get('*', (req: Request, res: Response) => {
     res.sendFile(path.join(__dirname, '../', 'build', 'index.html'))
   })
-}*/
+}
 
 DB.connect()
 
