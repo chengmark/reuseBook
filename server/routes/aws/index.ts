@@ -3,9 +3,9 @@ import { Routes } from '..'
 import AwsController from './AwsController'
 
 // routes for user related operations
-export class BookRoutes extends Routes {
+export class AWSRoutes extends Routes {
   constructor(router: Router) {
-    super(router, 'BookRoutes')
+    super(router, 'AWSRoutes')
   }
 
   configureRoutes(): void {
