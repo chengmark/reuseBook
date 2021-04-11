@@ -35,10 +35,11 @@ export const LOCATIONS = {
   settings: 'settings',
   sell: 'sell',
   reset: 'reset', // reset pw
-  product: 'product/:bookId',
+  product: 'product/:id',
 }
 
-export const toPath = (location: string): string => {
+export const toPath = (location: string, id?: string): string => {
+  if (id) return location.replace(':id', id)
   return '/' + location
 }
 

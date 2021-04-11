@@ -17,7 +17,7 @@ exports.Suggest = async (req, res) => {
   for (let key of Object.keys(selections)) {
     var count = selections[key]
     var category = JSON.parse(key)
-    let booksOfCategory = await bookDB.find({ categoryId: category._id }).exec()
+    let booksOfCategory = await bookDB.find({ category: category._id }).exec()
     //console.log(booksOfCategory)
     if (booksOfCategory) {
       if (booksOfCategory.length > count) {

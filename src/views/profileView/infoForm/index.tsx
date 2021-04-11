@@ -18,58 +18,56 @@ const InfoForm = (props: Props): ReactElement => {
   }
 
   return (
-    <>
-      <Container>
+    <Container>
+      <Input
+        id="password-input"
+        name="password"
+        label="New Password"
+        type="password"
+        autoComplete="current-password"
+        variant="outlined"
+        error={!!newInfo.password.errMsg}
+        helperText={newInfo.password.errMsg}
+        onChange={handleInputChange}
+      />
+      <Input
+        id="password-confirm-input"
+        name="passwordConfirm"
+        label="Confirm Password"
+        type="password"
+        autoComplete="current-password"
+        variant="outlined"
+        error={!!newInfo.passwordConfirm.errMsg}
+        helperText={newInfo.passwordConfirm.errMsg}
+        onChange={handleInputChange}
+      />
+      <InputRow>
         <Input
-          id="password-input"
-          name="password"
-          label="New Password"
-          type="password"
-          autoComplete="current-password"
+          id="firstname-input"
+          name="firstname"
+          label="First Name"
+          type="firstname"
+          autoComplete="current-firstname"
           variant="outlined"
-          error={!!newInfo.password.errMsg}
-          helperText={newInfo.password.errMsg}
+          error={!!newInfo.firstname.errMsg}
+          helperText={newInfo.firstname.errMsg}
           onChange={handleInputChange}
+          value={newInfo.firstname.value}
         />
         <Input
-          id="password-confirm-input"
-          name="passwordConfirm"
-          label="Confirm Password"
-          type="password"
-          autoComplete="current-password"
+          id="lastname-input"
+          name="lastname"
+          label="Last Name"
+          type="lastname"
+          autoComplete="current-lastname"
           variant="outlined"
-          error={!!newInfo.passwordConfirm.errMsg}
-          helperText={newInfo.passwordConfirm.errMsg}
+          error={!!newInfo.lastname.errMsg}
+          helperText={newInfo.lastname.errMsg}
           onChange={handleInputChange}
+          value={newInfo.lastname.value}
         />
-        <InputRow>
-          <Input
-            id="firstname-input"
-            name="firstname"
-            label="First Name"
-            type="firstname"
-            autoComplete="current-firstname"
-            variant="outlined"
-            error={!!newInfo.firstname.errMsg}
-            helperText={newInfo.firstname.errMsg}
-            onChange={handleInputChange}
-            value={newInfo.firstname.value}
-          />
-          <Input
-            id="lastname-input"
-            name="lastname"
-            label="Last Name"
-            type="lastname"
-            autoComplete="current-lastname"
-            variant="outlined"
-            error={!!newInfo.lastname.errMsg}
-            helperText={newInfo.lastname.errMsg}
-            onChange={handleInputChange}
-            value={newInfo.lastname.value}
-          />
-        </InputRow>
-      </Container>
-    </>
+      </InputRow>
+    </Container>
   )
 }
 

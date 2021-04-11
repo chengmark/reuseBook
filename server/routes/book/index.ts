@@ -39,12 +39,12 @@ export class BookRoutes extends Routes {
         BookController.getBook(req, res)
       })
     this.router
-      .route('/books/:category')
-      //.delete((req: Request, res: Response) => {
-      //BookController.deleteByCategory(req, res)
-      //})
+      .route('/books/:categoryId')
+      .delete((req: Request, res: Response) => {
+        BookController.deleteByCategory(req, res)
+      })
       .get((req: Request, res: Response) => {
-        BookController.findByCategory(req, res)
+        BookController.listByCategory(req, res)
       })
   }
 }

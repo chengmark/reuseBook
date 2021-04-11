@@ -1,7 +1,9 @@
 import { Divider } from '@material-ui/core'
+import ReviewPopup from '@src/components/reviewPopup'
 import Tooltip from '@src/components/tooltip'
 import { toDDMMYYYY, toRelativeTime, toStandardTime } from '@src/utils'
-import React, { ReactElement } from 'react'
+import { Btn } from '@src/views/sellView/style'
+import React, { ReactElement, useState } from 'react'
 import {
   Container,
   FlexFullRow,
@@ -12,6 +14,7 @@ import {
   ReviewText,
   Title,
   SubContainer,
+  NoReviewText,
 } from '../style'
 
 type Props = {
@@ -21,15 +24,17 @@ type Props = {
 
 const ReviewSection = (props: Props): ReactElement => {
   const { reviews, ...rest } = props
+  const [open, setOpen] = useState(false)
+
   return (
     <Container>
       <FlexFullRow>
         <Title>Reviews</Title>
-        <MinorText>{`(total ${reviews.length})`}</MinorText>
+        <MinorText>{`(total ${reviews?.length})`}</MinorText>
       </FlexFullRow>
       <Divider />
       <SubContainer>
-        {reviews.map((review, i) => (
+        {reviews?.map((review, i) => (
           <ReviewCard key={i}>
             <ReviewContent>
               <ReviewerAvatar></ReviewerAvatar>
@@ -40,7 +45,11 @@ const ReviewSection = (props: Props): ReactElement => {
             </Tooltip>
           </ReviewCard>
         ))}
+        {reviews?.length == 0 && <NoReviewText>{`No Reviews Yet`}</NoReviewText>}
       </SubContainer>
+      <Divider />
+      <Btn onClick={() => setOpen(true)}>Add a review</Btn>
+      <ReviewPopup open={open} setOpen={setOpen} />
     </Container>
   )
 }

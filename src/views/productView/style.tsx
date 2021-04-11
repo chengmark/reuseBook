@@ -28,13 +28,25 @@ export const Container = styled(Card)`
 export const ProductInfo = styled.div`
   display: flex;
   flex-direction: row;
+  grid-gap: 20px;
   @media (max-width: ${MEDIA_BREAK}px) {
     flex-direction: column;
   }
 `
 
-export const Image = styled.div`
+type ImageProps = {
+  img: string
+}
+
+export const ImageWrapper = styled.div`
   flex: 1;
+  cursor: pointer;
+`
+
+export const Image = styled.div`
+  background: no-repeat url(${(props: ImageProps) => props.img}) 50% / 100%;
+  // background-size: contain;
+  // background-repeat: no-repeat;
 `
 
 export const InfoTextSection = styled.div`
@@ -193,4 +205,12 @@ export const SubContainer = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: ${(props: SubContainerProps) => (props.center ? `center` : ``)};
+`
+
+export const NoReviewText = styled.div`
+  font-size: 16px;
+  color: ${COLOR.font.grey};
+  margin: 10px 0 10px 0;
+  align-self: center;
+  text-align: center;
 `

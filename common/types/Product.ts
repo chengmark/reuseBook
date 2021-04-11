@@ -8,8 +8,10 @@ export type Image = {
 export type Details = {
   category: Category
   title: string
-  listType: string
+  author: string
+  type: string
   price: string
   tradeOption: string
   description: string
+  condition: string
 }

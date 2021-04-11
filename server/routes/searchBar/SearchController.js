@@ -50,7 +50,7 @@ exports.Search = async (req, res) => {
 async function findBooks(bookList, keyword) {
   var foundBooks
   let foundCategory = await categoryDB.findOne({ name: keyword }).exec()
-  if (foundCategory) foundBooks = await bookDB.find({ categoryId: foundCategory.id }).exec()
+  if (foundCategory) foundBooks = await bookDB.find({ category: foundCategory.id }).exec()
   if (!foundBooks) {
     keyword = keyword.split(' ')
     for (let i = 0; i < bookList.length; i++) {
