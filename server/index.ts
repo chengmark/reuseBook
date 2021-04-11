@@ -7,6 +7,7 @@ import { CategoryRoutes } from './routes/category'
 import { ChatRoutes } from './routes/chat'
 import { BookRoutes } from './routes/book'
 import { ReviewRoutes } from './routes/review'
+import { TransactionRoutes } from './routes/transaction'
 import { AWSRoutes } from './routes/aws'
 // import { SearchRoutes } from './routes/searchBar'
 // import { AuthRoutes } from './routes/auth'
@@ -35,6 +36,7 @@ routes.push(new BookRoutes(router))
 routes.push(new ChatRoutes(router))
 routes.push(new ReviewRoutes(router))
 routes.push(new AWSRoutes(router))
+routes.push(new TransactionRoutes(router))
 // create auth routes to the router
 // routes.push(new AuthRoutes(router))
 
