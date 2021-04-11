@@ -4,6 +4,8 @@ import Tooltip from '@src/components/tooltip'
 import { toDDMMYYYY, toRelativeTime, toStandardTime } from '@src/utils'
 import { Btn } from '@src/views/sellView/style'
 import React, { ReactElement, useState } from 'react'
+import AddBoxIcon from '@material-ui/icons/AddBox'
+import { useSnackbar } from 'notistack'
 import {
   Container,
   FlexFullRow,
@@ -16,15 +18,24 @@ import {
   SubContainer,
   NoReviewText,
 } from '../style'
+import { useUserState } from '@src/context/UserContext'
 
 type Props = {
+  bookId: string
   reviews: Array<any>
-  children?: ReactElement
+  getBook: () => void
 }
 
 const ReviewSection = (props: Props): ReactElement => {
-  const { reviews, ...rest } = props
+  const { bookId, reviews, getBook, ...rest } = props
   const [open, setOpen] = useState(false)
+  const { enqueueSnackbar } = useSnackbar()
+  const { loggedIn, state } = useUserState()
+
+  const handleAddReview = () => {
+    if (!loggedIn()) return enqueueSnackbar('Please Login First.', { variant: 'warning' })
+    setOpen(true)
+  }
 
   return (
     <Container>
@@ -48,8 +59,10 @@ const ReviewSection = (props: Props): ReactElement => {
         {reviews?.length == 0 && <NoReviewText>{`No Reviews Yet`}</NoReviewText>}
       </SubContainer>
       <Divider />
-      <Btn onClick={() => setOpen(true)}>Add a review</Btn>
-      <ReviewPopup open={open} setOpen={setOpen} />
+      <Btn onClick={handleAddReview} startIcon={<AddBoxIcon />}>
+        Add a review
+      </Btn>
+      <ReviewPopup bookId={bookId} userId={state._id as string} getBook={getBook} open={open} setOpen={setOpen} />
     </Container>
   )
 }
