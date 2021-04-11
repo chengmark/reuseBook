@@ -45,7 +45,7 @@ const ReviewController = {
 
         try{
         const _id = mongoose.Types.ObjectId(reviewId)
-        Review.findOne({ _id: _id }).populate('User').exec((err, data) => {
+        Review.findOne({ _id: _id }).populate('user').exec((err, data) => {
             if(err){
                 return res.status(500).send({message: 'error finding review'})
             }
