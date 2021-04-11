@@ -4,10 +4,10 @@ import bookDB from '../../models/Product'
 import categoryDB from '../../models/Category'
 import SpellChecker from 'spellchecker'
 exports.Search = async (req, res) => {
-  var keyword = req.query.keyword
-  var pageNum = Number(req.query.pageNum)
-  var pageSize = Number(req.query.pageSize)
-  var persist = req.query.persist === 'true'
+  var keyword = req.body.keyword
+  var pageNum = Number(req.body.pageNum)
+  var pageSize = Number(req.body.pageSize)
+  var persist = req.body.persist === 'true'
   var suggestion
   if (!keyword) {
     return res.status(400).send({ message: 'Enter something' })
