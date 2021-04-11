@@ -1,19 +1,24 @@
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@material-ui/core'
-import { checkIntegrity, formNoErr, VALIDATORS } from '@src/formIntegrity'
+import { checkIntegrity, formNoErr, toData, VALIDATORS } from '@src/formIntegrity'
+import BookService from '@src/services/BookService'
 import React, { ChangeEvent, Dispatch, ReactElement, SetStateAction, useState } from 'react'
 import { Container, Input } from './style'
+import { useSnackbar } from 'notistack'
 
 type Props = {
+  bookId: string
+  userId: string
   open: boolean
   setOpen: Dispatch<SetStateAction<any>>
-  children?: ReactElement
+  getBook: () => void
 }
 
 const ReviewPopup = (props: Props): ReactElement => {
-  const { open, setOpen, ...rest } = props
+  const { bookId, userId, open, setOpen, getBook, ...rest } = props
   const [input, setInput] = useState({
     content: { value: '', errMsg: '' },
   })
+  const { enqueueSnackbar } = useSnackbar()
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const nextState = input
@@ -33,6 +38,17 @@ const ReviewPopup = (props: Props): ReactElement => {
     const content = checkIntegrity(input.content, [VALIDATORS.REQUIRED, VALIDATORS.LENGTH_EIGHT])
     setInput({ ...input, content })
     if (formNoErr(input)) {
+      BookService.addReview(bookId, { content: input.content.value, user: userId })
+        .then((res) => {
+          getBook()
+          enqueueSnackbar('Review added.', { variant: 'success' })
+          setOpen(false)
+        })
+        .catch((err) => {
+          console.log(err)
+          enqueueSnackbar('Plaese try again later.', { variant: 'error' })
+          setOpen(false)
+        })
     }
   }
 
