@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import Book from '../../models/Book'
+import Category from '../../models/Category'
 import {
   CreateBook,
   DeleteBook,
@@ -28,14 +29,16 @@ const BookController = {
   },
 
   createBook: async (req: Request, res: Response) => {
-    console.log(req.body)
-    const newBook = <CreateBook>(<unknown>req.body)
-    //newBook.sellerId = req.signedCookies['SID']
-    Book.create(newBook, (err: any, data: any) => {
-      if (err) {
-        return res.status(500).send({ message: 'Error in creating new book' })
-      }
-      res.status(200).send(data)
+    const categoryName = req.body.category
+    Category.findOne({ name: categoryName }).exec((err, result) => {
+      req.body.category = mongoose.Types.ObjectId(result?.get('_id'))
+      const newBook = <CreateBook>(<unknown>req.body)
+      Book.create(newBook, (error, data) => {
+        if (error) {
+          res.status(200).send({ message: 'error creating book' })
+        }
+        res.status(200).send(data)
+      })
     })
   },
 
@@ -44,12 +47,16 @@ const BookController = {
     const { bookId } = <GetBook>(<unknown>req.params)
     try {
       const _id = mongoose.Types.ObjectId(bookId)
-      Book.findOne({ _id: _id }, (err: any, data: any) => {
-        if (err) return res.status(500).send(err)
-        if (!data) return res.status(500).send({ message: 'book not found' })
-        res.status(200).send(data)
-      })
+      Book.findOne({ _id: _id })
+        .populate('Category')
+        .exec((err, data) => {
+          if (err) {
+            return res.status(500).send({ message: 'error finding book' })
+          }
+          res.status(200).send(data)
+        })
     } catch (e) {
+      console.log(e)
       res.status(500).send({ message: 'invalid bookId' })
     }
   },
@@ -67,13 +74,28 @@ const BookController = {
     }
   },
 
-  findByCategory: async (req: Request, res: Response): Promise<void> => {
-    const { category } = <FindByCategory>(<unknown>req.params)
-    const query = category ? { bookcategory: category } : {}
+  listByCategory: async (req: Request, res: Response): Promise<void> => {
+    const { categoryId } = <FindByCategory>(<unknown>req.params)
+    const query = categoryId ? { category: categoryId } : {}
     Book.find(query, (err: any, data: any) => {
       if (err) return res.status(500).send({ message: 'Error in finding books by category' })
       res.status(200).send(data)
     })
+  },
+
+  deleteByCategory: async (req: Request, res: Response): Promise<void> => {
+    const { categoryId } = <DeleteByCategory>(<unknown>req.params)
+    try {
+      const _categoryId = mongoose.Types.ObjectId(categoryId)
+      Book.deleteMany({ category: _categoryId }).then((err: any) => {
+        if (err) {
+          return res.status(500).send({ message: 'Error deleting all books of given categoyId' })
+        }
+      })
+    } catch (e) {
+      console.log(e)
+      res.status(500).send({ message: 'invalid categoryId' })
+    }
   },
 
   search: async (req: Request, res: Response): Promise<void> => {
@@ -102,11 +124,11 @@ const BookController = {
     console.log(req.body)
     const { name, price, category } = <AdvancedSearch>(<unknown>req.body)
     console.log(name)
-    if (!name || !price || !category) {
-      res.status(404).send({ message: 'Book name and price must be entered' })
+    if (!name || !price) {
+      res.status(404).send({ message: 'Book name, price must be entered' })
     }
-    const query = { name: name, price: price, category: category }
-    Book.find(query)
+
+    Book.find({ name: name }, { price: price })
       .sort({ createdAt: -1 })
       .exec((err, data) => {
         if (err) {

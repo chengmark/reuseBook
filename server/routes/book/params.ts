@@ -11,7 +11,7 @@ export type CreateBook = {
   price: string
   tradeOption: string
   author: string
-  category: string
+  categoryId: string
   description: string
   condition: string
   img: string
@@ -37,11 +37,11 @@ export type AdvancedSearch = {
 }
 
 export type FindByCategory = {
-  category: string
+  categoryId: string
 }
 
 export type DeleteByCategory = {
-  category: string
+  categoryId: string
 }
 
 export type CreateChatRoom = {
