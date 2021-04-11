@@ -1,7 +1,7 @@
 import { Card, Divider } from '@material-ui/core'
 import SearchBar from '@src/components/searchBar'
 import Tooltip from '@src/components/tooltip'
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 import ReviewSection from './reviewSection'
 import ShareOutlinedIcon from '@material-ui/icons/ShareOutlined'
 import ChatBubbleOutlineOutlinedIcon from '@material-ui/icons/ChatBubbleOutlineOutlined'
@@ -26,17 +26,19 @@ import {
   ShareBtn,
   TimeIcon,
   TimeText,
+  ImageWrapper,
 } from './style'
 import { toStandardTime } from '@src/utils'
 import RecommendationSection from './recommendationSection'
 import { useSnackbar } from 'notistack'
+import BookService from '@src/services/BookService'
+import { Obj } from '@myTypes/Obj'
 
 type Props = {
-  product?: any
   children?: ReactElement
 }
 
-const testProduct = {
+const book = {
   name: 'Discrete Mathematics and Its Application',
   type: 'sell', // or trade
   price: '120', // or ''
@@ -99,12 +101,31 @@ const testProduct = {
 }
 
 const ProductView = (props: Props): ReactElement => {
-  const { product, ...rest } = props
+  const { ...rest } = props
+  const [loading, setLoading] = useState(true)
+  const [book, setBook] = useState<Obj>({})
   const { enqueueSnackbar } = useSnackbar()
+
+  useEffect(() => {
+    BookService.getBook(location.href.substring(location.href.lastIndexOf('/') + 1))
+      .then((res) => {
+        setLoading(false)
+        console.log(res)
+        setBook(res)
+      })
+      .catch((err) => {
+        console.log(err)
+        setLoading(false)
+      })
+  }, [])
 
   const handleShareOnClick = () => {
     navigator.clipboard.writeText(location.href)
     enqueueSnackbar('Copied URL to clipboard', { variant: 'info' })
+  }
+
+  const handleImageOnClick = (url: string) => {
+    window.open(url, '_blank')
   }
 
   return (
@@ -112,50 +133,52 @@ const ProductView = (props: Props): ReactElement => {
       <SearchBar />
       <Container>
         <ProductInfo>
-          <Image></Image>
+          <ImageWrapper onClick={() => handleImageOnClick(book.img as string)}>
+            <Image img={book.img as string} />
+          </ImageWrapper>
           <InfoTextSection>
-            <Title>{`${testProduct.name}`}</Title>
+            <Title>{`${book.name}`}</Title>
             <Tooltip title="Author" style={{ fontSize: '14px' }}>
-              <Href>{`${testProduct.author}`}</Href>
+              <Href>{`${book.author}`}</Href>
             </Tooltip>
             <Divider />
-            {testProduct.type == 'sell' ? (
+            {book.type == 'sell' ? (
               <Tooltip title="For sell" style={{ fontSize: '14px' }}>
                 <FlexRow>
                   <SellIcon />
-                  <Highlighted>{`${testProduct.price}`}</Highlighted>
+                  <Highlighted>{`${book.price}`}</Highlighted>
                 </FlexRow>
               </Tooltip>
             ) : (
               <Tooltip title="For sell" style={{ fontSize: '14px' }}>
                 <FlexRow>
                   <TradeIcon />
-                  <Highlighted>{testProduct.tradeOption}</Highlighted>
+                  <Highlighted>{`${book.tradeOption}`}</Highlighted>
                 </FlexRow>
               </Tooltip>
             )}
             <Tooltip title="Category" style={{ fontSize: '14px' }}>
               <FlexRow>
                 <CategoryIcon />
-                <Href>{`${testProduct.category}`}</Href>
+                <Href>{`${book.category}`}</Href>
               </FlexRow>
             </Tooltip>
             <Tooltip title="Condition" style={{ fontSize: '14px' }}>
               <FlexRow>
                 <ConditionIcon />
-                <ConditionText>{`${testProduct.condition}`}</ConditionText>
+                <ConditionText>{`${book.condition}`}</ConditionText>
               </FlexRow>
             </Tooltip>
             <Tooltip title="Description" style={{ fontSize: '14px' }}>
               <FlexRow>
                 <DescriptionIcon />
-                <DescriptionText>{`${testProduct.description}`}</DescriptionText>
+                <DescriptionText>{`${book.description}`}</DescriptionText>
               </FlexRow>
             </Tooltip>
             <Tooltip title="Listing time" style={{ fontSize: '14px' }}>
               <FlexRow>
                 <TimeIcon />
-                <TimeText>{`${toStandardTime(testProduct.createdAt)}`}</TimeText>
+                <TimeText>{`${toStandardTime(new Date(book.createdAt as string).getTime())}`}</TimeText>
               </FlexRow>
             </Tooltip>
             <ChatBtn startIcon={<ChatBubbleOutlineOutlinedIcon />}>Chat with seller</ChatBtn>
@@ -165,7 +188,7 @@ const ProductView = (props: Props): ReactElement => {
           </InfoTextSection>
         </ProductInfo>
       </Container>
-      <ReviewSection reviews={testProduct.reviews}></ReviewSection>
+      <ReviewSection reviews={book.reviews as any[]}></ReviewSection>
       <RecommendationSection />
     </ProductWrapper>
   )
