@@ -1,3 +1,4 @@
+require('dotenv').config()
 import express, { Request, Response } from 'express'
 import http from 'http'
 import { Routes } from './routes'
@@ -6,7 +7,8 @@ import { CategoryRoutes } from './routes/category'
 import { ChatRoutes } from './routes/chat'
 import { BookRoutes } from './routes/book'
 import { ReviewRoutes } from './routes/review'
-const SearchRoutes = require('./routes/searchBar')
+import { AWSRoutes } from './routes/aws'
+// import { SearchRoutes } from './routes/searchBar'
 // import { AuthRoutes } from './routes/auth'
 // import initPassport from './authentication'
 import middlewares from './middlewares'
@@ -24,21 +26,22 @@ app.use(middlewares)
 
 const routes: Array<Routes> = []
 const router = express.Router()
-
+console.log(process.env.AWS_SECRET_ACCESS_KEY)
 // create user routes to the router
 routes.push(new UserRoutes(router))
 routes.push(new CategoryRoutes(router))
-routes.push(new SearchRoutes(router))
+// routes.push(new SearchRoutes(router))
 routes.push(new BookRoutes(router))
 routes.push(new ChatRoutes(router))
 routes.push(new ReviewRoutes(router))
+routes.push(new AWSRoutes(router))
 // create auth routes to the router
 // routes.push(new AuthRoutes(router))
 
 // all routes start with '/api'
 app.use('/api', router)
 
-/*if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../../build')))
   app.get('*', (req: Request, res: Response) => {
     res.sendFile(path.join(__dirname, '../../', 'build', 'index.html'))
@@ -48,7 +51,7 @@ app.use('/api', router)
   app.get('*', (req: Request, res: Response) => {
     res.sendFile(path.join(__dirname, '../', 'build', 'index.html'))
   })
-}*/
+}
 
 DB.connect()
 

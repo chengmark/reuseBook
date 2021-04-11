@@ -14,6 +14,7 @@ export type CreateBook = {
   categoryId: string
   description: string
   condition: string
+  img: string
 }
 
 export type Search = {

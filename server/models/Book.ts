@@ -11,6 +11,7 @@ const Book = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now() },
   condition: { type: String },
   reviews: [{ type: mongoose.Types.ObjectId, ref: 'Review' }],
+  img: { type: String },
 })
 
 export default mongoose.model('Book', Book)

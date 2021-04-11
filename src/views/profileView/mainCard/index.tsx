@@ -15,8 +15,8 @@ const MainCard = (): ReactElement => {
     <Card>
       <Tabs value={currentTab} variant="fullWidth" onChange={handleTabChange} indicatorColor="primary" centered>
         <Tab label="Listing"></Tab>
-        <Tab label="Order"></Tab>
-        <Tab label="History"></Tab>
+        <Tab label="Messages"></Tab>
+        <Tab label="Orders"></Tab>
       </Tabs>
       <ListingTab currentTab={currentTab}></ListingTab>
       <TabPanel currentTab={currentTab} index={1}>

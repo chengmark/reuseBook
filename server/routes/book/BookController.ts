@@ -100,7 +100,7 @@ const BookController = {
 
   search: async (req: Request, res: Response): Promise<void> => {
     const { name, author } = <Search>(<unknown>req.body)
-    var query: any
+    let query = {}
     if (name && author) {
       query = { name: name, author: author }
     } else if (name) {

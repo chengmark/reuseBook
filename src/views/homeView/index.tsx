@@ -1,10 +1,12 @@
 import Carousel from '@src/components/carousel'
 import ProductCard from '@src/components/productCard/productCard'
 import SearchBar from '@src/components/searchBar'
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useEffect } from 'react'
 import { HomeWrapper, ProductRow } from './style'
 
 const HomeView = (): ReactElement => {
+  // useEffect(() => {}, [])
+
   return (
     <HomeWrapper>
       <SearchBar></SearchBar>
