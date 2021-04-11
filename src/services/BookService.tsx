@@ -39,6 +39,14 @@ const BookService = {
     })
     return await response.data
   },
+  getBook: async (id: string): Promise<Obj> => {
+    const response = await axios({
+      method: 'get',
+      url: `${URL}/books/${id}`,
+      headers: { 'Content-Type': 'application/json;charset=utf-8' },
+    })
+    return await response.data
+  },
 }
 
 export default BookService
