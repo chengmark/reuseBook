@@ -1,4 +1,4 @@
-import bookDB from '../../models/Product'
+import bookDB from '../../models/Book'
 
 exports.Suggest = async (req, res) => {
   //console.log(req.body)

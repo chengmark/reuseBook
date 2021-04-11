@@ -33,10 +33,10 @@ console.log(process.env.AWS_SECRET_ACCESS_KEY)
 // create user routes to the router
 routes.push(new UserRoutes(router))
 routes.push(new CategoryRoutes(router))
-// routes.push(new SearchRoutes(router))
 routes.push(new BookRoutes(router))
 routes.push(new ChatRoutes(router))
 routes.push(new SuggestionRoutes(router))
+routes.push(new SearchRoutes(router))
 routes.push(new ReviewRoutes(router))
 routes.push(new AWSRoutes(router))
 // create auth routes to the router

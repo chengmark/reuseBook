@@ -1,13 +1,14 @@
 import express, { Request, Response } from 'express'
 import { callbackPromise } from 'nodemailer/lib/shared'
-import bookDB from '../../models/Product'
+import bookDB from '../../models/Book'
 import categoryDB from '../../models/Category'
 import SpellChecker from 'spellchecker'
 exports.Search = async (req, res) => {
   var keyword = req.body.keyword
   var pageNum = Number(req.body.pageNum)
   var pageSize = Number(req.body.pageSize)
-  var persist = req.body.persist === 'true'
+  console.log(typeof req.body.persist)
+  var persist = req.body.persist
   var suggestion
   if (!keyword) {
     return res.status(400).send({ message: 'Enter something' })
