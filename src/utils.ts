@@ -1,4 +1,5 @@
-export const toRelativeTime = (time: number): string => {
+export const toRelativeTime = (timeString: string): string => {
+  const time = getTime(timeString)
   const min = 60 * 1000
   const hr = min * 60
   const day = hr * 24
@@ -14,7 +15,8 @@ export const toRelativeTime = (time: number): string => {
   else return Math.round(diff / year) + ' years ago'
 }
 
-export const toDDMMYYYY = (time: number): string => {
+export const toDDMMYYYY = (timeString: string): string => {
+  const time = getTime(timeString)
   const date = new Date(time)
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
   const day = date.getDate()
@@ -24,8 +26,9 @@ export const toDDMMYYYY = (time: number): string => {
   return `${day}-${month}-${year}`
 }
 
-export const toStandardTime = (time: number): string => {
-  return `${toRelativeTime(time)} (${toDDMMYYYY(time)})`
-}
+const getTime = (timeString: string) => new Date(timeString).getTime()
+
+export const toStandardTime = (timeString: string): string =>
+  `${toRelativeTime(timeString)} (${toDDMMYYYY(timeString)})`
 
 export const capFirst = (string: string): string => string.charAt(0).toUpperCase() + string.slice(1)
