@@ -10,5 +10,9 @@ export class CategoryRoutes extends Routes {
     this.router.route(`/category`).get((req: Request, res: Response) => {
       CategoryController.listCategories(req, res)
     })
+
+    this.router.route('/category/:categoryId').get((req: Request, res: Response) => {
+      CategoryController.getCategory(req, res)
+    })
   }
 }
