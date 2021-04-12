@@ -9,8 +9,12 @@ const ResultView = (): ReactElement => {
 
   useEffect(() => {
     BookService.search(getUrlLastSegmant(), false)
-      .then((res) => {})
-      .catch((res) => {})
+      .then((res) => {
+        console.log(res)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }, [])
 
   return (
