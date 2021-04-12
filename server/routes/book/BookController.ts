@@ -19,6 +19,9 @@ const BookController = {
     const { status } = <ListBooks>(<unknown>req.body)
     const query = status ? { status: status } : {}
     Book.find(query)
+      .populate('category')
+      .populate('reviews')
+      .populate('sellerId')
       .sort({ createdAt: -1 })
       .exec((err, data) => {
         if (err) {
@@ -28,19 +31,12 @@ const BookController = {
       })
   },
 
-  createBook: async (req: Request, res: Response) => {
-    const categoryName = req.body.category
-    Category.findOne({ name: categoryName }).exec((err, result) => {
-      req.body.category = mongoose.Types.ObjectId(result?.get('_id'))
-      const newBook = <CreateBook>(<unknown>req.body)
-      Book.create(newBook, (error, data) => {
-        if (error) {
-          res.status(200).send({ message: 'error creating book' })
-        }
-        req.body.category = categoryName
-        console.log(req.body)
-        res.status(200).send(data)
-      })
+  createBook: async (req: Request, res: Response): Promise<void> => {
+    req.body.category = mongoose.Types.ObjectId(req.body.category._id)
+    const newBook = <CreateBook>(<unknown>req.body)
+    Book.create(newBook, (error, data) => {
+      if (error) return res.status(200).send({ message: 'error creating book' })
+      res.status(200).send(data)
     })
   },
 
@@ -52,9 +48,7 @@ const BookController = {
       Book.findOne({ _id: _id })
         .populate('category')
         .populate('reviews')
-
         .populate('sellerId')
-
         .exec((err, data) => {
           if (err) {
             return res.status(500).send({ message: 'error finding book' })

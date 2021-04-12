@@ -181,12 +181,14 @@ const ProductView = (props: Props): ReactElement => {
                 <ConditionText>{`${book.condition}`}</ConditionText>
               </FlexRow>
             </Tooltip>
-            <Tooltip title="Description" style={{ fontSize: '14px' }}>
-              <FlexRow>
-                <DescriptionIcon />
-                <DescriptionText>{`${book.description}`}</DescriptionText>
-              </FlexRow>
-            </Tooltip>
+            {book.description && (
+              <Tooltip title="Description" style={{ fontSize: '14px' }}>
+                <FlexRow>
+                  <DescriptionIcon />
+                  <DescriptionText>{`${book.description}`}</DescriptionText>
+                </FlexRow>
+              </Tooltip>
+            )}
             <Tooltip title="Listing time" style={{ fontSize: '14px' }}>
               <FlexRow>
                 <TimeIcon />

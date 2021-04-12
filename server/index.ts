@@ -6,8 +6,7 @@ import { UserRoutes } from './routes/user'
 import { CategoryRoutes } from './routes/category'
 import { ChatRoutes } from './routes/chat'
 import { BookRoutes } from './routes/book'
-const SearchRoutes = require('./routes/searchBar')
-const SuggestionRoutes = require('./routes/suggestion')
+// const SuggestionRoutes = require('./routes/suggestion')
 
 import { ReviewRoutes } from './routes/review'
 import { TransactionRoutes } from './routes/transaction'
@@ -20,7 +19,7 @@ import path from 'path'
 import DB from './DB'
 import initDB from './InitDB'
 
-const app: express.Application = express()
+export const app: express.Application = express()
 const server: http.Server = http.createServer(app)
 const PORT = process.env.PORT ? process.env.PORT : 3002
 
@@ -36,7 +35,7 @@ routes.push(new UserRoutes(router))
 routes.push(new CategoryRoutes(router))
 routes.push(new BookRoutes(router))
 routes.push(new ChatRoutes(router))
-routes.push(new SuggestionRoutes(router))
+// routes.push(new SuggestionRoutes(router))
 routes.push(new SearchRoutes(router))
 routes.push(new ReviewRoutes(router))
 routes.push(new AWSRoutes(router))
@@ -60,13 +59,22 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 DB.connect()
-
-initDB().then(() => {
-  server.listen(PORT, () => {
+if (process.env.NODE_ENV === 'testing') {
+  server.listen(process.env.TESTING_PORT, () => {
     console.log(`Server running on port: ${PORT}`)
     console.log(`end point at /api`)
     routes.forEach((routes: Routes) => {
       console.log(`Routes configured for ${routes.getName()}`)
     })
   })
-})
+} else {
+  initDB().then(() => {
+    server.listen(PORT, () => {
+      console.log(`Server running on port: ${PORT}`)
+      console.log(`end point at /api`)
+      routes.forEach((routes: Routes) => {
+        console.log(`Routes configured for ${routes.getName()}`)
+      })
+    })
+  })
+}
