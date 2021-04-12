@@ -56,6 +56,15 @@ const BookService = {
     })
     return await response.data
   },
+  search: async (keyword: string, persist: boolean): Promise<Obj> => {
+    const response = await axios({
+      method: 'post',
+      url: `${URL}/search`,
+      headers: { 'Content-Type': 'application/json;charset=utf-8' },
+      data: { keyword: keyword, pageNum: 1, pageSize: 20, persist: persist },
+    })
+    return await response.data
+  },
 }
 
 export default BookService

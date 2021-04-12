@@ -1,9 +1,25 @@
-import React, { ReactElement, useState } from 'react'
+import React, { ChangeEvent, ReactElement, useState } from 'react'
 import { BarWrapper, Btn, Input } from './style'
 import SearchIcon from '@material-ui/icons/Search'
+import BookService from '@src/services/BookService'
 
 const SearchBar = (): ReactElement => {
   const [focused, setFocused] = useState(false)
+  const [keyword, setKeyword] = useState('')
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setKeyword(e.target.value)
+  }
+
+  const handleBtnOnClick = () => {
+    BookService.search(keyword, false)
+      .then((res) => {
+        console.log(res)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
 
   return (
     <BarWrapper focused={focused}>
@@ -16,8 +32,10 @@ const SearchBar = (): ReactElement => {
         }}
         variant="outlined"
         placeholder="Search for a book"
+        value={keyword}
+        onChange={handleInputChange}
       ></Input>
-      <Btn>
+      <Btn onClick={handleBtnOnClick}>
         <SearchIcon />
       </Btn>
     </BarWrapper>
