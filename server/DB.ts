@@ -4,7 +4,7 @@ export const MONGODB_URL = process.env.MONGODB_URI ? process.env.MONGODB_URI : '
 
 const DB = {
   connect: (): void => {
-    mongoose.connect(MONGODB_URL)
+    mongoose.connect(MONGODB_URL, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
     const db = mongoose.connection
 
     db.on('error', (err) => {

@@ -59,7 +59,6 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 DB.connect()
-console.log(process.env.NODE_ENV)
 if (process.env.NODE_ENV === 'testing') {
   server.listen(process.env.TESTING_PORT, () => {
     console.log(`Server running on port: ${PORT}`)

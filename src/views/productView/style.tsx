@@ -49,6 +49,7 @@ export const ImageWrapper = styled.div`
 `
 
 export const Image = styled.img`
+  max-width: 650px;
   @media (max-width: ${MEDIA_BREAK}px) {
     max-width: 308px;
   }

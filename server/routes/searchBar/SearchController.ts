@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import Book from '../../models/Book'
 import Category from '../../models/Category'
 import SpellChecker from 'spellchecker'
+import mongoose from 'mongoose'
 
 type Search = {
   keyword: string
@@ -15,7 +16,6 @@ const SearchController = {
     const { keyword, pageNum, pageSize, persist } = <Search>(<unknown>req.body)
     let suggestion = ''
     console.log(persist)
-    console.log(typeof persist)
     if (!keyword) return res.status(400).send({ message: 'Enter something' })
     if (!persist) {
       suggestion = getSuggestion(keyword) // suggestion or empty string
@@ -23,9 +23,16 @@ const SearchController = {
       const category = await Category.findOne({ name: suggestion || keyword }) // find the catrgory string
       console.log(category)
       if (category) {
-        // if found
-        console.log(category)
-        res.status(200).send(category)
+        // keyword is a category
+        console.log(category._id)
+        return res
+          .status(200)
+          .send({ books: await findBookByCategory(category._id, pageNum, pageSize), suggestion: suggestion })
+      } else {
+        // keyword is not a category
+        return res
+          .status(200)
+          .send({ books: await findBookByName(suggestion || keyword, pageNum, pageSize), suggestion: suggestion })
       }
     }
   },
@@ -44,130 +51,106 @@ const getSuggestion = (keyword: string): string => {
   return suggestion
 }
 
+const findBookByCategory = async (categoryId: string, pageNum: number, pageSize: number) => {
+  console.log(mongoose.Types.ObjectId(categoryId))
+  const result = await Book.find({ category: categoryId })
+    .skip((pageNum - 1) * pageSize)
+    .limit(pageSize)
+    .exec()
+  console.log(result)
+  return result
+}
+
+const findBookByName = async (keyword: string, pageNum: number, pageSize: number) => {
+  const bookList = await Book.find().exec()
+  const wordsOfKeyword = keyword.split(' ')
+  const result: Array<any> = []
+  bookList.forEach((book) => {
+    let cnt = 0
+    const wordsOfBookName = book['name'].toLowerCase().split(' ')
+    const usedHash = new Array(wordsOfBookName.length).fill(false) // whether the word of book name is used for calculating similarity
+    for (let i = 0; i < wordsOfKeyword.length; i++) {
+      for (let j = 0; j < wordsOfBookName.length; j++) {
+        if (usedHash[j]) continue
+        if (jaroWinkler(wordsOfKeyword[i], wordsOfBookName[j]) > 0.7) {
+          console.log(wordsOfBookName[j])
+          usedHash[j] = true
+          cnt++
+          break
+        }
+      }
+    }
+    console.log(cnt)
+    if (cnt > wordsOfKeyword.length / 3) result.push(book)
+  })
+  const start = (pageNum - 1) * pageSize
+  const end = start + pageSize - 1
+  return result.slice(start, end)
+}
+
 export default SearchController
 
-// exports.Search = async (req, res) => {
-//   var keyword = req.body.keyword
-//   var pageNum = Number(req.body.pageNum)
-//   var pageSize = Number(req.body.pageSize)
-//   console.log(typeof req.body.persist)
-//   var persist = req.body.persist
-//   var suggestion
-//   if (!keyword) {
-//     return res.status(400).send({ message: 'Enter something' })
-//   }
-//   if (!persist) {
-//     let misspelled = SpellChecker.isMisspelled(keyword)
-//     if (misspelled) {
-//       suggestion = keyword.split(' ')
-//       for (let i = 0; i < suggestion.length; i++) {
-//         let s = SpellChecker.getCorrectionsForMisspelling(suggestion[i])[0]
-//         if (s) suggestion[i] = s
-//       }
-//       if (suggestion) {
-//         suggestion = suggestion.join(' ')
-//       }
-//     }
-//   }
-//   const bookList = await bookDB.find().exec()
-//   if (bookList) {
-//     var foundBooks = await findBooks(bookList, keyword)
-//     if (foundBooks) {
-//       if (!(foundBooks.length < (pageNum - 1) * pageSize)) {
-//         return res.status(200).send({
-//           book: foundBooks.slice((pageNum - 1) * pageSize, Math.min(foundBooks.length, pageNum * pageSize)),
-//           suggestion: suggestion,
-//         })
-//       } else {
-//         return res.status(200).send({
-//           book: [],
-//           suggestion: '',
-//         })
-//       }
-//     }
-//   }
-//   return res.status(200).send({
-//     book: [],
-//     suggestion: suggestion,
-//   })
-// }
-// async function findBooks(bookList, keyword) {
-//   var foundBooks
-//   let foundCategory = await categoryDB.findOne({ name: keyword }).exec()
-//   if (foundCategory) foundBooks = await bookDB.find({ category: foundCategory.id }).exec()
-//   if (!foundBooks) {
-//     keyword = keyword.split(' ')
-//     for (let i = 0; i < bookList.length; i++) {
-//       let cnt = 0
-//       let s = bookList[i].name.toLowerCase().split(' ')
-//       let used = new Array(s.length).fill(false)
-//       for (let j = 0; j < keyword.length; j++) {
-//         for (let k = 0; k < s.length; k++) {
-//           let jw = 0
-//           if (used[k]) continue
-//           jw = await jaro_winkler(keyword[j], s[k])
-//           if (jw > 0.7) {
-//             used[k] = true
-//             cnt++
-//             break
-//           }
-//         }
-//       }
-//       if (cnt > keyword.length / 3) {
-//         if (!foundBooks) foundBooks = []
-//         foundBooks.push(bookList[i])
-//       }
-//     }
-//   }
-//   return foundBooks
-// }
+const jaroWinkler = (s1: string, s2: string): number => {
+  if (s1.length === 0 || s2.length === 0) return 0 // base case
 
-// async function jaro_winkler(s1, s2) {
-//   if (s1 == s2 || (s2.includes(s1) && s1.length >= s2.length / 3)) return 1
-//   let l1 = s1.length
-//   let l2 = s2.length
-//   if (!l1 || !l2) {
-//     return 0
-//   }
-//   let m = 0,
-//     t = 0,
-//     dj,
-//     range = Math.abs(Math.floor(Math.max(l1, l2) / 2) - 1),
-//     match1 = new Array(s1.length),
-//     match2 = new Array(s2.length)
-//   for (let i = 0; i < l1; i++) {
-//     for (let j = Math.max(0, i - range); j < Math.min(l2, i + range + 1); j++) {
-//       if (!match1[i] && !match2[j] && s1[i] == s2[j]) {
-//         m++
-//         match1[i] = match2[j] = true
-//         break
-//       }
-//     }
-//   }
-//   if (!m) return 0
-//   let k = 0
-//   for (let i = 0; i < l1; i++) {
-//     if (match1[i])
-//       for (let j = k; j < l2; j++) {
-//         if (match2[j]) {
-//           k = j + 1
-//           break
-//         }
-//         if (s1[i] != s2[j]) {
-//           t++
-//         }
-//       }
-//   }
-//   t /= 2
-//   dj = (m / l1 + m / l2 + (m - t) / m) / 3
-//   if (dj >= 0.7) {
-//     let i, l
-//     i = l = 0
-//     while (s1[i] == s2[i] && i < Math.min(Math.min(l1, l2), 4)) {
-//       i++
-//       l++
-//     }
-//     dj = dj + l * 0.1 * (1 - dj)
-//   }
-//   return dj
-// }
+  // non case sensitive
+  s1 = s1.toLowerCase()
+  s2 = s2.toLowerCase()
+
+  if (s1 === s2) return 1 // match exactly
+
+  // Number of matches
+  let matches = 0
+
+  const maxDist = Math.floor(Math.max(s1.length, s2.length) / 2) - 1
+
+  // Hash of matches for transpoitions calculation
+  const s1Hash = new Array(s1.length)
+  const s2Hash = new Array(s2.length)
+
+  for (let i = 0; i < s1.length; i++) {
+    // loop over the first string
+    for (let j = Math.max(0, i - maxDist); j <= Math.min(s2.length, i + maxDist + 1); j++) {
+      // check for matches
+      if (!s1Hash[i] && !s2Hash[j] && s1[i] === s2[j]) {
+        matches++
+        s1Hash[i] = s2Hash[j] = true
+        break
+      }
+    }
+  }
+
+  if (matches === 0) return 0 // no matches
+
+  let t = 0 // transpositions
+  let point = 0
+
+  // count transpositions
+  for (let i = 0; i < s1.length; i++) {
+    if (s1Hash[i]) {
+      while (!s2Hash[point]) {
+        point++
+      }
+
+      if (s1.charAt(i) !== s2.charAt(point++)) t++
+    }
+  }
+
+  t /= 2
+
+  let dist = (matches / s1.length + matches / s2.length + (matches - t) / matches) / 3
+  let prefix = 0 // maxium 4 character prefix
+
+  if (dist > 0.7) {
+    const minIndex = Math.min(s1.length, s2.length)
+    let i = 0
+    while (s1[i] === s2[i] && i < 4 && i < minIndex) {
+      ++prefix
+      i++
+    }
+
+    dist += 0.1 * prefix * (1 - dist)
+  }
+
+  return dist
+}
