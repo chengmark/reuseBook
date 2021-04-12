@@ -33,6 +33,7 @@ import RecommendationSection from './recommendationSection'
 import { useSnackbar } from 'notistack'
 import BookService from '@src/services/BookService'
 import { Obj } from '@myTypes/Obj'
+import { useUserState } from '@src/context/UserContext'
 
 type Props = {
   children?: ReactElement
@@ -105,8 +106,13 @@ const ProductView = (props: Props): ReactElement => {
   const [loading, setLoading] = useState(true)
   const [book, setBook] = useState<Obj>({})
   const { enqueueSnackbar } = useSnackbar()
+  const { loggedIn } = useUserState()
 
   useEffect(() => {
+    getBook()
+  }, [])
+
+  const getBook = (): void => {
     BookService.getBook(location.href.substring(location.href.lastIndexOf('/') + 1))
       .then((res) => {
         setLoading(false)
@@ -116,16 +122,19 @@ const ProductView = (props: Props): ReactElement => {
       .catch((err) => {
         console.log(err)
         setLoading(false)
+        // book not found
       })
-  }, [])
+  }
 
   const handleShareOnClick = () => {
     navigator.clipboard.writeText(location.href)
     enqueueSnackbar('Copied URL to clipboard', { variant: 'info' })
   }
 
-  const handleImageOnClick = (url: string) => {
-    window.open(url, '_blank')
+  const handleImageOnClick = (url: string) => window.open(url, '_blank')
+
+  const handleChatBtnOnClick = () => {
+    if (!loggedIn()) return enqueueSnackbar('Please Login First.', { variant: 'warning' })
   }
 
   return (
@@ -134,7 +143,7 @@ const ProductView = (props: Props): ReactElement => {
       <Container>
         <ProductInfo>
           <ImageWrapper onClick={() => handleImageOnClick(book.img as string)}>
-            <Image img={book.img as string} />
+            <Image src={book.img as string} />
           </ImageWrapper>
           <InfoTextSection>
             <Title>{`${book.name}`}</Title>
@@ -142,6 +151,9 @@ const ProductView = (props: Props): ReactElement => {
               <Href>{`${book.author}`}</Href>
             </Tooltip>
             <Divider />
+            <ImageWrapper onClick={() => handleImageOnClick(book.img as string)} isMobile>
+              <Image src={book.img as string} />
+            </ImageWrapper>
             {book.type == 'sell' ? (
               <Tooltip title="For sell" style={{ fontSize: '14px' }}>
                 <FlexRow>
@@ -160,7 +172,7 @@ const ProductView = (props: Props): ReactElement => {
             <Tooltip title="Category" style={{ fontSize: '14px' }}>
               <FlexRow>
                 <CategoryIcon />
-                <Href>{`${book.category}`}</Href>
+                <Href>{`${(book.category as any)?.name}`}</Href>
               </FlexRow>
             </Tooltip>
             <Tooltip title="Condition" style={{ fontSize: '14px' }}>
@@ -178,17 +190,19 @@ const ProductView = (props: Props): ReactElement => {
             <Tooltip title="Listing time" style={{ fontSize: '14px' }}>
               <FlexRow>
                 <TimeIcon />
-                <TimeText>{`${toStandardTime(new Date(book.createdAt as string).getTime())}`}</TimeText>
+                <TimeText>{`${toStandardTime(book.createdAt as string)}`}</TimeText>
               </FlexRow>
             </Tooltip>
-            <ChatBtn startIcon={<ChatBubbleOutlineOutlinedIcon />}>Chat with seller</ChatBtn>
+            <ChatBtn onClick={handleChatBtnOnClick} startIcon={<ChatBubbleOutlineOutlinedIcon />}>
+              Chat with seller
+            </ChatBtn>
             <ShareBtn startIcon={<ShareOutlinedIcon />} onClick={handleShareOnClick}>
               Share
             </ShareBtn>
           </InfoTextSection>
         </ProductInfo>
       </Container>
-      <ReviewSection reviews={book.reviews as any[]}></ReviewSection>
+      <ReviewSection bookId={book._id as string} reviews={book.reviews as any[]} getBook={getBook}></ReviewSection>
       <RecommendationSection />
     </ProductWrapper>
   )

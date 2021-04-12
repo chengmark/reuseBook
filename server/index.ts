@@ -10,6 +10,7 @@ const SearchRoutes = require('./routes/searchBar')
 const SuggestionRoutes = require('./routes/suggestion')
 
 import { ReviewRoutes } from './routes/review'
+import { TransactionRoutes } from './routes/transaction'
 import { AWSRoutes } from './routes/aws'
 // import { SearchRoutes } from './routes/searchBar'
 // import { AuthRoutes } from './routes/auth'
@@ -39,6 +40,7 @@ routes.push(new SuggestionRoutes(router))
 routes.push(new SearchRoutes(router))
 routes.push(new ReviewRoutes(router))
 routes.push(new AWSRoutes(router))
+routes.push(new TransactionRoutes(router))
 // create auth routes to the router
 // routes.push(new AuthRoutes(router))
 
