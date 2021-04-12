@@ -33,16 +33,6 @@ const ReviewController = {
       )
     })
   },
-
-
-        try{
-        const _id = mongoose.Types.ObjectId(reviewId)
-        Review.findOne({ _id: _id }).populate('user').exec((err, data) => {
-            if(err){
-                return res.status(500).send({message: 'error finding review'})
-            }
-            res.status(200).send(data)
-
   getReview: async (req: Request, res: Response): Promise<void> => {
     console.log(req.params)
     const { reviewId } = <GetReview>(<unknown>req.params)
@@ -50,11 +40,7 @@ const ReviewController = {
     try {
       const _id = mongoose.Types.ObjectId(reviewId)
       Review.findOne({ _id: _id })
-
-        .populate('User')
-
         .populate('user')
-
         .exec((err, data) => {
           if (err) {
             return res.status(500).send({ message: 'error finding review' })
