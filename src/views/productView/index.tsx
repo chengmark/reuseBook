@@ -28,7 +28,7 @@ import {
   TimeText,
   ImageWrapper,
 } from './style'
-import { toStandardTime } from '@src/utils'
+import { getUrlLastSegmant, toStandardTime } from '@src/utils'
 import RecommendationSection from './recommendationSection'
 import { useSnackbar } from 'notistack'
 import BookService from '@src/services/BookService'
@@ -113,7 +113,7 @@ const ProductView = (props: Props): ReactElement => {
   }, [])
 
   const getBook = (): void => {
-    BookService.getBook(location.href.substring(location.href.lastIndexOf('/') + 1))
+    BookService.getBook(getUrlLastSegmant())
       .then((res) => {
         setLoading(false)
         console.log(res)

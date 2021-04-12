@@ -32,3 +32,7 @@ export const toStandardTime = (timeString: string): string =>
   `${toRelativeTime(timeString)} (${toDDMMYYYY(timeString)})`
 
 export const capFirst = (string: string): string => string.charAt(0).toUpperCase() + string.slice(1)
+
+export const getUrlLastSegmant = () => {
+  return location.href.substring(location.href.lastIndexOf('/') + 1)
+}
