@@ -49,7 +49,8 @@ const BookController = {
     try {
       const _id = mongoose.Types.ObjectId(bookId)
       Book.findOne({ _id: _id })
-        .populate('Category')
+        .populate('category')
+        .populate('reviews')
         .exec((err, data) => {
           if (err) {
             return res.status(500).send({ message: 'error finding book' })
@@ -128,17 +129,8 @@ const BookController = {
     if (!name || !price) {
       res.status(404).send({ message: 'Book name, price must be entered' })
     }
-    var _categoryId: any
-    Category.find({ name: category }, (err: any, result: any) => {
-      if (err) {
-        return res.status(500).send({ message: 'error finding categoryId' })
-      }
-      _categoryId = mongoose.Types.ObjectId(result._id)
-      //const query = {category: _categoryId}
-      Book.find({ category: _categoryId }, { price: { $lt: price } })
-    })
 
-    Book.find({ name: name }, { price: { $lt: price } })
+    Book.find({ name: name }, { price: price })
       .sort({ createdAt: -1 })
       .exec((err, data) => {
         if (err) {

@@ -39,6 +39,23 @@ const BookService = {
     })
     return await response.data
   },
+  getBook: async (id: string): Promise<Obj> => {
+    const response = await axios({
+      method: 'get',
+      url: `${URL}/books/${id}`,
+      headers: { 'Content-Type': 'application/json;charset=utf-8' },
+    })
+    return await response.data
+  },
+  addReview: async (id: string, input: Obj): Promise<Obj> => {
+    const response = await axios({
+      method: 'post',
+      url: `${URL}/books/${id}/reviews`,
+      headers: { 'Content-Type': 'application/json;charset=utf-8' },
+      data: input,
+    })
+    return await response.data
+  },
 }
 
 export default BookService
