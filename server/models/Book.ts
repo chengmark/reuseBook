@@ -12,6 +12,7 @@ const Book = new mongoose.Schema({
   condition: { type: String },
   reviews: [{ type: mongoose.Types.ObjectId, ref: 'Review' }],
   img: { type: String },
+  sellerId: { type: mongoose.Types.ObjectId, ref: 'User' },
 })
 
 export default mongoose.model('Book', Book)

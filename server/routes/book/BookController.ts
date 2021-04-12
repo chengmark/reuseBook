@@ -37,6 +37,8 @@ const BookController = {
         if (error) {
           res.status(200).send({ message: 'error creating book' })
         }
+        req.body.category = categoryName
+        console.log(req.body)
         res.status(200).send(data)
       })
     })
@@ -48,7 +50,9 @@ const BookController = {
     try {
       const _id = mongoose.Types.ObjectId(bookId)
       Book.findOne({ _id: _id })
-        .populate('Category')
+        .populate('category')
+        .populate('reviews')
+        .populate('sellerId')
         .exec((err, data) => {
           if (err) {
             return res.status(500).send({ message: 'error finding book' })
