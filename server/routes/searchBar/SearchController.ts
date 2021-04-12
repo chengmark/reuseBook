@@ -1,8 +1,8 @@
 import { Request, Response } from 'express'
 import Book from '../../models/Book'
 import Category from '../../models/Category'
-import SpellChecker from 'spellchecker'
-import mongoose from 'mongoose'
+import spelling from 'spelling'
+import dictionary from 'spelling/dictionaries/en_US'
 
 type Search = {
   keyword: string
@@ -18,37 +18,37 @@ const SearchController = {
     if (!keyword) return res.status(400).send({ message: 'Enter something' })
     if (!persist) {
       suggestion = getSuggestion(keyword) // suggestion or empty string
-      const category = await Category.findOne({ name: suggestion || keyword }) // find the catrgory string
-      if (category) {
-        // keyword is a category
-        return res
-          .status(200)
-          .send({ books: await findBookByCategory(category._id, pageNum, pageSize), suggestion: suggestion })
-      } else {
-        // keyword is not a category
-        return res
-          .status(200)
-          .send({ books: await findBookByName(suggestion || keyword, pageNum, pageSize), suggestion: suggestion })
-      }
+    }
+    const category = await Category.findOne({ name: suggestion || keyword }) // find the catrgory string
+    if (category) {
+      // keyword is a category
+      return res
+        .status(200)
+        .send({ books: await findBookByCategory(category._id, pageNum, pageSize), suggestion: suggestion })
+    } else {
+      // keyword is not a category
+      return res
+        .status(200)
+        .send({ books: await findBookByName(suggestion || keyword, pageNum, pageSize), suggestion: suggestion })
     }
   },
 }
 
 const getSuggestion = (keyword: string): string => {
-  const isMisspelled = SpellChecker.isMisspelled(keyword)
-  console.log(SpellChecker.isMisspelled('sociel'))
-  console.log(SpellChecker.isMisspelled('soccial'))
-  console.log(SpellChecker.isMisspelled('s0cial'))
-  console.log(SpellChecker.isMisspelled('social'))
-  console.log(SpellChecker.isMisspelled('sociall'))
+  const dict = new spelling(dictionary)
   let suggestion = ''
-  if (isMisspelled) {
-    const tmp: Array<string> = []
-    keyword.split(' ').forEach((word) => {
-      tmp.push(SpellChecker.getCorrectionsForMisspelling(word)[0] || '')
-    })
-    suggestion = tmp.join(' ')
-  }
+  let suggested = false
+  const tmp: Array<string> = []
+  keyword.split(' ').forEach((word) => {
+    const lookup = dict.lookup(word)
+    if (!lookup.found) {
+      if (lookup.suggestions.length > 0) {
+        tmp.push(lookup.suggestions[0].word)
+        suggested = true
+      } else tmp.push(word)
+    } else tmp.push(word)
+  })
+  if (suggested) suggestion = tmp.join(' ')
   return suggestion
 }
 

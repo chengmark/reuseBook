@@ -2,7 +2,6 @@
   "dependencies": {
     "@types/aws-sdk": "^2.7.0",
     "@types/express-session": "^1.17.3",
-    "@types/spellchecker": "^3.5.0",
     "aws-sdk": "^2.884.0",
     "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",
@@ -17,7 +16,7 @@
     "nodemailer": "^6.5.0",
     "passport": "^0.4.1",
     "passport-google-oauth2": "^0.2.0",
-    "spellchecker": "^3.7.1",
+    "spelling": "^2.0.2",
     "ts-jest": "^26.5.4"
   },
   "scripts": {
