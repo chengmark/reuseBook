@@ -15,16 +15,12 @@ const SearchController = {
   search: async (req: Request, res: Response): Promise<unknown> => {
     const { keyword, pageNum, pageSize, persist } = <Search>(<unknown>req.body)
     let suggestion = ''
-    console.log(persist)
     if (!keyword) return res.status(400).send({ message: 'Enter something' })
     if (!persist) {
       suggestion = getSuggestion(keyword) // suggestion or empty string
-      console.log(suggestion)
       const category = await Category.findOne({ name: suggestion || keyword }) // find the catrgory string
-      console.log(category)
       if (category) {
         // keyword is a category
-        console.log(category._id)
         return res
           .status(200)
           .send({ books: await findBookByCategory(category._id, pageNum, pageSize), suggestion: suggestion })
@@ -40,11 +36,16 @@ const SearchController = {
 
 const getSuggestion = (keyword: string): string => {
   const isMisspelled = SpellChecker.isMisspelled(keyword)
+  console.log(SpellChecker.isMisspelled('sociel'))
+  console.log(SpellChecker.isMisspelled('soccial'))
+  console.log(SpellChecker.isMisspelled('s0cial'))
+  console.log(SpellChecker.isMisspelled('social'))
+  console.log(SpellChecker.isMisspelled('sociall'))
   let suggestion = ''
   if (isMisspelled) {
     const tmp: Array<string> = []
     keyword.split(' ').forEach((word) => {
-      tmp.push(SpellChecker.getCorrectionsForMisspelling(word)[0] ?? '')
+      tmp.push(SpellChecker.getCorrectionsForMisspelling(word)[0] || '')
     })
     suggestion = tmp.join(' ')
   }
@@ -52,12 +53,10 @@ const getSuggestion = (keyword: string): string => {
 }
 
 const findBookByCategory = async (categoryId: string, pageNum: number, pageSize: number) => {
-  console.log(mongoose.Types.ObjectId(categoryId))
   const result = await Book.find({ category: categoryId })
     .skip((pageNum - 1) * pageSize)
     .limit(pageSize)
     .exec()
-  console.log(result)
   return result
 }
 
@@ -73,14 +72,12 @@ const findBookByName = async (keyword: string, pageNum: number, pageSize: number
       for (let j = 0; j < wordsOfBookName.length; j++) {
         if (usedHash[j]) continue
         if (jaroWinkler(wordsOfKeyword[i], wordsOfBookName[j]) > 0.7) {
-          console.log(wordsOfBookName[j])
           usedHash[j] = true
           cnt++
           break
         }
       }
     }
-    console.log(cnt)
     if (cnt > wordsOfKeyword.length / 3) result.push(book)
   })
   const start = (pageNum - 1) * pageSize

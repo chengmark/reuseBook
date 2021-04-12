@@ -29,13 +29,13 @@ type Props = {
 
 export const LOCATIONS = {
   home: 'home',
-  search: 'search',
   profile: 'profile',
   login: 'login',
   settings: 'settings',
   sell: 'sell',
   reset: 'reset', // reset pw
   product: 'product/:id',
+  search: 'search/:id',
 }
 
 export const toPath = (location: string, id?: string): string => {
