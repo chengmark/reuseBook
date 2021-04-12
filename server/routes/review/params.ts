@@ -1,32 +1,32 @@
 import mongoose from 'mongoose'
 
 export type CreateReview = {
-    bookId: string
-    content: string
-    userId: string
+  bookId: string
+  content: string
+  userId: string
 }
 
 export type GetReview = {
-    reviewId: string
+  reviewId: string
 }
 
 export type DeleteReview = {
-    reviewId: string
+  reviewId: string
 }
 
 export type EditReview = {
-    reviewId: string
-    content: string
+  reviewId: string
+  content: string
 }
 
 export type ListReviews = {
-    bookId: string
+  bookId: string
 }
 
 export type DeleteReviews = {
-    bookId: string
+  bookId: string
 }
 
 export type GetUser = {
-    reviewId: string
+  reviewId: string
 }

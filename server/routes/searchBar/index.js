@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express'
 import { Routes } from '..'
-import SearchController from './SearchController'
+const SearchController = require('./SearchController')
 
 export class SearchRoutes extends Routes {
   constructor(router = express.Router) {
@@ -12,3 +12,4 @@ export class SearchRoutes extends Routes {
     })
   }
 }
+module.exports = SearchRoutes

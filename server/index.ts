@@ -6,6 +6,9 @@ import { UserRoutes } from './routes/user'
 import { CategoryRoutes } from './routes/category'
 import { ChatRoutes } from './routes/chat'
 import { BookRoutes } from './routes/book'
+const SearchRoutes = require('./routes/searchBar')
+const SuggestionRoutes = require('./routes/suggestion')
+
 import { ReviewRoutes } from './routes/review'
 import { TransactionRoutes } from './routes/transaction'
 import { AWSRoutes } from './routes/aws'
@@ -31,9 +34,10 @@ console.log(process.env.AWS_SECRET_ACCESS_KEY)
 // create user routes to the router
 routes.push(new UserRoutes(router))
 routes.push(new CategoryRoutes(router))
-// routes.push(new SearchRoutes(router))
 routes.push(new BookRoutes(router))
 routes.push(new ChatRoutes(router))
+routes.push(new SuggestionRoutes(router))
+routes.push(new SearchRoutes(router))
 routes.push(new ReviewRoutes(router))
 routes.push(new AWSRoutes(router))
 routes.push(new TransactionRoutes(router))

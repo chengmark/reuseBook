@@ -1,13 +1,14 @@
 import express, { Request, Response } from 'express'
 import { callbackPromise } from 'nodemailer/lib/shared'
-import bookDB from '../../models/Product'
+import bookDB from '../../models/Book'
 import categoryDB from '../../models/Category'
 import SpellChecker from 'spellchecker'
 exports.Search = async (req, res) => {
-  var keyword = req.query.keyword
-  var pageNum = Number(req.query.pageNum)
-  var pageSize = Number(req.query.pageSize)
-  var persist = req.query.persist === 'true'
+  var keyword = req.body.keyword
+  var pageNum = Number(req.body.pageNum)
+  var pageSize = Number(req.body.pageSize)
+  console.log(typeof req.body.persist)
+  var persist = req.body.persist
   var suggestion
   if (!keyword) {
     return res.status(400).send({ message: 'Enter something' })
@@ -50,7 +51,7 @@ exports.Search = async (req, res) => {
 async function findBooks(bookList, keyword) {
   var foundBooks
   let foundCategory = await categoryDB.findOne({ name: keyword }).exec()
-  if (foundCategory) foundBooks = await bookDB.find({ categoryId: foundCategory.id }).exec()
+  if (foundCategory) foundBooks = await bookDB.find({ category: foundCategory.id }).exec()
   if (!foundBooks) {
     keyword = keyword.split(' ')
     for (let i = 0; i < bookList.length; i++) {
