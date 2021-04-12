@@ -35,18 +35,23 @@ export const ProductInfo = styled.div`
 `
 
 type ImageProps = {
-  img: string
+  isMobile?: boolean
 }
 
 export const ImageWrapper = styled.div`
   flex: 1;
   cursor: pointer;
+  display: ${(props: ImageProps) => (props.isMobile ? `none` : `flex`)};
+  @media (max-width: ${MEDIA_BREAK}px) {
+    display: ${(props: ImageProps) => (props.isMobile ? `flex` : `none`)};
+    margin-top: 5px;
+  }
 `
 
-export const Image = styled.div`
-  background: no-repeat url(${(props: ImageProps) => props.img}) 50% / 100%;
-  // background-size: contain;
-  // background-repeat: no-repeat;
+export const Image = styled.img`
+  @media (max-width: ${MEDIA_BREAK}px) {
+    max-width: 308px;
+  }
 `
 
 export const InfoTextSection = styled.div`
@@ -213,4 +218,5 @@ export const NoReviewText = styled.div`
   margin: 10px 0 10px 0;
   align-self: center;
   text-align: center;
+  width: 100%;
 `

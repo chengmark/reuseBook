@@ -52,7 +52,9 @@ const BookController = {
       Book.findOne({ _id: _id })
         .populate('category')
         .populate('reviews')
+
         .populate('sellerId')
+
         .exec((err, data) => {
           if (err) {
             return res.status(500).send({ message: 'error finding book' })
