@@ -12,7 +12,7 @@ const SuggestionRoutes = require('./routes/suggestion')
 import { ReviewRoutes } from './routes/review'
 import { TransactionRoutes } from './routes/transaction'
 import { AWSRoutes } from './routes/aws'
-// import { SearchRoutes } from './routes/searchBar'
+import { SearchRoutes } from './routes/searchBar'
 // import { AuthRoutes } from './routes/auth'
 // import initPassport from './authentication'
 import middlewares from './middlewares'
