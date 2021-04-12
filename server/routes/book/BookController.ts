@@ -37,6 +37,7 @@ const BookController = {
         if (error) {
           res.status(200).send({ message: 'error creating book' })
         }
+        req.body.category = categoryName                                        
         res.status(200).send(data)
       })
     })
