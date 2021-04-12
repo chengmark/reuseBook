@@ -3,7 +3,6 @@ import { Redirect, Route, Switch } from 'react-router-dom'
 import Navigation from '@components/navigation'
 import AppView from './views/appView'
 import HomeView from './views/homeView'
-import SearchView from './views/searchView'
 import ProfileView from './views/profileView'
 import SettingsView from './views/settingsView'
 import { GlobalStyles } from './styling'
@@ -15,6 +14,7 @@ import { useSnackbar } from 'notistack'
 import UserService from './services/UserService'
 import ResetPwView from './views/resetPwView'
 import ProductView from './views/productView'
+import ResultView from './views/resultView'
 
 // import LoadingView from './views/loadingView'
 
@@ -39,7 +39,7 @@ export const LOCATIONS = {
 }
 
 export const toPath = (location: string, id?: string): string => {
-  if (id) return location.replace(':id', id)
+  if (id) return '/' + location.replace(':id', id)
   return '/' + location
 }
 
@@ -81,9 +81,7 @@ const Routes = (props: Props): ReactElement => {
               <HomeView />
             </Route>
             <Route exact path={toPath(LOCATIONS.search)}>
-              <SearchView>
-                <div>Search View</div>
-              </SearchView>
+              <ResultView />
             </Route>
             <Route exact path={toPath(LOCATIONS.product)}>
               <ProductView />

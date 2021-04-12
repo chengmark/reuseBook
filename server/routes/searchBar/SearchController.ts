@@ -54,6 +54,8 @@ const getSuggestion = (keyword: string): string => {
 
 const findBookByCategory = async (categoryId: string, pageNum: number, pageSize: number) => {
   const result = await Book.find({ category: categoryId })
+    .populate('category')
+    .populate('sellerId')
     .skip((pageNum - 1) * pageSize)
     .limit(pageSize)
     .exec()
@@ -61,7 +63,7 @@ const findBookByCategory = async (categoryId: string, pageNum: number, pageSize:
 }
 
 const findBookByName = async (keyword: string, pageNum: number, pageSize: number) => {
-  const bookList = await Book.find().exec()
+  const bookList = await Book.find().populate('category').populate('sellerId').exec()
   const wordsOfKeyword = keyword.split(' ')
   const result: Array<any> = []
   bookList.forEach((book) => {

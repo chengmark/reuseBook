@@ -1,8 +1,9 @@
 import ProductTile from '@src/components/productTile'
+import SearchBar from '@src/components/searchBar'
 import BookService from '@src/services/BookService'
 import { getUrlLastSegmant } from '@src/utils'
 import React, { ReactElement, useEffect, useState } from 'react'
-import { FilterWrapper, Wrapper } from './style'
+import { FilterWrapper, ProductWrapper, ResultWrapper, Wrapper } from './style'
 
 const ResultView = (): ReactElement => {
   const [books, setBooks] = useState<Array<any>>([])
@@ -10,6 +11,7 @@ const ResultView = (): ReactElement => {
   useEffect(() => {
     BookService.search(getUrlLastSegmant(), false)
       .then((res) => {
+        setBooks(res.books as Array<any>)
         console.log(res)
       })
       .catch((err) => {
@@ -19,10 +21,15 @@ const ResultView = (): ReactElement => {
 
   return (
     <Wrapper>
-      <FilterWrapper></FilterWrapper>
-      {books.map((book) => (
-        <ProductTile book={book} key={book._id} />
-      ))}
+      <SearchBar />
+      <ResultWrapper>
+        <FilterWrapper></FilterWrapper>
+        <ProductWrapper>
+          {books.map((book) => (
+            <ProductTile book={book} key={book._id} />
+          ))}
+        </ProductWrapper>
+      </ResultWrapper>
     </Wrapper>
   )
 }

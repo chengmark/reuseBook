@@ -162,7 +162,7 @@ const ProductView = (props: Props): ReactElement => {
                 </FlexRow>
               </Tooltip>
             ) : (
-              <Tooltip title="For sell" style={{ fontSize: '14px' }}>
+              <Tooltip title="For trade" style={{ fontSize: '14px' }}>
                 <FlexRow>
                   <TradeIcon />
                   <Highlighted>{`${book.tradeOption}`}</Highlighted>

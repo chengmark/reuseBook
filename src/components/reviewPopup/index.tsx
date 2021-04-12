@@ -10,11 +10,11 @@ type Props = {
   userId: string
   open: boolean
   setOpen: Dispatch<SetStateAction<any>>
-  getBook: () => void
+  submitCallback: () => void
 }
 
 const ReviewPopup = (props: Props): ReactElement => {
-  const { bookId, userId, open, setOpen, getBook, ...rest } = props
+  const { bookId, userId, open, setOpen, submitCallback, ...rest } = props
   const [input, setInput] = useState({
     content: { value: '', errMsg: '' },
   })
@@ -40,7 +40,7 @@ const ReviewPopup = (props: Props): ReactElement => {
     if (formNoErr(input)) {
       BookService.addReview(bookId, { content: input.content.value, user: userId })
         .then((res) => {
-          getBook()
+          submitCallback()
           enqueueSnackbar('Review added.', { variant: 'success' })
           setOpen(false)
         })

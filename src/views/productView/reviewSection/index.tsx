@@ -62,7 +62,13 @@ const ReviewSection = (props: Props): ReactElement => {
       <Btn onClick={handleAddReview} startIcon={<AddBoxIcon />}>
         Add a review
       </Btn>
-      <ReviewPopup bookId={bookId} userId={state._id as string} getBook={getBook} open={open} setOpen={setOpen} />
+      <ReviewPopup
+        bookId={bookId}
+        userId={state._id as string}
+        submitCallback={getBook}
+        open={open}
+        setOpen={setOpen}
+      />
     </Container>
   )
 }
