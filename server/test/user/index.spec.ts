@@ -15,6 +15,5 @@ describe('Testing /users/:userId', () => {
     expect(typeof response.body.email).toBe('string')
     expect(typeof response.body.createdAt).toBe('string')
     expect(typeof response.body.updatedAt).toBe('string')
-    expect(typeof response.body.__v).toBe('number')
   })
 })

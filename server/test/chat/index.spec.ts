@@ -11,6 +11,5 @@ describe('Testing /chats/:roomID/', () => {
     expect(typeof response.body.name).toBe('string')
     expect(typeof response.body.createdAt).toBe('string')
     expect(typeof response.body.updatedAt).toBe('string')
-    expect(typeof response.body.__v).toBe('number')
   })  
 })
