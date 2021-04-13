@@ -68,6 +68,7 @@ const ResultView = (): ReactElement => {
     listingType: false,
     condition: false,
   })
+  const history = useHistory()
 
   useEffect(() => {
     searchBooks()
@@ -84,9 +85,11 @@ const ResultView = (): ReactElement => {
     persist = false,
     sort: 'similarity' | 'createdAt' | 'reviewNum' = 'similarity',
     filter: Obj = {},
+    keyword?: string,
   ) => {
     setLoading(true)
-    BookService.search(getUrlLastSegmant(), persist, sort, filter)
+    if (keyword) history.push(toPath(LOCATIONS.search, keyword))
+    BookService.search(keyword || getUrlLastSegmant(), persist, sort, filter)
       .then((res) => {
         setBooks(res.books as Array<any>)
         setSuggestion(res.suggestion as string)
@@ -194,20 +197,30 @@ const ResultView = (): ReactElement => {
           <SuggestionWrapper>
             <SuggestionText>
               {`Showing results for `}
-              <SuggestionLink>{suggestion}</SuggestionLink>
-            </SuggestionText>
-            <SuggestionText persist>
-              {`Search instead for `}
-              <SuggestionLink persist onClick={handlePersistOnClick}>
-                {getUrlLastSegmant()}
+              <SuggestionLink
+                onClick={() => {
+                  searchBooks(false, sort, formatFilter(filter), suggestion)
+                }}
+              >
+                {suggestion}
               </SuggestionLink>
+            </SuggestionText>
+            <SuggestionText>
+              {`Search instead for `}
+              <SuggestionLink onClick={handlePersistOnClick}>{getUrlLastSegmant()}</SuggestionLink>
             </SuggestionText>
           </SuggestionWrapper>
         ) : (
           <SuggestionWrapper>
             <SuggestionText>
               {`Showing results for `}
-              <SuggestionLink>{getUrlLastSegmant()}</SuggestionLink>
+              <SuggestionLink
+                onClick={() => {
+                  searchBooks(false, sort, formatFilter(filter), getUrlLastSegmant())
+                }}
+              >
+                {getUrlLastSegmant()}
+              </SuggestionLink>
             </SuggestionText>
           </SuggestionWrapper>
         )}

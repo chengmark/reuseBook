@@ -100,7 +100,7 @@ export const SuggestionLink = styled.a`
   color: ${COLOR.primary.shade2};
   margin: 5px 0 5px 0;
   width: fit-content;
-  cursor: ${(props: LinkProps) => (props.persist ? `pointer` : ``)};
+  cursor: pointer;
   font-style: italic;
 `
 

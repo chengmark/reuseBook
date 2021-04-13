@@ -34,6 +34,8 @@ import { useSnackbar } from 'notistack'
 import BookService from '@src/services/BookService'
 import { Obj } from '@myTypes/Obj'
 import { useUserState } from '@src/context/UserContext'
+import { LOCATIONS, toPath } from '@src/routes'
+import { useHistory } from 'react-router-dom'
 
 type Props = {
   children?: ReactElement
@@ -107,6 +109,7 @@ const ProductView = (props: Props): ReactElement => {
   const [book, setBook] = useState<Obj>({})
   const { enqueueSnackbar } = useSnackbar()
   const { loggedIn } = useUserState()
+  const history = useHistory()
 
   useEffect(() => {
     getBook()
@@ -137,6 +140,10 @@ const ProductView = (props: Props): ReactElement => {
     if (!loggedIn()) return enqueueSnackbar('Please Login First.', { variant: 'warning' })
   }
 
+  const search = (keyword: string) => {
+    history.push(toPath(LOCATIONS.search, keyword))
+  }
+
   return (
     <ProductWrapper>
       <SearchBar />
@@ -148,7 +155,11 @@ const ProductView = (props: Props): ReactElement => {
           <InfoTextSection>
             <Title>{`${book.name}`}</Title>
             <Tooltip title="Author" style={{ fontSize: '14px' }}>
-              <Href>{`${book.author}`}</Href>
+              <Href
+                onClick={() => {
+                  search(book.author as string)
+                }}
+              >{`${book.author}`}</Href>
             </Tooltip>
             <Divider />
             <ImageWrapper onClick={() => handleImageOnClick(book.img as string)} isMobile>
@@ -172,7 +183,11 @@ const ProductView = (props: Props): ReactElement => {
             <Tooltip title="Category" style={{ fontSize: '14px' }}>
               <FlexRow>
                 <CategoryIcon />
-                <Href>{`${(book.category as any)?.name}`}</Href>
+                <Href
+                  onClick={() => {
+                    search((book.category as any)?.name)
+                  }}
+                >{`${(book.category as any)?.name}`}</Href>
               </FlexRow>
             </Tooltip>
             <Tooltip title="Condition" style={{ fontSize: '14px' }}>
