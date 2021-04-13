@@ -1,7 +1,7 @@
 import { Category } from '@myTypes/Category'
 import { Button, DialogActions, DialogContent, DialogTitle } from '@material-ui/core'
 import Tooltip from '@src/components/tooltip'
-import CategoryHelper from '@src/services/CategoryService'
+import CategoryService from '@src/services/CategoryService'
 import React, { ReactElement, useState } from 'react'
 import { Card, Block, InterestTitle, Divider, InterestContainer, StyledChip, PenIcon, InterestDialog } from '../style'
 import { useSnackbar } from 'notistack'
@@ -20,7 +20,7 @@ const InterestCard = (): ReactElement => {
   const { enqueueSnackbar } = useSnackbar()
 
   const handleDialogOpen = () => {
-    CategoryHelper.listCategories()
+    CategoryService.listCategories()
       .then((res) => {
         // set original interests to selected
         const selectables: Selectable[] = res

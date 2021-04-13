@@ -5,7 +5,11 @@ import BookService from '@src/services/BookService'
 import { useHistory } from 'react-router'
 import { LOCATIONS, toPath } from '@src/routes'
 
-const SearchBar = (): ReactElement => {
+type Props = {
+  callback?: () => void
+}
+
+const SearchBar = ({ callback }: Props): ReactElement => {
   const [focused, setFocused] = useState(false)
   const [keyword, setKeyword] = useState('')
   const history = useHistory()
@@ -15,8 +19,11 @@ const SearchBar = (): ReactElement => {
   }
 
   const handleBtnOnClick = () => {
-    console.log(toPath(LOCATIONS.search, keyword))
-    history.push(toPath(LOCATIONS.search, keyword))
+    if (keyword) {
+      setKeyword('')
+      history.push(toPath(LOCATIONS.search, keyword))
+      if (callback) callback()
+    }
   }
 
   return (

@@ -11,6 +11,7 @@ import { Obj } from '@myTypes/Obj'
 import { useSnackbar } from 'notistack'
 import { useHistory } from 'react-router'
 import { LOCATIONS, toPath } from '@src/routes'
+import { uuidv4 } from '@src/utils'
 
 type loadType = {
   goStep2: (image: { dataURL: string; file: File }) => void
@@ -74,9 +75,10 @@ const SellView = (): ReactElement => {
   const submitForm = () => {
     console.log(details)
     console.log(image.file)
-    BookService.getSignedRequest({ fileName: image.file.name, fileType: image.file.type }) // get the aws url
+    const imageToSend = new File([image.file], uuidv4(), { type: image.file.type })
+    BookService.getSignedRequest({ fileName: imageToSend.name, fileType: imageToSend.type }) // get the aws url
       .then((res) => {
-        BookService.uploadImage(image.file, res.signedRequest as Obj, res.url as string).then(() => {
+        BookService.uploadImage(imageToSend, res.signedRequest as Obj, res.url as string).then(() => {
           // upload image to aws url
           BookService.createBook({
             // create book record

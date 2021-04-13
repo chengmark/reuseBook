@@ -15,8 +15,6 @@ export const Wrapper = styled.div`
   grid-gap: 20px;
   background: ${COLOR.bg.light};
   padding: 10px 15px 10px 15px;
-  max-width: 90%;
-  min-width: 1200px;
 `
 
 export const ImageWrapper = styled.div`

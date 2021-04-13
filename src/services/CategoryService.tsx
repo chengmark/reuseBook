@@ -2,7 +2,7 @@ import axios from 'axios'
 
 const URL = process.env.NODE_ENV == 'production' ? `${process.env.PUBLIC_URL}/api` : `http://localhost:3002/api`
 
-const CategoryHelper = {
+const CategoryService = {
   listCategories: async (): Promise<any> => {
     const response = await axios({
       method: 'get',
@@ -13,4 +13,4 @@ const CategoryHelper = {
   },
 }
 
-export default CategoryHelper
+export default CategoryService
