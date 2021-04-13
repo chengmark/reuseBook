@@ -1,0 +1,10 @@
+SESSION_SECRET=6c129070eefafc2d57a096819c2b9292
+S3_BUKCET_NAME=csci3100-a6-reuse-book
+MONGODB_URI=mongodb+srv://csci3100-A6:kIGpwiIb7iJk0pZH@csci3100-southeast-1.r54cz.mongodb.net/csci3100?retryWrites=true&w=majority
+MAIL_USER=csci3100.a6@gmail.com
+MAIL_PASS=kIGpwiIb7iJk0pZH
+COOKIE_SECRET=dfc87f6d65b695abcaabdae69caa6816
+AWS_SECRET_ACCESS_KEY=fYjUDnoUYyLNXQJl4SWbkQTpALKD0h8RcfjHwh4c
+AWS_ACCESS_KEY_ID=AKIA5FQPFVUMVAVJFL6C
+NODE_ENV=production
+TESTING_PORT=3003
