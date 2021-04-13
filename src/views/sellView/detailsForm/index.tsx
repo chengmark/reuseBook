@@ -2,7 +2,7 @@ import { checkIntegrity, formNoErr, VALIDATORS, Target } from '@src/formIntegrit
 import React, { ChangeEvent, ReactElement, useEffect, useState } from 'react'
 import { FormContainer, TextInput, BtnRow, Title, PriceType, Btn } from '../style'
 import { Autocomplete } from '@material-ui/lab'
-import CategoryHelper from '@src/services/CategoryService'
+import CategoryService from '@src/services/CategoryService'
 import { useSnackbar } from 'notistack'
 import { Category } from '@myTypes/Category'
 import { Details } from '@myTypes/Product'
@@ -34,7 +34,7 @@ const DetailsForm = (props: Props): ReactElement => {
   ])
 
   useEffect(() => {
-    CategoryHelper.listCategories()
+    CategoryService.listCategories()
       .then((res: Category[]) => {
         setCategories(res)
       })

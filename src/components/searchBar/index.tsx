@@ -2,23 +2,28 @@ import React, { ChangeEvent, ReactElement, useState } from 'react'
 import { BarWrapper, Btn, Input } from './style'
 import SearchIcon from '@material-ui/icons/Search'
 import BookService from '@src/services/BookService'
+import { useHistory } from 'react-router'
+import { LOCATIONS, toPath } from '@src/routes'
 
-const SearchBar = (): ReactElement => {
+type Props = {
+  callback?: () => void
+}
+
+const SearchBar = ({ callback }: Props): ReactElement => {
   const [focused, setFocused] = useState(false)
   const [keyword, setKeyword] = useState('')
+  const history = useHistory()
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setKeyword(e.target.value)
   }
 
   const handleBtnOnClick = () => {
-    BookService.search(keyword, false)
-      .then((res) => {
-        console.log(res)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+    if (keyword) {
+      setKeyword('')
+      history.push(toPath(LOCATIONS.search, keyword))
+      if (callback) callback()
+    }
   }
 
   return (
