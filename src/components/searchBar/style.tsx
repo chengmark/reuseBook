@@ -1,4 +1,5 @@
 import { IconButton, TextField } from '@material-ui/core'
+import { MEDIA_BREAK } from '@src/layout'
 import { COLOR } from '@src/styling'
 import styled from 'styled-components'
 
@@ -17,6 +18,11 @@ export const BarWrapper = styled.div`
   ${(props: Props) =>
     props.focused &&
     ` box-shadow: 0 0 0 4px ${COLOR.secondary.tint1}, inset 0 0 0 1px ${COLOR.secondary.main}; background: ${COLOR.bg.light}`}
+  @media (max-width: ${MEDIA_BREAK}px) {
+    position: sticky;
+    top: 5px;
+    z-index: 100;
+  }
 `
 
 export const Input = styled(TextField)`

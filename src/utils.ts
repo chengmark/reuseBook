@@ -34,7 +34,7 @@ export const toStandardTime = (timeString: string): string =>
 export const capFirst = (string: string): string => string.charAt(0).toUpperCase() + string.slice(1)
 
 export const getUrlLastSegmant = () => {
-  return location.href.substring(location.href.lastIndexOf('/') + 1).replace('%20', ' ')
+  return location.href.substring(location.href.lastIndexOf('/') + 1).replaceAll('%20', ' ')
 }
 
 export const uuidv4 = (): string => {

@@ -62,6 +62,7 @@ export const FlexRow = styled.div`
   margin: 2.5px 0 2.5px 0;
   width: fit-content;
   align-items: center;
+  flex-wrap: wrap;
 `
 
 export const InfoText = styled.div`
