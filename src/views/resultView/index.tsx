@@ -33,6 +33,9 @@ import {
   SelectControl,
   NoBookFoundText,
   MobileSelect,
+  LoadMoreBtn,
+  LoadMoreBtnWrapper,
+  Progress,
 } from './style'
 import CategoryService from '../../services/CategoryService'
 import { Category } from '@myTypes/Category'
@@ -52,6 +55,8 @@ type Filter = {
 
 const ResultView = (): ReactElement => {
   const [loading, setLoading] = useState(true)
+  const [loadingMore, setLoadingMore] = useState(false)
+  const [page, setPage] = useState(1)
   const [books, setBooks] = useState<Array<any>>([])
   const [suggestion, setSuggestion] = useState('')
   const MAX_PRICE = 500
@@ -86,20 +91,30 @@ const ResultView = (): ReactElement => {
     sort: 'similarity' | 'createdAt' | 'reviewNum' = 'similarity',
     filter: Obj = {},
     keyword?: string,
+    loadMore?: boolean,
   ) => {
-    setLoading(true)
+    if (loadMore) {
+      setLoadingMore(true)
+    } else setLoading(true)
     if (keyword) history.push(toPath(LOCATIONS.search, keyword))
-    BookService.search(keyword || getUrlLastSegmant(), persist, sort, filter)
+    BookService.search(keyword || getUrlLastSegmant(), persist, sort, filter, loadMore ? page + 1 : 1)
       .then((res) => {
-        setBooks(res.books as Array<any>)
+        if (loadMore) {
+          setBooks([...books, ...(res.books as Array<any>)])
+          setPage(page + 1)
+        } else {
+          setBooks(res.books as Array<any>)
+          setPage(1)
+        }
         setSuggestion(res.suggestion as string)
         setLoading(false)
-        // if (res.suggestion) history.push(toPath(LOCATIONS.search, res.suggestion as string))
-        console.log(res)
+        setLoadingMore(false)
+        console.log((res.books as Array<any>).length)
       })
       .catch((err) => {
         console.log(err)
         setLoading(false)
+        setLoadingMore(false)
       })
   }
 
@@ -191,7 +206,12 @@ const ResultView = (): ReactElement => {
 
   return (
     <Wrapper>
-      <SearchBar callback={searchBooks} />
+      <SearchBar
+        callback={() => {
+          setPage(1)
+          searchBooks(false, sort, formatFilter(filter))
+        }}
+      />
       <PreResultRow>
         {suggestion ? (
           <SuggestionWrapper>
@@ -205,7 +225,7 @@ const ResultView = (): ReactElement => {
                 {suggestion}
               </SuggestionLink>
             </SuggestionText>
-            <SuggestionText>
+            <SuggestionText persist>
               {`Search instead for `}
               <SuggestionLink onClick={handlePersistOnClick}>{getUrlLastSegmant()}</SuggestionLink>
             </SuggestionText>
@@ -543,6 +563,19 @@ const ResultView = (): ReactElement => {
             ) : (
               <NoBookFoundText>No Book found</NoBookFoundText>
             )}
+            <FlexRow>
+              <LoadMoreBtnWrapper>
+                <LoadMoreBtn
+                  variant="outlined"
+                  color="primary"
+                  onClick={() => {
+                    searchBooks(false, sort, formatFilter(filter), getUrlLastSegmant(), true)
+                  }}
+                >
+                  {loadingMore ? <Progress /> : `Load More`}
+                </LoadMoreBtn>
+              </LoadMoreBtnWrapper>
+            </FlexRow>
           </ProductWrapper>
         </ResultWrapper>
       )}

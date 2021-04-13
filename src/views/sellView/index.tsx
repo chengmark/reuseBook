@@ -20,6 +20,7 @@ type loadType = {
   submitForm: () => void
   image: Image
   details: Details
+  loading: boolean
 }
 
 const getSteps = () => {
@@ -34,7 +35,13 @@ const getStepContent = (index: number, load: loadType) => {
       return <DetailsForm goStep3={load.goStep3} />
     case 2:
       return (
-        <ConfirmForm goStep1={load.goStep1} submitForm={load.submitForm} image={load.image} details={load.details} />
+        <ConfirmForm
+          goStep1={load.goStep1}
+          submitForm={load.submitForm}
+          image={load.image}
+          details={load.details}
+          loading={load.loading}
+        />
       )
     default:
       return 'undefined step'
@@ -57,6 +64,7 @@ const SellView = (): ReactElement => {
     condition: '',
   })
   const steps = getSteps()
+  const [loading, setLoading] = useState(false)
 
   const goStep2 = (image: { dataURL: string; file: File }): void => {
     setImage(image)
@@ -73,8 +81,7 @@ const SellView = (): ReactElement => {
   }
 
   const submitForm = () => {
-    console.log(details)
-    console.log(image.file)
+    setLoading(true)
     const imageToSend = new File([image.file], uuidv4(), { type: image.file.type })
     BookService.getSignedRequest({ fileName: imageToSend.name, fileType: imageToSend.type }) // get the aws url
       .then((res) => {
@@ -92,13 +99,14 @@ const SellView = (): ReactElement => {
             condition: details.condition,
             img: res.url,
           }).then((res) => {
-            console.log(res)
+            setLoading(false)
             history.push(toPath(LOCATIONS.product, res._id as string)) // should redirect to the book post
             enqueueSnackbar('Book listed.', { variant: 'success' })
           })
         })
       })
       .catch(() => {
+        setLoading(false)
         enqueueSnackbar('Please try again later.', { variant: 'error' })
       })
   }
@@ -115,7 +123,7 @@ const SellView = (): ReactElement => {
           ))}
         </Stepper>
         <StepContentWrapper>
-          {getStepContent(activeStep, { goStep2, goStep3, goStep1, submitForm, image, details })}
+          {getStepContent(activeStep, { goStep2, goStep3, goStep1, submitForm, image, details, loading })}
         </StepContentWrapper>
       </Container>
     </CenteredLayout>

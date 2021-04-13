@@ -61,12 +61,13 @@ const BookService = {
     persist: boolean,
     sort: 'similarity' | 'createdAt' | 'reviewNum',
     filters?: Obj,
+    pageNum = 1,
   ): Promise<Obj> => {
     const response = await axios({
       method: 'post',
       url: `${URL}/search`,
       headers: { 'Content-Type': 'application/json;charset=utf-8' },
-      data: { keyword: keyword, pageNum: 1, pageSize: 20, persist: persist, filters: filters, sort: sort },
+      data: { keyword: keyword, pageNum: pageNum, pageSize: 4, persist: persist, filters: filters, sort: sort },
     })
     return await response.data
   },

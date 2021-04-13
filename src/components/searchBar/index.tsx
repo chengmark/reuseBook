@@ -19,11 +19,9 @@ const SearchBar = ({ callback }: Props): ReactElement => {
   }
 
   const handleBtnOnClick = () => {
-    if (keyword) {
-      setKeyword('')
-      history.push(toPath(LOCATIONS.search, keyword))
-      if (callback) callback()
-    }
+    if (!keyword) setKeyword('*')
+    history.push(toPath(LOCATIONS.search, !keyword ? '*' : keyword))
+    if (callback) callback()
   }
 
   return (

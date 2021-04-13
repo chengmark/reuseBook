@@ -8,6 +8,7 @@ import LabelOutlinedIcon from '@material-ui/icons/LabelOutlined'
 import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined'
 import CategoryOutlinedIcon from '@material-ui/icons/CategoryOutlined'
 import Autocomplete from '@material-ui/lab/Autocomplete'
+import CircularProgress from '@material-ui/core/CircularProgress'
 import { MEDIA_BREAK } from '@src/layout'
 
 export const Container = styled.div`
@@ -253,4 +254,13 @@ export const FlexRow = styled.div`
   align-items: center;
   width: fit-content;
   padding: 5px 0 5px 0;
+`
+
+export const Progress = styled(CircularProgress)`
+  &.MuiCircularProgress-root {
+    color: ${COLOR.bg.light};
+    left: -64px;
+    top: 8px;
+    position: relative;
+  }
 `

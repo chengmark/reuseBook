@@ -34,18 +34,23 @@ const SearchController = {
 
     if (!keyword) return res.status(400).send({ message: 'Enter something' })
 
+    if (keyword == '*')
+      return res
+        .status(200)
+        .send({ books: reduce(await Book.find().exec(), pageSize, pageNum, filters, sort), suggestion: '' })
+
     const category = isCategory(keyword) ? await Category.findOne({ name: keyword }) : null // find the catrgory id
     if (category && !filters.category) {
       // keyword is a category
       return res.status(200).send({
-        books: await findBookByCategory(category._id, pageNum, pageSize, filters, sort),
+        books: reduce(await findBookByCategory(category._id), pageNum, pageSize, filters, sort),
         suggestion: '',
       })
     } else {
       // see whether keyword matches any book name
-      let booksMatchKeywordInName = await findBookByName(keyword, pageNum, pageSize, filters, sort)
+      let booksMatchKeywordInName = await findBookByName(keyword)
       // see whether keyword matches any author
-      let booksMatchKeywordInAuthor = await findBookByAuthor(keyword, pageNum, pageSize, filters, sort)
+      let booksMatchKeywordInAuthor = await findBookByAuthor(keyword)
       // if no book found on that keyword, we try to suggest keyword
       if (
         !persist &&
@@ -54,23 +59,28 @@ const SearchController = {
         !isCategory(keyword)
       ) {
         suggestion = getSuggestion(keyword) // suggestion or empty string
-        booksMatchKeywordInName = await findBookByName(suggestion, pageNum, pageSize, filters, sort) // use suggestion to find books
+        booksMatchKeywordInName = await findBookByName(suggestion) // use suggestion to find books
       }
 
       // found book with suggestion or keyword
       if (booksMatchKeywordInName.length > 0) {
         if (booksMatchKeywordInAuthor.length > 0)
           // merge author results as well
-          booksMatchKeywordInName = sortResult(merge(booksMatchKeywordInName, booksMatchKeywordInAuthor), sort)
-        return res.status(200).send({ books: booksMatchKeywordInName, suggestion: suggestion })
+          booksMatchKeywordInName = merge(booksMatchKeywordInName, booksMatchKeywordInAuthor)
+        return res
+          .status(200)
+          .send({ books: reduce(booksMatchKeywordInName, pageSize, pageNum, filters, sort), suggestion: suggestion })
       } else {
         // book not found, then give author
         // leave search by author results to the last if any, cuz book names grabs more attention in our UI
         if (suggestion) {
-          booksMatchKeywordInAuthor = await findBookByAuthor(suggestion, pageNum, pageSize, filters, sort)
+          booksMatchKeywordInAuthor = await findBookByAuthor(suggestion)
         }
         if (booksMatchKeywordInAuthor.length > 0) {
-          return res.status(200).send({ books: booksMatchKeywordInAuthor, suggestion: suggestion })
+          return res.status(200).send({
+            books: reduce(booksMatchKeywordInAuthor, pageNum, pageSize, filters, sort),
+            suggestion: suggestion,
+          })
         } else {
           return res.status(200).send({ books: [], suggestion: suggestion })
         }
@@ -88,6 +98,8 @@ const isCategory = (keyword: string) => {
 
 const merge = (books1: Array<any>, books2: Array<any>) => {
   const ids = flattenResult(books1, '_id')
+  console.log(books1)
+  console.log(books2)
   const result = [
     ...books1,
     ...books2.filter((book) => {
@@ -95,6 +107,27 @@ const merge = (books1: Array<any>, books2: Array<any>) => {
     }),
   ]
   return result
+}
+
+const reduce = (
+  books: Array<any>,
+  pageSize: number,
+  pageNum: number,
+  filters: Filters,
+  sort: 'similarity' | 'createdAt' | 'reviewNum',
+) => {
+  let result = books
+  console.log(result)
+  const start = (pageNum - 1) * pageSize
+  const end = start + pageSize
+  console.log(result.length)
+  result = filterResult(result, filters)
+  console.log(result.length)
+  result = sortResult(result, sort)
+  console.log(result.length)
+  console.log(start)
+  console.log(end)
+  return result.slice(start, end)
 }
 
 const filterResult = (books: Array<any>, filters: Filters) => {
@@ -140,32 +173,16 @@ const getSuggestion = (keyword: string): string => {
   return suggestion
 }
 
-const findBookByCategory = async (
-  categoryId: string,
-  pageNum: number,
-  pageSize: number,
-  filters: Filters,
-  sort: 'similarity' | 'createdAt' | 'reviewNum',
-) => {
-  let result = await Book.find({ category: categoryId })
+const findBookByCategory = async (categoryId: string) => {
+  const result = await Book.find({ category: categoryId })
     .populate('category')
     .populate('sellerId')
     .populate('reviews')
     .exec()
-  const start = (pageNum - 1) * pageSize
-  const end = start + pageSize - 1
-  result = filterResult(result, filters)
-  result = sortResult(result, sort)
-  return result.slice(start, end)
+  return result
 }
 
-const findBookByName = async (
-  keyword: string,
-  pageNum: number,
-  pageSize: number,
-  filters: Filters,
-  sort: 'similarity' | 'createdAt' | 'reviewNum',
-) => {
+const findBookByName = async (keyword: string) => {
   const bookList = await Book.find().populate('category').populate('sellerId').exec()
   const wordsOfKeyword = keyword.split(' ')
   let result: Array<any> = []
@@ -173,22 +190,12 @@ const findBookByName = async (
     const bookSimilarInName = getBookByName(book, wordsOfKeyword)
     if (bookSimilarInName) result.push(bookSimilarInName)
   })
-  const start = (pageNum - 1) * pageSize
-  const end = start + pageSize - 1
   result.sort(sortBySimilarity)
   result = flattenResult(result, 'book')
-  result = filterResult(result, filters)
-  result = sortResult(result, sort)
-  return result.slice(start, end) // arraged by similarity
+  return result // arraged by similarity
 }
 
-const findBookByAuthor = async (
-  keyword: string,
-  pageNum: number,
-  pageSize: number,
-  filters: Filters,
-  sort: 'similarity' | 'createdAt' | 'reviewNum',
-) => {
+const findBookByAuthor = async (keyword: string) => {
   const bookList = await Book.find().populate('category').populate('sellerId').exec()
   const wordsOfKeyword = keyword.split(' ')
   let result: Array<any> = []
@@ -196,13 +203,9 @@ const findBookByAuthor = async (
     const bookSimilarInAuthor = getBookByAuthor(book, wordsOfKeyword)
     if (bookSimilarInAuthor) result.push(bookSimilarInAuthor)
   })
-  const start = (pageNum - 1) * pageSize
-  const end = start + pageSize - 1
   result.sort(sortBySimilarity)
   result = flattenResult(result, 'book')
-  result = filterResult(result, filters)
-  result = sortResult(result, sort)
-  return result.slice(start, end) // arraged by similarity
+  return result // arraged by similarity
 }
 
 const sortBySimilarity = (a: { similarity: number }, b: { similarity: number }) => {

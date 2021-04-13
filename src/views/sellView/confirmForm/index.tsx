@@ -1,6 +1,5 @@
 import { List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core'
 import { Details, Image } from '@myTypes/Product'
-import Tooltip from '@src/components/tooltip'
 import RepeatIcon from '@material-ui/icons/Repeat'
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney'
 import LabelOutlinedIcon from '@material-ui/icons/LabelOutlined'
@@ -9,19 +8,7 @@ import BorderColorIcon from '@material-ui/icons/BorderColor'
 import TitleIcon from '@material-ui/icons/Title'
 import CategoryOutlinedIcon from '@material-ui/icons/CategoryOutlined'
 import React, { ReactElement } from 'react'
-import {
-  Btn,
-  BtnRow,
-  CoverPhoto,
-  CoverPhotoWrapper,
-  DetailsWrapper,
-  DetailTitle,
-  FlexRow,
-  FormContainer,
-  SellIcon,
-  TextRow,
-  TradeIcon,
-} from '../style'
+import { Btn, BtnRow, CoverPhoto, CoverPhotoWrapper, DetailsWrapper, FormContainer, Progress } from '../style'
 import { capFirst } from '@src/utils'
 
 type Props = {
@@ -29,10 +16,11 @@ type Props = {
   submitForm: () => void
   image: Image
   details: Details
+  loading: boolean
 }
 
 const ConfirmForm = (props: Props): ReactElement => {
-  const { goStep1, submitForm, image, details } = props
+  const { goStep1, submitForm, image, details, loading } = props
 
   return (
     <FormContainer center direction="row">
@@ -106,7 +94,12 @@ const ConfirmForm = (props: Props): ReactElement => {
           <Btn onClick={goStep1} secondary>
             discard
           </Btn>
-          <Btn onClick={submitForm}>Confirm</Btn>
+          <div>
+            <Btn onClick={submitForm} disabled={loading}>
+              Confirm
+            </Btn>
+            {loading && <Progress size={24} />}
+          </div>
         </BtnRow>
       </DetailsWrapper>
     </FormContainer>
