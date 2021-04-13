@@ -54,6 +54,10 @@ export const ProductTitle = styled.div`
   &:hover {
     color: ${COLOR.secondary.shade1};
   }
+  @media (max-width: ${MEDIA_BREAK}px) {
+    font-size: 16px;
+    line-height: 20px;
+  }
 `
 
 export const FlexRow = styled.div`
@@ -62,6 +66,7 @@ export const FlexRow = styled.div`
   margin: 2.5px 0 2.5px 0;
   width: fit-content;
   align-items: center;
+  flex-wrap: wrap;
 `
 
 export const InfoText = styled.div`
@@ -71,6 +76,10 @@ export const InfoText = styled.div`
   margin-right: 5px;
   color: ${COLOR.font.grey};
   word-break: break-word;
+  @media (max-width: ${MEDIA_BREAK}px) {
+    font-size: 12px;
+    line-height: 16px;
+  }
 `
 
 export const HighlightText = styled.div`

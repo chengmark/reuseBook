@@ -5,46 +5,73 @@ import spelling from 'spelling'
 import dictionary from 'spelling/dictionaries/en_US'
 import { categories } from '../../InitDB'
 
+type Filters = {
+  condition?: 'new' | 'used'
+  listingType?: 'sell' | 'trade'
+  category?: string // category id, with category, we assume searching book name or author
+  price?: {
+    max: number
+    min: number
+  }
+}
+
+const PRICE_RANGE_UPPER_BOUND = 500
+
 type Search = {
   keyword: string
   pageNum: number
   pageSize: number
   persist: boolean
+  filters: Filters
+  sort: 'similarity' | 'createdAt' | 'reviewNum'
 }
 
 const SearchController = {
   search: async (req: Request, res: Response): Promise<unknown> => {
-    const { pageNum, pageSize, persist } = <Search>(<unknown>req.body)
+    const { pageNum, pageSize, persist, filters, sort } = <Search>(<unknown>req.body)
     const keyword = req.body.keyword.toLowerCase() // case insensitive searching
     let suggestion = ''
+
     if (!keyword) return res.status(400).send({ message: 'Enter something' })
 
-    // see whether it is looking for an author
-    // if so don't look up the keyword for suggestion, send the books directly
-    const booksMatchKeywordInAuthor = await findBookByAuthor(keyword, pageNum, pageSize)
-
-    if (!persist && !(booksMatchKeywordInAuthor.length > 0) && !isCategory(keyword)) {
-      suggestion = getSuggestion(keyword) // suggestion or empty string
-    }
-    const category = await Category.findOne({ name: suggestion || keyword }) // find the catrgory id
-    if (category) {
+    const category = isCategory(keyword) ? await Category.findOne({ name: keyword }) : null // find the catrgory id
+    if (category && !filters.category) {
       // keyword is a category
-      return res
-        .status(200)
-        .send({ books: await findBookByCategory(category._id, pageNum, pageSize), suggestion: suggestion })
+      return res.status(200).send({
+        books: await findBookByCategory(category._id, pageNum, pageSize, filters, sort),
+        suggestion: '',
+      })
     } else {
-      // keyword is not a category
-      const booksMatchKeywordInName = await findBookByName(suggestion || keyword, pageNum, pageSize)
+      // see whether keyword matches any book name
+      let booksMatchKeywordInName = await findBookByName(keyword, pageNum, pageSize, filters, sort)
+      // see whether keyword matches any author
+      let booksMatchKeywordInAuthor = await findBookByAuthor(keyword, pageNum, pageSize, filters, sort)
+      // if no book found on that keyword, we try to suggest keyword
+      if (
+        !persist &&
+        booksMatchKeywordInName.length <= 0 &&
+        booksMatchKeywordInAuthor.length <= 0 &&
+        !isCategory(keyword)
+      ) {
+        suggestion = getSuggestion(keyword) // suggestion or empty string
+        booksMatchKeywordInName = await findBookByName(suggestion, pageNum, pageSize, filters, sort) // use suggestion to find books
+      }
+
+      // found book with suggestion or keyword
       if (booksMatchKeywordInName.length > 0) {
-        return res
-          .status(200)
-          .send({ books: await findBookByName(suggestion || keyword, pageNum, pageSize), suggestion: suggestion })
+        if (booksMatchKeywordInAuthor.length > 0)
+          // merge author results as well
+          booksMatchKeywordInName = sortResult(merge(booksMatchKeywordInName, booksMatchKeywordInAuthor), sort)
+        return res.status(200).send({ books: booksMatchKeywordInName, suggestion: suggestion })
       } else {
+        // book not found, then give author
+        // leave search by author results to the last if any, cuz book names grabs more attention in our UI
+        if (suggestion) {
+          booksMatchKeywordInAuthor = await findBookByAuthor(suggestion, pageNum, pageSize, filters, sort)
+        }
         if (booksMatchKeywordInAuthor.length > 0) {
-          // leave search by author results to the last if any, cuz book names grabs more attention in our UI
           return res.status(200).send({ books: booksMatchKeywordInAuthor, suggestion: suggestion })
         } else {
-          // not similar to any field
           return res.status(200).send({ books: [], suggestion: suggestion })
         }
       }
@@ -57,6 +84,42 @@ const isCategory = (keyword: string) => {
     if (category.name == keyword) return true
   }
   return false
+}
+
+const merge = (books1: Array<any>, books2: Array<any>) => {
+  const ids = flattenResult(books1, '_id')
+  const result = [
+    ...books1,
+    ...books2.filter((book) => {
+      return !ids.some((id) => id.toString() == book._id.toString())
+    }),
+  ]
+  return result
+}
+
+const filterResult = (books: Array<any>, filters: Filters) => {
+  let result = books
+  if (filters.category) result = result.filter((book) => book['category']._id == filters.category)
+
+  if (filters.condition) result = result.filter((book) => book['condition'] == filters.condition)
+
+  if (filters.listingType) result = result.filter((book) => book['type'] == filters.listingType)
+
+  if (filters.price) {
+    const max = filters.price.max
+    const min = filters.price.min
+    if (filters.price.max >= PRICE_RANGE_UPPER_BOUND) result = result.filter((book) => book['price'] >= min)
+    else result = result.filter((book) => book['price'] >= min && book['price'] <= max)
+  }
+
+  return result
+}
+
+const sortResult = (books: Array<any>, sort: 'similarity' | 'createdAt' | 'reviewNum') => {
+  let result = books
+  if (sort == 'createdAt') result = result.sort((a, b) => b.createdAt - a.createdAt)
+  if (sort == 'reviewNum') result = result.sort((a, b) => b.reviews.length - a.reviews.length)
+  return result
 }
 
 const getSuggestion = (keyword: string): string => {
@@ -77,45 +140,68 @@ const getSuggestion = (keyword: string): string => {
   return suggestion
 }
 
-const findBookByCategory = async (categoryId: string, pageNum: number, pageSize: number) => {
-  const result = await Book.find({ category: categoryId })
+const findBookByCategory = async (
+  categoryId: string,
+  pageNum: number,
+  pageSize: number,
+  filters: Filters,
+  sort: 'similarity' | 'createdAt' | 'reviewNum',
+) => {
+  let result = await Book.find({ category: categoryId })
     .populate('category')
     .populate('sellerId')
-    .skip((pageNum - 1) * pageSize)
-    .limit(pageSize)
+    .populate('reviews')
     .exec()
-  return result
+  const start = (pageNum - 1) * pageSize
+  const end = start + pageSize - 1
+  result = filterResult(result, filters)
+  result = sortResult(result, sort)
+  return result.slice(start, end)
 }
 
-const findBookByName = async (keyword: string, pageNum: number, pageSize: number) => {
+const findBookByName = async (
+  keyword: string,
+  pageNum: number,
+  pageSize: number,
+  filters: Filters,
+  sort: 'similarity' | 'createdAt' | 'reviewNum',
+) => {
   const bookList = await Book.find().populate('category').populate('sellerId').exec()
   const wordsOfKeyword = keyword.split(' ')
   let result: Array<any> = []
   bookList.forEach((book) => {
-    const bookSimilarInName = getBookByNameSimilarity(book, wordsOfKeyword)
+    const bookSimilarInName = getBookByName(book, wordsOfKeyword)
     if (bookSimilarInName) result.push(bookSimilarInName)
   })
   const start = (pageNum - 1) * pageSize
   const end = start + pageSize - 1
   result.sort(sortBySimilarity)
-  console.log(result)
   result = flattenResult(result, 'book')
+  result = filterResult(result, filters)
+  result = sortResult(result, sort)
   return result.slice(start, end) // arraged by similarity
 }
 
-const findBookByAuthor = async (keyword: string, pageNum: number, pageSize: number) => {
+const findBookByAuthor = async (
+  keyword: string,
+  pageNum: number,
+  pageSize: number,
+  filters: Filters,
+  sort: 'similarity' | 'createdAt' | 'reviewNum',
+) => {
   const bookList = await Book.find().populate('category').populate('sellerId').exec()
   const wordsOfKeyword = keyword.split(' ')
   let result: Array<any> = []
   bookList.forEach((book) => {
-    const bookSimilarInAuthor = getBookByAuthorSimilarity(book, wordsOfKeyword)
+    const bookSimilarInAuthor = getBookByAuthor(book, wordsOfKeyword)
     if (bookSimilarInAuthor) result.push(bookSimilarInAuthor)
   })
   const start = (pageNum - 1) * pageSize
   const end = start + pageSize - 1
   result.sort(sortBySimilarity)
-  console.log(result)
   result = flattenResult(result, 'book')
+  result = filterResult(result, filters)
+  result = sortResult(result, sort)
   return result.slice(start, end) // arraged by similarity
 }
 
@@ -125,10 +211,9 @@ const sortBySimilarity = (a: { similarity: number }, b: { similarity: number }) 
   return 0
 }
 
-const flattenResult = (results: Array<{ book: any; similarity: number }>, key: string) =>
-  results.map((result) => result[key])
+const flattenResult = (results: Array<any>, key: string) => results.map((result) => result[key])
 
-const getBookByNameSimilarity = (book: any, wordsOfKeyword: Array<string>) => {
+const getBookByName = (book: any, wordsOfKeyword: Array<string>) => {
   let cnt = 0
   const wordsOfBookName = book['name'].toLowerCase().split(' ')
   const usedHash = new Array(wordsOfBookName.length).fill(false) // whether the word of book name is used for calculating similarity
@@ -136,8 +221,8 @@ const getBookByNameSimilarity = (book: any, wordsOfKeyword: Array<string>) => {
   for (let i = 0; i < wordsOfKeyword.length; i++) {
     for (let j = 0; j < wordsOfBookName.length; j++) {
       if (usedHash[j]) continue
-      const similarity = jaroWinkler(wordsOfKeyword[i], wordsOfBookName[j])
-      if (similarity > 0.7) {
+      const similarity = jaroWinkler(wordsOfKeyword[i], wordsOfBookName[j]) // for relevancy sorting
+      if (wordsOfKeyword[i] == wordsOfBookName[j]) {
         usedHash[j] = true
         cnt++
         sumOfSimilarity += similarity
@@ -149,7 +234,7 @@ const getBookByNameSimilarity = (book: any, wordsOfKeyword: Array<string>) => {
 }
 
 // author name require high similarity
-const getBookByAuthorSimilarity = (book: any, wordsOfKeyword: Array<string>) => {
+const getBookByAuthor = (book: any, wordsOfKeyword: Array<string>) => {
   let cnt = 0
   const wordsOfAuthor = book['author'].toLowerCase().split(' ')
   const usedHash = new Array(wordsOfAuthor.length).fill(false) // whether the word of book name is used for calculating similarity
@@ -157,8 +242,8 @@ const getBookByAuthorSimilarity = (book: any, wordsOfKeyword: Array<string>) => 
   for (let i = 0; i < wordsOfKeyword.length; i++) {
     for (let j = 0; j < wordsOfAuthor.length; j++) {
       if (usedHash[j]) continue
-      const similarity = jaroWinkler(wordsOfKeyword[i], wordsOfAuthor[j])
-      if (similarity > 0.92) {
+      const similarity = jaroWinkler(wordsOfKeyword[i], wordsOfAuthor[j]) // for relevancy sorting
+      if (wordsOfKeyword[i] == wordsOfAuthor[j]) {
         usedHash[j] = true
         cnt++
         sumOfSimilarity += similarity
@@ -166,7 +251,7 @@ const getBookByAuthorSimilarity = (book: any, wordsOfKeyword: Array<string>) => 
       }
     }
   }
-  // all words with 0.92 similarity
+  // all words with more than 0.92 similarity
   if (cnt >= wordsOfKeyword.length) return { book: book, similarity: sumOfSimilarity }
 }
 
@@ -236,3 +321,42 @@ const jaroWinkler = (s1: string, s2: string): number => {
 }
 
 export default SearchController
+
+// const getBookByNameSimilarity = (book: any, wordsOfKeyword: Array<string>) => {
+//   let cnt = 0
+//   const wordsOfBookName = book['name'].toLowerCase().split(' ')
+//   const usedHash = new Array(wordsOfBookName.length).fill(false) // whether the word of book name is used for calculating similarity
+//   let sumOfSimilarity = 0 // sum of similarity of all words, for sorting by similarity
+//   for (let i = 0; i < wordsOfKeyword.length; i++) {
+//     for (let j = 0; j < wordsOfBookName.length; j++) {
+//       if (usedHash[j]) continue
+//       const similarity = jaroWinkler(wordsOfKeyword[i], wordsOfBookName[j])
+//       if (similarity > 0.7) {
+//         usedHash[j] = true
+//         cnt++
+//         sumOfSimilarity += similarity
+//         break
+//       }
+//     }
+//   }
+//   if (cnt > wordsOfKeyword.length / 3) return { book: book, similarity: sumOfSimilarity }
+// }
+
+// // author name require high similarity
+// const getBookByAuthorSimilarity = (book: any, wordsOfKeyword: Array<string>) => {
+//   let cnt = 0
+//   const wordsOfAuthor = book['author'].toLowerCase().split(' ')
+//   const usedHash = new Array(wordsOfAuthor.length).fill(false) // whether the word of book name is used for calculating similarity
+//   let sumOfSimilarity = 0 // sum of similarity of all words, for sorting by similarity
+//   for (let i = 0; i < wordsOfKeyword.length; i++) {
+//     for (let j = 0; j < wordsOfAuthor.length; j++) {
+//       if (usedHash[j]) continue
+//       const similarity = jaroWinkler(wordsOfKeyword[i], wordsOfAuthor[j])
+//       if (similarity > 0.9) {
+//         usedHash[j] = true
+//         cnt++
+//         sumOfSimilarity += similarity
+//         break
+//       }
+//     }
+//   }
