@@ -1,6 +1,24 @@
 import Category from './models/Category'
 // {name: 'Music'},
-import { categories } from '../common/categories'
+export const categories = [
+  { name: 'arts' },
+  { name: 'biographies' },
+  { name: 'business' },
+  { name: 'comics' },
+  { name: 'cooking' },
+  { name: 'education' },
+  { name: 'health' },
+  { name: 'history' },
+  { name: 'horror' },
+  { name: 'math' },
+  { name: 'medical' },
+  { name: 'philosophy' },
+  { name: 'religion' },
+  { name: 'sci-fi' },
+  { name: 'science' },
+  { name: 'sports' },
+  { name: 'travel' },
+]
 
 const toNames = (categories: Array<{ name: string }>) => {
   const result: Array<string> = []
