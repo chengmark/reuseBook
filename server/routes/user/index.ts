@@ -51,7 +51,7 @@ export class UserRoutes extends Routes {
         res.status(200).send({ message: 'post user' })
       })
       .patch((req: Request, res: Response) => {
-        res.status(200).send({ message: 'upadte user' })
+        UserController.updateUserInfo(req, res)
       })
       .delete((req: Request, res: Response) => {
         UserController.deleteUser(req, res)
