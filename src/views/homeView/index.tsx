@@ -21,7 +21,7 @@ const HomeView = (): ReactElement => {
         console.log(err)
       })
   }, [])
-  const AWS_S3_URL = `https://${process.env.REACT_APP_S3_BUCKET_NAME}.s3-ap-southeast-1.amazonaws.com/`
+  const AWS_S3_URL = `https://csci3100-a6-reuse-book.s3-ap-southeast-1.amazonaws.com/`
 
   const getSlides = () => {
     const slides: Array<any> = []
