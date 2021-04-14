@@ -13,23 +13,28 @@ const SuggestionController = {
     const selections = {}
     //console.log(interests)
     //console.log(max)
-    for (let i = 0; max > 0; max--) {
+    for (; max > 0; max--) {
       const interest = JSON.stringify(interests[Math.floor(Math.random() * interests.length)])
       if (!selections[interest]) selections[interest] = 0
       selections[interest] += 1
     }
     //console.log(selections)
-    const books: Array<any> = []
+    let books: Array<any> = []
     for (const key of Object.keys(selections)) {
       const count = selections[key]
       const category = JSON.parse(key)
-      const booksOfCategory = await Book.find({ category: category._id }).exec()
+      const booksOfCategory = await Book.find({ category: category._id }).limit(count).exec()
       //console.log(booksOfCategory)
       if (booksOfCategory) {
-        if (booksOfCategory.length > count) {
-          books.push(booksOfCategory.slice[(0, count)])
-        } else books.push(booksOfCategory)
+        books.push(booksOfCategory)
+        books = books.concat(booksOfCategory)
       }
+    }
+    if (books.length < max) {
+      const otherBooks = Book.find({ category: { $nin: Object.keys(selections) } })
+        .limit(max - books.length)
+        .exec()
+      books = books.concat(otherBooks)
     }
     return res.status(200).send(books)
   },
