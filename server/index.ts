@@ -6,7 +6,7 @@ import { UserRoutes } from './routes/user'
 import { CategoryRoutes } from './routes/category'
 import { ChatRoutes } from './routes/chat'
 import { BookRoutes } from './routes/book'
-// const SuggestionRoutes = require('./routes/suggestion')
+import { SuggestionRoutes } from './routes/suggestion'
 
 import { ReviewRoutes } from './routes/review'
 import { TransactionRoutes } from './routes/transaction'
@@ -37,7 +37,7 @@ routes.push(new UserRoutes(router))
 routes.push(new CategoryRoutes(router))
 routes.push(new BookRoutes(router))
 routes.push(new ChatRoutes(router))
-// routes.push(new SuggestionRoutes(router))
+routes.push(new SuggestionRoutes(router))
 routes.push(new SearchRoutes(router))
 routes.push(new ReviewRoutes(router))
 routes.push(new AWSRoutes(router))

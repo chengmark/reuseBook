@@ -1,14 +1,31 @@
 import { Divider } from '@material-ui/core'
 import ProductCard from '@src/components/productCard/productCard'
-import React, { ReactElement } from 'react'
+import { useUserState } from '@src/context/UserContext'
+import BookService from '@src/services/BookService'
+import React, { ReactElement, useEffect, useState } from 'react'
 import { SubContainer, Container, FlexFullRow, Title } from '../style'
 
 type Props = {
-  children?: ReactElement
+  exclude: string // bookid
+  ready: boolean
 }
 
-const RecommendationSection = (props: Props): ReactElement => {
-  const { children, ...rest } = props
+const RecommendationSection = ({ exclude, ready }: Props): ReactElement => {
+  const [suggestions, setSuggestions] = useState<Array<any>>()
+  const { loggedIn, state } = useUserState()
+  useEffect(() => {
+    if (ready) {
+      const interestIds = loggedIn() ? (state.interests as Array<any>).map((interest) => interest._id) : []
+      BookService.listSuggestions(interestIds, exclude)
+        .then((res) => {
+          setSuggestions(res as Array<any>)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
+  }, [ready, exclude])
+
   return (
     <Container>
       <FlexFullRow>
@@ -16,14 +33,10 @@ const RecommendationSection = (props: Props): ReactElement => {
       </FlexFullRow>
       <Divider />
       <SubContainer center>
-        <ProductCard image="https://media.newyorker.com/photos/59ee325f1685003c9c28c4ad/master/w_2560%2Cc_limit/Heller-Kirkus-Reviews.jpg"></ProductCard>
-        <ProductCard image="https://media.newyorker.com/photos/59ee325f1685003c9c28c4ad/master/w_2560%2Cc_limit/Heller-Kirkus-Reviews.jpg"></ProductCard>
-        <ProductCard image="https://media.newyorker.com/photos/59ee325f1685003c9c28c4ad/master/w_2560%2Cc_limit/Heller-Kirkus-Reviews.jpg"></ProductCard>
-        <ProductCard image="https://media.newyorker.com/photos/59ee325f1685003c9c28c4ad/master/w_2560%2Cc_limit/Heller-Kirkus-Reviews.jpg"></ProductCard>
-        <ProductCard image="https://media.newyorker.com/photos/59ee325f1685003c9c28c4ad/master/w_2560%2Cc_limit/Heller-Kirkus-Reviews.jpg"></ProductCard>
-        <ProductCard image="https://media.newyorker.com/photos/59ee325f1685003c9c28c4ad/master/w_2560%2Cc_limit/Heller-Kirkus-Reviews.jpg"></ProductCard>
+        {suggestions?.map((suggestion) => (
+          <ProductCard key={suggestion._id} book={suggestion} />
+        ))}
       </SubContainer>
-      {children}
     </Container>
   )
 }

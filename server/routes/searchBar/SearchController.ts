@@ -43,7 +43,7 @@ const SearchController = {
     if (category && !filters.category) {
       // keyword is a category
       return res.status(200).send({
-        books: reduce(await findBookByCategory(category._id), pageNum, pageSize, filters, sort),
+        books: reduce(await findBookByCategory(category._id), pageSize, pageNum, filters, sort),
         suggestion: '',
       })
     } else {

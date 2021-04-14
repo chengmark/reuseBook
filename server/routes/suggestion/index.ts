@@ -7,7 +7,7 @@ export class SuggestionRoutes extends Routes {
     super(router, 'listSuggestions')
   }
   configureRoutes(): void {
-    this.router.route(`/search`).post(async (req, res) => {
+    this.router.route(`/suggestions`).post(async (req, res) => {
       SuggestionController.suggest(req, res)
     })
   }
