@@ -3,7 +3,7 @@ import Book from '../../models/Book'
 import Category from '../../models/Category'
 import spelling from 'spelling'
 import dictionary from 'spelling/dictionaries/en_US'
-import { categories } from '../../InitDB'
+import { categories } from '../../../common/categories'
 
 type Filters = {
   condition?: 'new' | 'used'
@@ -98,8 +98,6 @@ const isCategory = (keyword: string) => {
 
 const merge = (books1: Array<any>, books2: Array<any>) => {
   const ids = flattenResult(books1, '_id')
-  console.log(books1)
-  console.log(books2)
   const result = [
     ...books1,
     ...books2.filter((book) => {
@@ -117,16 +115,10 @@ const reduce = (
   sort: 'similarity' | 'createdAt' | 'reviewNum',
 ) => {
   let result = books
-  console.log(result)
   const start = (pageNum - 1) * pageSize
   const end = start + pageSize
-  console.log(result.length)
   result = filterResult(result, filters)
-  console.log(result.length)
   result = sortResult(result, sort)
-  console.log(result.length)
-  console.log(start)
-  console.log(end)
   return result.slice(start, end)
 }
 

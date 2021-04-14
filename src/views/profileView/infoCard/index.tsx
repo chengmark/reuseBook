@@ -69,16 +69,17 @@ const InfoCard = (props: Props): ReactElement => {
       const [password, passwordConfirm] = checkSameValue(newInfo.password, newInfo.passwordConfirm)
       setNewInfo({ ...newInfo, password, passwordConfirm })
       if (formNoErr(newInfo)) {
+        // call api to update userinfo
+        // UserService.signup(toData(input))
+        //   .then((res) => {
+        //     userState.updateState(res)
+        //     history.push(toPath(LOCATIONS.profile))
+        //     enqueueSnackbar('Successful signup', { variant: 'success' })
+        //   })
+        //   .catch((err) => {
+        //     if (err.response) enqueueSnackbar(err.response.data.message, { variant: 'error' })
+        //   })
       }
-      // UserService.signup(toData(input))
-      //   .then((res) => {
-      //     userState.updateState(res)
-      //     history.push(toPath(LOCATIONS.profile))
-      //     enqueueSnackbar('Successful signup', { variant: 'success' })
-      //   })
-      //   .catch((err) => {
-      //     if (err.response) enqueueSnackbar(err.response.data.message, { variant: 'error' })
-      //   })
     }
   }
 

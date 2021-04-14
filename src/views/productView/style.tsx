@@ -146,6 +146,17 @@ export const ShareBtn = styled(Button)`
   }
 `
 
+export const DeleteBtn = styled(Button)`
+  &.MuiButton-root {
+    margin: 5px 0 5px 0;
+    background: ${COLOR.error.tint};
+    color: ${COLOR.font.light};
+    &:hover {
+      background: ${COLOR.error.shade};
+    }
+  }
+`
+
 export const FlexRow = styled.div`
   display: flex;
   flex-direction: row;

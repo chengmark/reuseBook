@@ -4,6 +4,7 @@ import Tooltip from '@src/components/tooltip'
 import React, { ReactElement, useEffect, useState } from 'react'
 import ReviewSection from './reviewSection'
 import ShareOutlinedIcon from '@material-ui/icons/ShareOutlined'
+import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined'
 import ChatBubbleOutlineOutlinedIcon from '@material-ui/icons/ChatBubbleOutlineOutlined'
 import {
   Container,
@@ -27,6 +28,7 @@ import {
   TimeIcon,
   TimeText,
   ImageWrapper,
+  DeleteBtn,
 } from './style'
 import { getUrlLastSegmant, toStandardTime } from '@src/utils'
 import RecommendationSection from './recommendationSection'
@@ -110,6 +112,7 @@ const ProductView = (props: Props): ReactElement => {
   const { enqueueSnackbar } = useSnackbar()
   const { loggedIn } = useUserState()
   const history = useHistory()
+  const userState = useUserState()
 
   useEffect(() => {
     getBook()
@@ -130,6 +133,8 @@ const ProductView = (props: Props): ReactElement => {
   }
 
   const handleShareOnClick = () => {
+    console.log(book.sellerId)
+    console.log(userState.state)
     navigator.clipboard.writeText(location.href)
     enqueueSnackbar('Copied URL to clipboard', { variant: 'info' })
   }
@@ -138,6 +143,19 @@ const ProductView = (props: Props): ReactElement => {
 
   const handleChatBtnOnClick = () => {
     if (!loggedIn()) return enqueueSnackbar('Please Login First.', { variant: 'warning' })
+    else history.push('')
+  }
+
+  const handleDeleteOnClick = () => {
+    BookService.deleteBook(book._id as string)
+      .then(() => {
+        enqueueSnackbar('Book listing deleted.', { variant: 'success' })
+        history.push(toPath(LOCATIONS.profile))
+      })
+      .catch((err) => {
+        console.log(err)
+        enqueueSnackbar('Please try again later.', { variant: 'error' })
+      })
   }
 
   const search = (keyword: string) => {
@@ -210,9 +228,15 @@ const ProductView = (props: Props): ReactElement => {
                 <TimeText>{`${toStandardTime(book.createdAt as string)}`}</TimeText>
               </FlexRow>
             </Tooltip>
-            <ChatBtn onClick={handleChatBtnOnClick} startIcon={<ChatBubbleOutlineOutlinedIcon />}>
-              Chat with seller
-            </ChatBtn>
+            {(book.sellerId as Obj)?._id == userState.state._id && userState.loggedIn() ? (
+              <DeleteBtn startIcon={<DeleteForeverOutlinedIcon />} onClick={handleDeleteOnClick}>
+                Delete this listing
+              </DeleteBtn>
+            ) : (
+              <ChatBtn onClick={handleChatBtnOnClick} startIcon={<ChatBubbleOutlineOutlinedIcon />}>
+                Chat with seller
+              </ChatBtn>
+            )}
             <ShareBtn startIcon={<ShareOutlinedIcon />} onClick={handleShareOnClick}>
               Share
             </ShareBtn>

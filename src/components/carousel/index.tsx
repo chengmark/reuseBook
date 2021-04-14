@@ -22,8 +22,8 @@ const MyCarousel = (props: Props): ReactElement => {
       emulateTouch={true}
     >
       {slides.map((slide, i) => (
-        <div style={{ height: '300px' }} key={i}>
-          This is a slide ({i})
+        <div style={{ height: '300px', maxWidth: '1500px' }} key={i}>
+          <img src={slide.img} />
         </div>
       ))}
     </Carousel>
