@@ -28,10 +28,10 @@ import {
 
 type Props = {
   book: any
+  callback?: () => any
 }
 
-const ProductCard = (props: Props): ReactElement => {
-  const { book } = props
+const ProductCard = ({ book, callback }: Props): ReactElement => {
   const history = useHistory()
   const [open, setOpen] = useState(false)
   const { enqueueSnackbar } = useSnackbar()
@@ -44,6 +44,7 @@ const ProductCard = (props: Props): ReactElement => {
 
   const redirect = () => {
     history.push(toPath(LOCATIONS.product, book._id))
+    if (callback) callback()
   }
 
   return (

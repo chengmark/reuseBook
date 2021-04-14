@@ -8,9 +8,10 @@ import { SubContainer, Container, FlexFullRow, Title } from '../style'
 type Props = {
   exclude: string // bookid
   ready: boolean
+  callback: () => any
 }
 
-const RecommendationSection = ({ exclude, ready }: Props): ReactElement => {
+const RecommendationSection = ({ exclude, ready, callback }: Props): ReactElement => {
   const [suggestions, setSuggestions] = useState<Array<any>>()
   const { loggedIn, state } = useUserState()
   useEffect(() => {
@@ -34,7 +35,7 @@ const RecommendationSection = ({ exclude, ready }: Props): ReactElement => {
       <Divider />
       <SubContainer center>
         {suggestions?.map((suggestion) => (
-          <ProductCard key={suggestion._id} book={suggestion} />
+          <ProductCard key={suggestion._id} book={suggestion} callback={callback} />
         ))}
       </SubContainer>
     </Container>
