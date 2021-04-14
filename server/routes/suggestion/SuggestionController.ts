@@ -2,34 +2,50 @@ import { Request, Response } from 'express'
 import Book from '../../models/Book'
 
 type Suggest = {
-  interests: Array<string>
+  interestIds: Array<string>
   max: number
+  exclude: string // book id
 }
 
 const SuggestionController = {
   suggest: async (req: Request, res: Response): Promise<any> => {
-    const { interests } = <Suggest>(<unknown>req.params)
-    let { max } = <Suggest>(<unknown>req.params)
+    const { interestIds, max, exclude } = <Suggest>(<unknown>req.body)
     const selections = {}
-    //console.log(interests)
-    //console.log(max)
-    for (let i = 0; max > 0; max--) {
-      const interest = JSON.stringify(interests[Math.floor(Math.random() * interests.length)])
-      if (!selections[interest]) selections[interest] = 0
-      selections[interest] += 1
+
+    if (interestIds.length < 1) {
+      return res.status(200).send(
+        await Book.find({ _id: { $ne: exclude } })
+          .populate('sellerId')
+          .populate('category')
+          .populate('reviews')
+          .limit(max)
+          .exec(),
+      )
     }
-    //console.log(selections)
-    const books: Array<any> = []
-    for (const key of Object.keys(selections)) {
-      const count = selections[key]
-      const category = JSON.parse(key)
-      const booksOfCategory = await Book.find({ category: category._id }).exec()
-      //console.log(booksOfCategory)
+    for (let i = max; i > 0; i--) {
+      const interestId = interestIds[Math.floor(Math.random() * interestIds.length)]
+      if (!selections[interestId]) selections[interestId] = 0
+      selections[interestId] += 1
+    }
+    let books: Array<any> = []
+    Object.keys(selections).forEach(async (interestId, count) => {
+      const booksOfCategory = await Book.find({ category: interestId, _id: { $ne: exclude } })
+        .populate('category')
+        .populate('reviews')
+        .limit(count)
+        .exec()
       if (booksOfCategory) {
-        if (booksOfCategory.length > count) {
-          books.push(booksOfCategory.slice[(0, count)])
-        } else books.push(booksOfCategory)
+        books = books.concat(booksOfCategory)
       }
+    })
+    if (books.length < max) {
+      const otherBooks = await Book.find({ category: { $nin: Object.keys(selections) }, _id: { $ne: exclude } })
+        .populate('category')
+        .populate('reviews')
+        .limit(max - books.length)
+        .exec()
+      console.log(Object.keys(selections))
+      books = books.concat(otherBooks)
     }
     return res.status(200).send(books)
   },

@@ -1,5 +1,4 @@
 import { Server, Socket } from 'socket.io'
-
 import controller from './lib/controller'
 
 interface ExtSocket extends Socket {
@@ -7,7 +6,10 @@ interface ExtSocket extends Socket {
 }
 
 export default (httpServer: any) => {
-  const io = new Server(httpServer)
+  // const io = new Server(httpServer)
+  const io = require('socket.io')(httpServer, {
+    // ...
+  })
 
   io.on('connection', (socket: Socket) => {
     const extSocket = <ExtSocket>socket

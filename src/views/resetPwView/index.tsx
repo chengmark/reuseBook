@@ -9,12 +9,7 @@ import UserService from '@src/services/UserService'
 import { LOCATIONS, toPath } from '@src/routes'
 import { Wrapper } from '../loginView/style'
 
-type Props = {
-  children?: ReactElement
-}
-
-const ResetPwView = (props: Props): ReactElement => {
-  const { children, ...rest } = props
+const ResetPwView = (): ReactElement => {
   const [input, setInput] = useState({
     password: { value: '', errMsg: '' },
   })

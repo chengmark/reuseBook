@@ -79,6 +79,15 @@ const BookService = {
     })
     return await response.data
   },
+  listSuggestions: async (interestIds: Array<string>, exclude?: string): Promise<any> => {
+    const response = await axios({
+      method: 'post',
+      url: `${URL}/suggestions`,
+      headers: { 'Content-Type': 'application/json;charset=utf-8' },
+      data: { interestIds: interestIds, max: 6, exclude: exclude },
+    })
+    return await response.data
+  },
 }
 
 export default BookService

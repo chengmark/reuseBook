@@ -244,7 +244,7 @@ const ProductView = (props: Props): ReactElement => {
         </ProductInfo>
       </Container>
       <ReviewSection bookId={book._id as string} reviews={book.reviews as any[]} getBook={getBook}></ReviewSection>
-      <RecommendationSection />
+      <RecommendationSection exclude={book._id as string} ready={!loading} callback={getBook} />
     </ProductWrapper>
   )
 }
