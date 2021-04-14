@@ -58,7 +58,7 @@ const ProductTile = (props: Props): ReactElement => {
         </FlexRow>
         <FlexRow>
           <CategoryIcon />
-          <InfoText>{book.category.name}</InfoText>
+          <InfoText>{book.category?.name}</InfoText>
           <InfoText>{'|'}</InfoText>
           <TimeIcon />
           <InfoText>{toRelativeTime(book.createdAt)}</InfoText>
@@ -87,7 +87,7 @@ const ProductTile = (props: Props): ReactElement => {
         <Tooltip title={`Number of reviews`} style={{ fontSize: '14px' }}>
           <FlexRow>
             <ReviewIcon />
-            <InfoText>{book.reviews.length}</InfoText>
+            <InfoText>{book.reviews?.length}</InfoText>
           </FlexRow>
         </Tooltip>
       </InfoSection>

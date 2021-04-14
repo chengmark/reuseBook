@@ -3,6 +3,8 @@ import styled from 'styled-components'
 export const HomeWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `
 
 export const ProductRow = styled.div`
@@ -10,4 +12,5 @@ export const ProductRow = styled.div`
   flex-direction: row;
   justify-content: center;
   flex-wrap: wrap;
+  max-width: 1500px;
 `

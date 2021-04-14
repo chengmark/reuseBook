@@ -1,4 +1,4 @@
-import { Button, Divider, TextField, Select, FormControl } from '@material-ui/core'
+import { Button, Divider, TextField, Select, FormControl, CircularProgress } from '@material-ui/core'
 import { Skeleton } from '@material-ui/lab'
 import { MEDIA_BREAK, NAV_WIDTH } from '@src/layout'
 import { Autocomplete } from '@material-ui/lab'
@@ -27,6 +27,7 @@ export const ProductWrapper = styled.div`
   display; flex;
   flex-direction: column;
   width: 100%;
+  height: 101%;
   flex: 4;
 `
 
@@ -191,5 +192,25 @@ export const MobileSelect = styled(FormControl)`
 export const MobileSelectInput = styled(Select)`
   &.MuiInputBase-root > .MuiSelect-root {
     padding: 5px 30px 5px 20px;
+  }
+`
+
+export const LoadMoreBtnWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+`
+
+export const LoadMoreBtn = styled(Button)`
+  width: fit-content;
+  margin: 10px;
+`
+
+export const Progress = styled(CircularProgress)`
+  &.MuiCircularProgress-root {
+    color: ${COLOR.primary.main};
+    // left: -64px;
+    // top: 8px;
+    // position: relative;
   }
 `

@@ -32,7 +32,6 @@ app.use(middlewares)
 
 const routes: Array<Routes> = []
 const router = express.Router()
-console.log(process.env.AWS_SECRET_ACCESS_KEY)
 // create user routes to the router
 routes.push(new UserRoutes(router))
 routes.push(new CategoryRoutes(router))

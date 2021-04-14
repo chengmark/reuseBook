@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import aws from 'aws-sdk'
 import { signS3 } from './params'
 
-const S3_BUCKET = process.env.S3_BUKCET_NAME
+const S3_BUCKET = process.env.S3_BUCKET_NAME
 aws.config.region = 'ap-southeast-1'
 
 const AwsController = {

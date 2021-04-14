@@ -5,7 +5,7 @@
         "@src/*": ["src/*"],
         "@views/*":["src/views/*"],
         "@components/*":["src/components/*"],
-        "@common":["common/*"],
+        "@common/*":["common/*"],
         "@myTypes/*": ["common/types/*"],
         "@routes/*":["server/routes/*"],
         "@models/*":["server/models/*"]

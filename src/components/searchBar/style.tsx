@@ -17,7 +17,13 @@ export const BarWrapper = styled.div`
   transition: 0.2s;
   ${(props: Props) =>
     props.focused &&
-    ` box-shadow: 0 0 0 4px ${COLOR.secondary.tint1}, inset 0 0 0 1px ${COLOR.secondary.main}; background: ${COLOR.bg.light}`}
+    ` box-shadow: 0 0 0 4px ${COLOR.secondary.tint1}, inset 0 0 0 1px ${COLOR.secondary.main}; background: ${COLOR.bg.light};
+    @media (max-width: ${MEDIA_BREAK}px) {
+    position: sticky;
+    top: 5px;
+    z-index: 100;
+  }
+    `}
   @media (max-width: ${MEDIA_BREAK}px) {
     position: sticky;
     top: 5px;
