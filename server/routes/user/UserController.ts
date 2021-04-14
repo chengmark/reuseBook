@@ -1,6 +1,16 @@
 import { Request, Response } from 'express'
 import User from '../../models/User'
-import { CreateUser, DeleteUser, GetUser, ListUsers, Login, AddInterests, ResetPassword, SetPassword } from './params'
+import {
+  CreateUser,
+  DeleteUser,
+  GetUser,
+  ListUsers,
+  Login,
+  AddInterests,
+  ResetPassword,
+  SetPassword,
+  UpdateUserInfo,
+} from './params'
 import bcrypt from 'bcrypt'
 import { isEmail, ONE_DAY, SHA256 } from '../../utils'
 import mongoose from 'mongoose'
@@ -27,10 +37,12 @@ const UserController = {
   listUsers: async (req: Request, res: Response): Promise<void> => {
     const { status } = <ListUsers>(<unknown>req.body)
     const query = status ? { status: status } : {}
-    User.find(query, (err, data) => {
-      if (err) return res.status(500).send({ message: 'Error in getting users from DB' })
-      res.status(200).send(data)
-    })
+    User.find(query)
+      .sort({ createdAt: -1 })
+      .exec((err, data) => {
+        if (err) return res.status(500).send({ message: 'Error in getting users from DB' })
+        res.status(200).send(data)
+      })
   },
   // create a user
   createUser: async (req: Request, res: Response): Promise<void> => {
@@ -124,6 +136,25 @@ const UserController = {
       res.status(500).send({ message: 'invalid userId' })
     }
   },
+
+  updateUserInfo: async (req: Request, res: Response): Promise<void> => {
+    const { userId } = <UpdateUserInfo>(<unknown>req.params)
+    const _userId = mongoose.Types.ObjectId(userId)
+    const { newPassword, confirmPassword, firstName, lastName } = <UpdateUserInfo>(<unknown>req.body)
+    var newInfo: any
+    if (newPassword && confirmPassword && firstName && lastName) {
+      bcrypt.genSalt(10, (err, salt) => {
+        bcrypt.hash(newPassword, salt, (err, hash) => {
+          newInfo = { password: hash, firstname: firstName, lastName: lastName }
+          User.findByIdAndUpdate({ _id: _userId }, newInfo, { new: true }, (err, result) => {
+            if (err) return res.status(500).send({ message: 'error updating user' })
+            res.status(200).send(result)
+          })
+        })
+      })
+    }
+  },
+
   // add interests
   setInterests: async (req: Request, res: Response): Promise<void> => {
     const { userId } = req.params

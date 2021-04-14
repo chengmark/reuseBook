@@ -41,3 +41,11 @@ export type SetPassword = {
   tokenId: string
   password: string
 }
+
+export type UpdateUserInfo = {
+  userId: string
+  newPassword: string
+  confirmPassword: string
+  firstName: string
+  lastName: string
+}
