@@ -31,7 +31,13 @@ const Navigation = (props: Props): ReactElement => {
           {({ match }) => <NavItem title={LOCATIONS.home} isActive={!!match} icon={HomeIcon}></NavItem>}
         </Route>
         <Divider></Divider>
-        {userState.loggedIn() ? (
+        <Route exact path={toPath(LOCATIONS.profile)}>
+          {({ match }) => <NavItem title={LOCATIONS.profile} isActive={!!match} icon={AccountCircleIcon}></NavItem>}
+        </Route>
+        <Route exact path={toPath(LOCATIONS.sell)}>
+          {({ match }) => <NavItem title={LOCATIONS.sell} isActive={!!match} icon={AddBox}></NavItem>}
+        </Route>
+        {/* {userState.loggedIn() ? (
           <>
             <Route exact path={toPath(LOCATIONS.profile)}>
               {({ match }) => <NavItem title={LOCATIONS.profile} isActive={!!match} icon={AccountCircleIcon}></NavItem>}
@@ -44,12 +50,12 @@ const Navigation = (props: Props): ReactElement => {
           <Route exact path={toPath(LOCATIONS.login)}>
             {({ match }) => <NavItem title={LOCATIONS.login} isActive={!!match} icon={ExitToAppIcon}></NavItem>}
           </Route>
-        )}
-        <Route exact path={toPath(LOCATIONS.settings)}>
+        )} */}
+        {/* <Route exact path={toPath(LOCATIONS.settings)}>
           {({ match }) => (
             <NavItem toBottom title={LOCATIONS.settings} isActive={!!match} icon={SettingsIcon}></NavItem>
           )}
-        </Route>
+        </Route> */}
       </NavigationGrid>
     </NavWrapper>
   )
