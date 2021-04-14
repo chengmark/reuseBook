@@ -143,7 +143,7 @@ const ProductView = (props: Props): ReactElement => {
 
   const handleChatBtnOnClick = () => {
     if (!loggedIn()) return enqueueSnackbar('Please Login First.', { variant: 'warning' })
-    else history.push('')
+    else history.push(toPath(LOCATIONS.chat, book._id as string))
   }
 
   const handleDeleteOnClick = () => {

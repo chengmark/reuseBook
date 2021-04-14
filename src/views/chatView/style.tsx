@@ -52,48 +52,6 @@ export const Container = styled.div`
   }
 `
 
-export const IconRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  font-size: 64px;
-  color: ${COLOR.primary.shade1};
-  width: 100%;
-`
-export const Line = styled.div`
-  flex: 2;
-  height: 1px;
-  background: ${COLOR.divider.dark};
-`
-
-export const CenteredRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  margin: 25px 0px 25px 0px;
-`
-
-export const DividerText = styled.div`
-  color: ${COLOR.divider.dark};
-  margin: 0px 15px 0px 15px;
-`
-export const LinkText = styled.div`
-  cursor: pointer;
-  font-weight: 600;
-  color: ${COLOR.primary.main};
-  &:hover {
-    color: ${COLOR.primary.shade2};
-  }
-`
-export const InputRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-`
-
 export const Input = styled(TextField)`
   &.MuiFormControl-root {
     margin: 10px 0 10px 0;
@@ -118,3 +76,7 @@ export const Btn = styled(Button)`
     }
   }
 `
+
+export const MessageWrapper = styled.div``
+
+export const InputWrapper = styled.div``
