@@ -1,7 +1,6 @@
 import { Button, Divider, TextField, Select, FormControl, CircularProgress } from '@material-ui/core'
 import { Skeleton } from '@material-ui/lab'
-import { MEDIA_BREAK, NAV_WIDTH } from '@src/layout'
-import { Autocomplete } from '@material-ui/lab'
+import { MEDIA_BREAK } from '@src/layout'
 import { COLOR } from '@src/styling'
 import styled from 'styled-components'
 

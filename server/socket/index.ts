@@ -1,5 +1,4 @@
 import { Server, Socket } from 'socket.io'
-
 import controller from './lib/controller'
 
 interface ExtSocket extends Socket {
