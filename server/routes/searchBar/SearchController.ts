@@ -35,9 +35,16 @@ const SearchController = {
     if (!keyword) return res.status(400).send({ message: 'Enter something' })
 
     if (keyword == '*')
-      return res
-        .status(200)
-        .send({ books: reduce(await Book.find().exec(), pageSize, pageNum, filters, sort), suggestion: '' })
+      return res.status(200).send({
+        books: reduce(
+          await Book.find().populate('reviews').populate('category').populate('sellerId').exec(),
+          pageSize,
+          pageNum,
+          filters,
+          sort,
+        ),
+        suggestion: '',
+      })
 
     const category = isCategory(keyword) ? await Category.findOne({ name: keyword }) : null // find the catrgory id
     if (category && !filters.category) {
@@ -175,7 +182,7 @@ const findBookByCategory = async (categoryId: string) => {
 }
 
 const findBookByName = async (keyword: string) => {
-  const bookList = await Book.find().populate('category').populate('sellerId').exec()
+  const bookList = await Book.find().populate('category').populate('sellerId').populate('reviews').exec()
   const wordsOfKeyword = keyword.split(' ')
   let result: Array<any> = []
   bookList.forEach((book) => {
@@ -188,7 +195,7 @@ const findBookByName = async (keyword: string) => {
 }
 
 const findBookByAuthor = async (keyword: string) => {
-  const bookList = await Book.find().populate('category').populate('sellerId').exec()
+  const bookList = await Book.find().populate('category').populate('sellerId').populate('reviews').exec()
   const wordsOfKeyword = keyword.split(' ')
   let result: Array<any> = []
   bookList.forEach((book) => {
