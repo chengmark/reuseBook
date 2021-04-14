@@ -46,8 +46,6 @@ const ChatController = {
   },
 
   addMessage: async (req: Request, res: Response): Promise<void> => {
-    console.log(req.body)
-    console.log(req.params)
     const { roomId } = <AddMessage>(<unknown>req.params)
     const { body, author } = <AddMessage>(<unknown>req.body)
     const newMessage = { body: body, author: author }
@@ -83,12 +81,12 @@ const ChatController = {
   listUserChatRooms: async (req: Request, res: Response): Promise<void> => {
     const { userId } = <ListUserChatRooms>(<unknown>req.params)
     const _userId = mongoose.Types.ObjectId(userId)
-    Chat.find({ users: _userId }, (err, data) => {
-      if (err) {
-        return res.status(400).send(err)
-      }
-      return res.status(200).send(data)
-    })
+    Chat.find({ users: _userId })
+      .populate('users')
+      .populate('messages')
+      .then((data) => {
+        return res.status(200).send(data)
+      })
   },
 
   getChatRoom: async (req: Request, res: Response): Promise<void> => {

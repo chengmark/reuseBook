@@ -39,6 +39,7 @@
     "react-responsive-carousel": "^3.2.18",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
+    "socket.io-client": "^4.0.1",
     "spellchecker": "^3.7.1",
     "styled-components": "^5.2.1",
     "ts-node": "^9.1.1",

@@ -44,7 +44,6 @@ const SuggestionController = {
         .populate('reviews')
         .limit(max - books.length)
         .exec()
-      console.log(Object.keys(selections))
       books = books.concat(otherBooks)
     }
     return res.status(200).send(books)

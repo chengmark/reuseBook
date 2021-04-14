@@ -44,8 +44,7 @@ export type SetPassword = {
 
 export type UpdateUserInfo = {
   userId: string
-  newPassword: string
-  confirmPassword: string
+  password: string
   firstName: string
   lastName: string
 }

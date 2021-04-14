@@ -88,6 +88,40 @@ const BookService = {
     })
     return await response.data
   },
+  addOffer: async (bookId: string, contact: string, buyerId: string, sellerId: string) => {
+    const response = await axios({
+      method: 'post',
+      url: `${URL}/offer`,
+      headers: { 'Content-Type': 'application/json;charset=utf-8' },
+      data: { book: bookId, contact: contact, buyerId: buyerId, sellerId: sellerId },
+    })
+    return await response.data
+  },
+  getBookBySeller: async (sellerId: string) => {
+    const response = await axios({
+      method: 'get',
+      url: `${URL}/books/seller/${sellerId}`,
+      headers: { 'Content-Type': 'application/json;charset=utf-8' },
+    })
+    return await response.data
+  },
+  getOfferBySeller: async (sellerId: string) => {
+    const response = await axios({
+      method: 'get',
+      url: `${URL}/offer/${sellerId}`,
+      headers: { 'Content-Type': 'application/json;charset=utf-8' },
+    })
+    return await response.data
+  },
+  deleteOffer: async (offerId: string) => {
+    const response = await axios({
+      method: 'delete',
+      url: `${URL}/offer`,
+      headers: { 'Content-Type': 'application/json;charset=utf-8' },
+      data: { id: offerId },
+    })
+    return await response.data
+  },
 }
 
 export default BookService

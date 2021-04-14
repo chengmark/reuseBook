@@ -68,6 +68,15 @@ const UserService = {
     })
     return await response.data
   },
+  updateInfo: async (userId: string, input: any): Promise<any> => {
+    const response = await axios({
+      method: 'patch',
+      url: `${URL}/users/${userId}`,
+      headers: { 'Content-Type': 'application/json;charset=utf-8' },
+      data: input,
+    })
+    return await response.data
+  },
 }
 
 export default UserService

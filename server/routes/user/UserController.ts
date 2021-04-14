@@ -140,17 +140,24 @@ const UserController = {
   updateUserInfo: async (req: Request, res: Response): Promise<void> => {
     const { userId } = <UpdateUserInfo>(<unknown>req.params)
     const _userId = mongoose.Types.ObjectId(userId)
-    const { newPassword, confirmPassword, firstName, lastName } = <UpdateUserInfo>(<unknown>req.body)
-    var newInfo: any
-    if (newPassword && confirmPassword && firstName && lastName) {
+    const { password, firstName, lastName } = <UpdateUserInfo>(<unknown>req.body)
+    let newInfo: any = {}
+    if (password && firstName && lastName) {
       bcrypt.genSalt(10, (err, salt) => {
-        bcrypt.hash(newPassword, salt, (err, hash) => {
+        bcrypt.hash(password, salt, (err, hash) => {
           newInfo = { password: hash, firstname: firstName, lastName: lastName }
           User.findByIdAndUpdate({ _id: _userId }, newInfo, { new: true }, (err, result) => {
             if (err) return res.status(500).send({ message: 'error updating user' })
             res.status(200).send(result)
           })
         })
+      })
+    }
+    if (!password) {
+      newInfo = { firstName: firstName ?? '', lastName: lastName ?? '' }
+      User.findByIdAndUpdate({ _id: _userId }, newInfo, { new: true }, (err, result) => {
+        if (err) return res.status(500).send({ message: 'error updating user' })
+        res.status(200).send(result)
       })
     }
   },

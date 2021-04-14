@@ -325,3 +325,90 @@ export const Input = styled(TextField)`
     }
   }
 `
+
+export const TileWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  grid-gap: 20px;
+  background: ${COLOR.bg.light};
+  padding: 10px 15px 10px 15px;
+`
+
+export const ImageWrapper = styled.div`
+  flex: 2;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+`
+
+export const Image = styled.img`
+  max-width: 250px;
+  @media (max-width: ${MEDIA_BREAK}px) {
+    max-width: 128px;
+  }
+`
+
+export const InfoSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 6;
+`
+
+export const BuyerName = styled.div`
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: 400;
+  width: 100%;
+  cursor: pointer;
+  &:hover {
+    color: ${COLOR.secondary.shade1};
+  }
+  @media (max-width: ${MEDIA_BREAK}px) {
+    font-size: 16px;
+    line-height: 20px;
+  }
+`
+
+export const FlexRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin: 2.5px 0 2.5px 0;
+  width: fit-content;
+  align-items: center;
+  flex-wrap: wrap;
+`
+
+export const InfoText = styled.div`
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+  margin-right: 5px;
+  color: ${COLOR.font.grey};
+  word-break: break-word;
+  @media (max-width: ${MEDIA_BREAK}px) {
+    font-size: 12px;
+    line-height: 16px;
+  }
+`
+
+export const FinishBtn = styled(Button)`
+  &.MuiButton-root {
+    margin: 5px 10px 5px 10px;
+    background: ${COLOR.success.tint};
+    color: ${COLOR.font.light};
+  }
+  &.MuiButton-root:hover {
+    background: ${COLOR.success.shade};
+  }
+`
+
+export const IgnoreBtn = styled(Button)`
+  &.MuiButton-root {
+    margin: 5px 10px 5px 10px;
+    background: ${COLOR.error.tint};
+    color: ${COLOR.font.light};
+  }
+  &.MuiButton-root:hover {
+    background: ${COLOR.error.shade};
+  }
+`

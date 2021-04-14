@@ -1,4 +1,4 @@
-import { Button, TextField } from '@material-ui/core'
+import { Button, IconButton, TextField } from '@material-ui/core'
 import { MEDIA_BREAK } from '@src/layout'
 import { COLOR } from '@src/styling'
 import styled, { keyframes } from 'styled-components'
@@ -52,52 +52,9 @@ export const Container = styled.div`
   }
 `
 
-export const IconRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  font-size: 64px;
-  color: ${COLOR.primary.shade1};
-  width: 100%;
-`
-export const Line = styled.div`
-  flex: 2;
-  height: 1px;
-  background: ${COLOR.divider.dark};
-`
-
-export const CenteredRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  margin: 25px 0px 25px 0px;
-`
-
-export const DividerText = styled.div`
-  color: ${COLOR.divider.dark};
-  margin: 0px 15px 0px 15px;
-`
-export const LinkText = styled.div`
-  cursor: pointer;
-  font-weight: 600;
-  color: ${COLOR.primary.main};
-  &:hover {
-    color: ${COLOR.primary.shade2};
-  }
-`
-export const InputRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-`
-
 export const Input = styled(TextField)`
   &.MuiFormControl-root {
-    margin: 10px 0 10px 0;
-    width: fill-available;
+    flex: 9;
     &.MuiOutlinedInput-root {
       &.Mui-focused fieldset {
         border-color: ${COLOR.primary.shade1};
@@ -108,13 +65,20 @@ export const Input = styled(TextField)`
     }
   }
 `
-export const Btn = styled(Button)`
-  &.MuiButton-root {
-    width: fill-available;
-    margin: 10px 0 10px 0;
-    background: ${COLOR.primary.shade1};
-    &:hover {
-      background: ${COLOR.primary.shade2};
-    }
-  }
+
+export const MessageWrapper = styled.div`
+  background: ${COLOR.chatroom.grey};
+  height: 600px;
+  width: 95%;
+`
+
+export const InputWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 95%;
+  margin: 5px 0 0 0;
+`
+
+export const Btn = styled(IconButton)`
+  flex: 1;
 `

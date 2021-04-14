@@ -46,5 +46,9 @@ export class BookRoutes extends Routes {
       .get((req: Request, res: Response) => {
         BookController.listByCategory(req, res)
       })
+
+    this.router.route('/books/seller/:sellerId').get((req: Request, res: Response) => {
+      BookController.listBookBySellerId(req, res)
+    })
   }
 }
