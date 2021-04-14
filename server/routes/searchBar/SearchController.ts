@@ -3,7 +3,7 @@ import Book from '../../models/Book'
 import Category from '../../models/Category'
 import spelling from 'spelling'
 import dictionary from 'spelling/dictionaries/en_US'
-import { categories } from '../../../common/categories'
+import { categories } from '../../InitDB'
 
 type Filters = {
   condition?: 'new' | 'used'
