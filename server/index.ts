@@ -7,7 +7,7 @@ import { CategoryRoutes } from './routes/category'
 import { ChatRoutes } from './routes/chat'
 import { BookRoutes } from './routes/book'
 import { SuggestionRoutes } from './routes/suggestion'
-
+import { OfferRoutes } from './routes/offer'
 import { ReviewRoutes } from './routes/review'
 import { TransactionRoutes } from './routes/transaction'
 import { AWSRoutes } from './routes/aws'
@@ -18,13 +18,13 @@ import middlewares from './middlewares'
 import path from 'path'
 import DB from './DB'
 import initDB from './InitDB'
-import socket from './socket'
+// import socket from './socket'
 
 export const app: express.Application = express()
 const server: http.Server = http.createServer(app)
 const PORT = process.env.PORT ? process.env.PORT : 3002
 
-socket(server)
+// socket(server)
 
 // use middlewares
 app.use(middlewares)
@@ -42,6 +42,7 @@ routes.push(new SearchRoutes(router))
 routes.push(new ReviewRoutes(router))
 routes.push(new AWSRoutes(router))
 routes.push(new TransactionRoutes(router))
+routes.push(new OfferRoutes(router))
 // create auth routes to the router
 // routes.push(new AuthRoutes(router))
 

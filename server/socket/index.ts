@@ -7,12 +7,11 @@ interface ExtSocket extends Socket {
 
 export default (httpServer: any) => {
   // const io = new Server(httpServer)
-  const io = require('socket.io')(httpServer, {
-    // ...
-  })
+  const io = require('socket.io')(httpServer)
 
   io.on('connection', (socket: Socket) => {
     const extSocket = <ExtSocket>socket
+    console.log(extSocket)
     console.log(extSocket.userData.userId + 'connected')
 
     extSocket.on('disconnect', () => {
@@ -21,6 +20,7 @@ export default (httpServer: any) => {
 
     extSocket.on('join', ({ id }) => {
       extSocket.join(id)
+      console.log('test', extSocket)
       console.log(`${extSocket.userData.userId} joined chat ${id}`)
     })
 

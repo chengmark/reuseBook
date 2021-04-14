@@ -7,6 +7,8 @@ import InterestCard from './interestCard'
 import MainCard from './mainCard'
 import { AppViewName, AppViewRow, OutlinedBtn, MainColumn, ProfileLayout, SecondaryColumn, Card, Btn } from './style'
 import { VALIDATORS, checkIntegrity, formNoErr, toData, checkSameValue } from '@src/formIntegrity'
+import UserService from '@src/services/UserService'
+import { useSnackbar } from 'notistack'
 
 // const testUser = {
 //   username: 'TestUser',
@@ -16,38 +18,43 @@ import { VALIDATORS, checkIntegrity, formNoErr, toData, checkSameValue } from '@
 // }
 
 const ProfileView = (): ReactElement => {
-  const user = useUserState().state
+  const userState = useUserState()
   const [openForm, setOpenForm] = useState(false)
+  const { state } = useUserState()
   const [newInfo, setNewInfo] = useState({
     password: { value: '', errMsg: '' },
     passwordConfirm: { value: '', errMsg: '' },
-    firstname: { value: user.firstname as string, errMsg: '' },
-    lastname: { value: user.lastname as string, errMsg: '' },
+    firstname: { value: state.firstname as string, errMsg: '' },
+    lastname: { value: state.lastname as string, errMsg: '' },
   })
-
+  const { enqueueSnackbar } = useSnackbar()
   const handleFormToggle = () => {
     setOpenForm(!openForm)
   }
 
   const handleUpdate = () => {
-    const password = checkIntegrity(newInfo.password, [VALIDATORS.REQUIRED, VALIDATORS.NUM_AND_LETTER])
+    if (newInfo.password.value) {
+      const password = checkIntegrity(newInfo.password, [VALIDATORS.NUM_AND_LETTER])
+      setNewInfo({ ...newInfo, password })
+    }
     const firstname = checkIntegrity(newInfo.firstname, [VALIDATORS.REQUIRED])
     const lastname = checkIntegrity(newInfo.lastname, [VALIDATORS.REQUIRED])
-    setNewInfo({ ...newInfo, password, firstname, lastname })
+    setNewInfo({ ...newInfo, firstname, lastname })
     if (formNoErr(newInfo)) {
-      const [password, passwordConfirm] = checkSameValue(newInfo.password, newInfo.passwordConfirm)
-      setNewInfo({ ...newInfo, password, passwordConfirm })
-      if (formNoErr(newInfo)) {
+      if (newInfo.password.value) {
+        const [password, passwordConfirm] = checkSameValue(newInfo.password, newInfo.passwordConfirm)
+        setNewInfo({ ...newInfo, password, passwordConfirm })
       }
-      // UserService.signup(toData(input))
-      //   .then((res) => {
-      //     userState.updateState(res)
-      //     history.push(toPath(LOCATIONS.profile))
-      //     enqueueSnackbar('Successful signup', { variant: 'success' })
-      //   })
-      //   .catch((err) => {
-      //     if (err.response) enqueueSnackbar(err.response.data.message, { variant: 'error' })
-      //   })
+      if (formNoErr(newInfo)) {
+        UserService.updateInfo(state._id as string, toData(newInfo))
+          .then((res) => {
+            userState.updateState(res)
+            enqueueSnackbar('Information updated', { variant: 'success' })
+          })
+          .catch((err) => {
+            if (err.response) enqueueSnackbar(err.response.data.message, { variant: 'error' })
+          })
+      }
     }
   }
 
@@ -56,21 +63,21 @@ const ProfileView = (): ReactElement => {
       {/* AppViewRow will be displayed for mobile view */}
       <AppViewRow>
         <Avatar></Avatar>
-        <AppViewName>{user.firstname + ' ' + user.lastname}</AppViewName>
+        <AppViewName>{state.firstname + ' ' + state.lastname}</AppViewName>
         <OutlinedBtn variant="outlined" onClick={handleFormToggle}>
           {openForm ? `BACK` : `UPDATE INFO`}
         </OutlinedBtn>
       </AppViewRow>
       {/* secondary will be hidden for mobile view */}
       <SecondaryColumn>
-        <InfoCard user={user}></InfoCard>
+        <InfoCard user={state}></InfoCard>
         <InterestCard></InterestCard>
       </SecondaryColumn>
       {/* infoForm is for mobile view*/}
       {openForm ? (
         <Card>
           <DialogTitle>{'Update Information'}</DialogTitle>
-          <InfoForm user={user} newInfo={newInfo} setNewInfo={setNewInfo} />
+          <InfoForm user={state} newInfo={newInfo} setNewInfo={setNewInfo} />
           <Btn size="small" variant="contained" onClick={handleUpdate}>{`Update Info`}</Btn>
         </Card>
       ) : (

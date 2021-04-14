@@ -65,8 +65,15 @@ export const COLOR = {
     shade: '#e91b0c',
     tint: '#F44336',
   },
+  success: {
+    shade: '#368839',
+    tint: '#43a047',
+  },
   hover: {
     grey: '#EEEEEE',
+  },
+  chatroom: {
+    grey: '#d6d6d633',
   },
   avatar: [
     '#1ABC9C',

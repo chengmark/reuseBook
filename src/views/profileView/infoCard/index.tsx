@@ -32,6 +32,7 @@ const InfoCard = (props: Props): ReactElement => {
   const history = useHistory()
   const { enqueueSnackbar } = useSnackbar()
   const [open, setOpen] = useState(false)
+  const { state } = useUserState()
   const [newInfo, setNewInfo] = useState({
     password: { value: '', errMsg: '' },
     passwordConfirm: { value: '', errMsg: '' },
@@ -61,24 +62,27 @@ const InfoCard = (props: Props): ReactElement => {
   }
 
   const handleUpdateInfo = () => {
-    const password = checkIntegrity(newInfo.password, [VALIDATORS.REQUIRED, VALIDATORS.NUM_AND_LETTER])
+    if (newInfo.password.value) {
+      const password = checkIntegrity(newInfo.password, [VALIDATORS.NUM_AND_LETTER])
+      setNewInfo({ ...newInfo, password })
+    }
     const firstname = checkIntegrity(newInfo.firstname, [VALIDATORS.REQUIRED])
     const lastname = checkIntegrity(newInfo.lastname, [VALIDATORS.REQUIRED])
-    setNewInfo({ ...newInfo, password, firstname, lastname })
+    setNewInfo({ ...newInfo, firstname, lastname })
     if (formNoErr(newInfo)) {
-      const [password, passwordConfirm] = checkSameValue(newInfo.password, newInfo.passwordConfirm)
-      setNewInfo({ ...newInfo, password, passwordConfirm })
+      if (newInfo.password.value) {
+        const [password, passwordConfirm] = checkSameValue(newInfo.password, newInfo.passwordConfirm)
+        setNewInfo({ ...newInfo, password, passwordConfirm })
+      }
       if (formNoErr(newInfo)) {
-        // call api to update userinfo
-        // UserService.signup(toData(input))
-        //   .then((res) => {
-        //     userState.updateState(res)
-        //     history.push(toPath(LOCATIONS.profile))
-        //     enqueueSnackbar('Successful signup', { variant: 'success' })
-        //   })
-        //   .catch((err) => {
-        //     if (err.response) enqueueSnackbar(err.response.data.message, { variant: 'error' })
-        //   })
+        UserService.updateInfo(state._id as string, toData(newInfo))
+          .then((res) => {
+            userState.updateState(res)
+            enqueueSnackbar('Information updated', { variant: 'success' })
+          })
+          .catch((err) => {
+            if (err.response) enqueueSnackbar(err.response.data.message, { variant: 'error' })
+          })
       }
     }
   }

@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 import Tooltip from '@src/components/tooltip'
 import {
   TileTitle,
@@ -15,6 +15,9 @@ import {
 import { ChatBubbleOutline, FavoriteBorder, PostAdd, Visibility } from '@material-ui/icons'
 import { useHistory } from 'react-router'
 import { LOCATIONS, toPath } from '@src/routes'
+import BookService from '@src/services/BookService'
+import { useUserState } from '@src/context/UserContext'
+import ProductTile from '@src/components/productTile'
 
 type Props = {
   currentTab: number
@@ -47,52 +50,64 @@ const testListings: any[] = [
 ]
 
 const ListingTab = (props: Props): ReactElement => {
-  const { currentTab, index = 1 } = props
+  const { currentTab, index = 0 } = props
   const history = useHistory()
+  const { state } = useUserState()
+  const [books, setBooks] = useState<Array<any>>()
 
-  const redirect = () => {
+  useEffect(() => {
+    BookService.getBookBySeller(state._id as string)
+      .then((res) => {
+        setBooks(res)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }, [])
+
+  const redirectToSellView = () => {
     history.push(toPath(LOCATIONS.sell))
   }
 
   return (
     <TabPanel currentTab={currentTab} index={0}>
-      {testListings.length > 0 &&
-        testListings.map((listing) => (
-          <Tile key={listing.name}>
-            <BookAvatar src={listing.coverPhoto}></BookAvatar>
-            <TileInfoBlock>
-              <TileTitle>{listing.name}</TileTitle>
-              <TileDetails>
-                <div>$ {listing.price}</div>
-                <div>{'(' + listing.type + ')'}</div>
-                <div>{listing.postDate}</div>
-              </TileDetails>
-              <TileDetails>
-                <Tooltip title="views" placement="top">
-                  <IconWrapper>
-                    <Visibility></Visibility> {listing.views}
-                  </IconWrapper>
-                </Tooltip>
-                <Tooltip title="favorites" placement="top">
-                  <IconWrapper>
-                    <FavoriteBorder></FavoriteBorder> {listing.favorites}
-                  </IconWrapper>
-                </Tooltip>
-                <Tooltip title="comments" placement="top">
-                  <IconWrapper>
-                    <ChatBubbleOutline></ChatBubbleOutline> {listing.comments}
-                  </IconWrapper>
-                </Tooltip>
-              </TileDetails>
-            </TileInfoBlock>
-            <StyledForwardIcon></StyledForwardIcon>
-          </Tile>
-        ))}
-      {testListings.length === 0 && (
+      {books?.map((book) => (
+        <ProductTile book={book} key={book._id} />
+        // <Tile key={book.name}>
+        //   <BookAvatar src={book.coverPhoto}></BookAvatar>
+        //   <TileInfoBlock>
+        //     <TileTitle>{book.name}</TileTitle>
+        //     <TileDetails>
+        //       <div>$ {book.price}</div>
+        //       <div>{'(' + book.type + ')'}</div>
+        //       <div>{book.postDate}</div>
+        //     </TileDetails>
+        //     <TileDetails>
+        //       <Tooltip title="views" placement="top">
+        //         <IconWrapper>
+        //           <Visibility></Visibility> {book.views}
+        //         </IconWrapper>
+        //       </Tooltip>
+        //       <Tooltip title="favorites" placement="top">
+        //         <IconWrapper>
+        //           <FavoriteBorder></FavoriteBorder> {book.favorites}
+        //         </IconWrapper>
+        //       </Tooltip>
+        //       <Tooltip title="comments" placement="top">
+        //         <IconWrapper>
+        //           <ChatBubbleOutline></ChatBubbleOutline> {book.comments}
+        //         </IconWrapper>
+        //       </Tooltip>
+        //     </TileDetails>
+        //   </TileInfoBlock>
+        //   <StyledForwardIcon></StyledForwardIcon>
+        // </Tile>
+      ))}
+      {books?.length === 0 && (
         <CenteredTabPanel>
           <TileInfoBlock>
             <TileTitle>{'Your listings will be displayed here.'}</TileTitle>
-            <Btn startIcon={<PostAdd />} onClick={redirect}>
+            <Btn startIcon={<PostAdd />} onClick={redirectToSellView}>
               Sell a book now
             </Btn>
           </TileInfoBlock>

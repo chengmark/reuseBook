@@ -15,14 +15,8 @@ import UserService from './services/UserService'
 import ResetPwView from './views/resetPwView'
 import ProductView from './views/productView'
 import ResultView from './views/resultView'
-import ChatView from './views/chatView'
 
 // import LoadingView from './views/loadingView'
-
-// const Sample = Loadable({
-//   loader: () => import('./views/SampleView'),
-//   loading: ({ isLoading }: LoadingComponentProps): ReactElement => (isLoading ? <LoadingView /> : <></>),
-// })
 
 type Props = {
   children?: ReactChild | ReactChild[]
@@ -37,7 +31,7 @@ export const LOCATIONS = {
   reset: 'reset', // reset pw
   product: 'product/:id',
   search: 'search/:id',
-  chat: 'chat/:id',
+  // chat: 'chat/:id',
 }
 
 export const toPath = (location: string, id?: string): string => {
@@ -89,7 +83,6 @@ const Routes = (props: Props): ReactElement => {
               <ProductView />
             </Route>
             <Route exact path={toPath(LOCATIONS.profile)}>
-              {/* {({ match }) => !!match && requireLogin(<ProfileView />)} */}
               {() => !loading && requireLogin(<ProfileView />)}
             </Route>
             <Route exact path={toPath(LOCATIONS.settings)}>
@@ -103,9 +96,9 @@ const Routes = (props: Props): ReactElement => {
             <Route exact path={toPath(LOCATIONS.sell)}>
               {() => !loading && requireLogin(<SellView />)}
             </Route>
-            <Route exact path={toPath(LOCATIONS.chat)}>
-              {() => !loading && requireLogin(<ChatView />)}
-            </Route>
+            {/* <Route exact path={toPath(LOCATIONS.chat)}>
+                {() => !loading && requireLogin(<ChatView />)}
+              </Route> */}
             <Route exact path={toPath(LOCATIONS.reset)}>
               <ResetPwView />
             </Route>

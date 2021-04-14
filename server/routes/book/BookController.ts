@@ -11,6 +11,7 @@ import {
   FindByCategory,
   DeleteByCategory,
   Pagination,
+  ListBookBySellerId,
 } from './params'
 import mongoose from 'mongoose'
 
@@ -93,7 +94,6 @@ const BookController = {
         }
       })
     } catch (e) {
-      console.log(e)
       res.status(500).send({ message: 'invalid categoryId' })
     }
   },
@@ -149,6 +149,13 @@ const BookController = {
       .exec(function (err, data) {
         res.status(200).send(data)
       })
+  },
+  listBookBySellerId: async (req: Request, res: Response) => {
+    const { sellerId } = <ListBookBySellerId>(<unknown>req.params)
+    Book.find({ sellerId: sellerId }, (err: any, data: any) => {
+      if (err) return res.status(400).send(err)
+      res.status(200).send(data)
+    })
   },
 }
 

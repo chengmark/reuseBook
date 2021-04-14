@@ -53,3 +53,7 @@ export type Pagination = {
   pageNo: string
   pageSize: string
 }
+
+export type ListBookBySellerId = {
+  sellerId: string
+}

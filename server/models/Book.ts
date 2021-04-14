@@ -13,6 +13,7 @@ const Book = new mongoose.Schema({
   reviews: [{ type: mongoose.Types.ObjectId, ref: 'Review' }],
   img: { type: String },
   sellerId: { type: mongoose.Types.ObjectId, ref: 'User' },
+  contact: { type: String },
 })
 
 export default mongoose.model('Book', Book)

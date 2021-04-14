@@ -1,11 +1,12 @@
-import { Card, Divider } from '@material-ui/core'
+import { Card, DialogTitle, Divider, DialogContent, Button, DialogActions, TextField } from '@material-ui/core'
 import SearchBar from '@src/components/searchBar'
 import Tooltip from '@src/components/tooltip'
-import React, { ReactElement, useEffect, useState } from 'react'
+import React, { ChangeEvent, ReactElement, useEffect, useState } from 'react'
 import ReviewSection from './reviewSection'
 import ShareOutlinedIcon from '@material-ui/icons/ShareOutlined'
 import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined'
 import ChatBubbleOutlineOutlinedIcon from '@material-ui/icons/ChatBubbleOutlineOutlined'
+import { checkIntegrity, formNoErr, toData, VALIDATORS } from '@src/formIntegrity'
 import {
   Container,
   ProductInfo,
@@ -38,6 +39,7 @@ import { Obj } from '@myTypes/Obj'
 import { useUserState } from '@src/context/UserContext'
 import { LOCATIONS, toPath } from '@src/routes'
 import { useHistory } from 'react-router-dom'
+import { InfoDialog } from '../profileView/style'
 
 type Props = {
   children?: ReactElement
@@ -113,6 +115,11 @@ const ProductView = (props: Props): ReactElement => {
   const { loggedIn } = useUserState()
   const history = useHistory()
   const userState = useUserState()
+  const [open, setOpen] = useState(false)
+  const { state } = useUserState()
+  const [input, setInput] = useState({
+    contact: { value: '', errMsg: '' },
+  })
 
   useEffect(() => {
     getBook()
@@ -141,9 +148,14 @@ const ProductView = (props: Props): ReactElement => {
 
   const handleImageOnClick = (url: string) => window.open(url, '_blank')
 
-  const handleChatBtnOnClick = () => {
+  // const handleChatBtnOnClick = () => {
+  //   if (!loggedIn()) return enqueueSnackbar('Please Login First.', { variant: 'warning' })
+  //   else history.push(toPath(LOCATIONS.chat, book._id as string))
+  // }
+
+  const handleMakeOfferClick = () => {
     if (!loggedIn()) return enqueueSnackbar('Please Login First.', { variant: 'warning' })
-    else history.push(toPath(LOCATIONS.chat, book._id as string))
+    else setOpen(true)
   }
 
   const handleDeleteOnClick = () => {
@@ -156,6 +168,34 @@ const ProductView = (props: Props): ReactElement => {
         console.log(err)
         enqueueSnackbar('Please try again later.', { variant: 'error' })
       })
+  }
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const nextState = input
+    nextState[e.target.name as keyof typeof input] = { value: e.target.value, errMsg: '' }
+    setInput({ ...nextState })
+  }
+
+  const handleSubmitContact = () => {
+    const contact = checkIntegrity(input.contact, [VALIDATORS.REQUIRED])
+    setInput({ ...input, contact })
+    if (formNoErr(input)) {
+      BookService.addOffer(
+        book._id as string,
+        input.contact.value,
+        (state as any)._id as string,
+        (book.sellerId as any)?._id,
+      )
+        .then((res) => {
+          enqueueSnackbar('Offer made, seller will contact you if they accept it.', { variant: 'success' })
+          setOpen(false)
+        })
+        .catch((err) => {
+          console.log(err)
+          enqueueSnackbar('Plaese try again later.', { variant: 'error' })
+          setOpen(false)
+        })
+    }
   }
 
   const search = (keyword: string) => {
@@ -233,8 +273,8 @@ const ProductView = (props: Props): ReactElement => {
                 Delete this listing
               </DeleteBtn>
             ) : (
-              <ChatBtn onClick={handleChatBtnOnClick} startIcon={<ChatBubbleOutlineOutlinedIcon />}>
-                Chat with seller
+              <ChatBtn onClick={handleMakeOfferClick} startIcon={<ChatBubbleOutlineOutlinedIcon />}>
+                Make an offer
               </ChatBtn>
             )}
             <ShareBtn startIcon={<ShareOutlinedIcon />} onClick={handleShareOnClick}>
@@ -243,6 +283,34 @@ const ProductView = (props: Props): ReactElement => {
           </InfoTextSection>
         </ProductInfo>
       </Container>
+      <InfoDialog
+        open={open}
+        onClose={() => {
+          setOpen(false)
+        }}
+      >
+        <DialogTitle>{'Make an offer'}</DialogTitle>
+        <DialogContent dividers>
+          <DialogContent>
+            <TextField
+              id="contact-input"
+              name="contact"
+              label="Contact"
+              type="contact"
+              autoComplete="current-contact"
+              variant="outlined"
+              error={!!input.contact.errMsg}
+              helperText={input.contact.errMsg}
+              onChange={handleInputChange}
+            />
+          </DialogContent>
+        </DialogContent>
+        <DialogActions>
+          <Button autoFocus onClick={handleSubmitContact} color="primary">
+            Submit
+          </Button>
+        </DialogActions>
+      </InfoDialog>
       <ReviewSection bookId={book._id as string} reviews={book.reviews as any[]} getBook={getBook}></ReviewSection>
       <RecommendationSection exclude={book._id as string} ready={!loading} callback={getBook} />
     </ProductWrapper>
