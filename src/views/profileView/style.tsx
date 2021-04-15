@@ -332,6 +332,7 @@ export const TileWrapper = styled.div`
   grid-gap: 20px;
   background: ${COLOR.bg.light};
   padding: 10px 15px 10px 15px;
+  max-height: 150px;
 `
 
 export const ImageWrapper = styled.div`
@@ -411,4 +412,29 @@ export const IgnoreBtn = styled(Button)`
   &.MuiButton-root:hover {
     background: ${COLOR.error.shade};
   }
+`
+
+export const DeleteBtn = styled(Btn)`
+  &.MuiButton-root {
+    margin: 5px 10px 5px 10px;
+    background: ${COLOR.error.tint};
+    color: ${COLOR.font.light};
+  }
+  &.MuiButton-root:hover {
+    background: ${COLOR.error.shade};
+  }
+`
+
+export const LastMsgText = styled.div`
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+  color: ${COLOR.font.grey};
+  word-break: break-word;
+  margin-top: auto;
+  @media (max-width: ${MEDIA_BREAK}px) {
+    font-size: 12px;
+    line-height: 16px;
+  }
+  margin-left: auto;
 `

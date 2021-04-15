@@ -129,6 +129,9 @@ export const SkeletonWrapper = styled.div`
 export const SkeletonImageWrapper = styled.div`
   width: 250px;
   height: 155px;
+  @media (max-width: ${MEDIA_BREAK}px) {
+    width: 128px !important;
+  }
 `
 
 export const SkeletonImage = styled(Skeleton)`

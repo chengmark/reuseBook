@@ -2,38 +2,37 @@ import { Server, Socket } from 'socket.io'
 import controller from './lib/controller'
 
 interface ExtSocket extends Socket {
-  userData: any
+  userId: string
 }
 
 export default (httpServer: any) => {
-  // const io = new Server(httpServer)
-  const io = require('socket.io')(httpServer)
+  const io = new Server(httpServer)
+  // const io = socket(httpServer)
 
   io.on('connection', (socket: Socket) => {
     const extSocket = <ExtSocket>socket
-    console.log(extSocket)
-    console.log(extSocket.userData.userId + 'connected')
+    console.log('connected')
 
     extSocket.on('disconnect', () => {
-      console.log(extSocket.userData.userId + 'disconnected')
+      console.log('disconnected')
     })
 
-    extSocket.on('join', ({ id }) => {
-      extSocket.join(id)
-      console.log('test', extSocket)
-      console.log(`${extSocket.userData.userId} joined chat ${id}`)
+    extSocket.on('join', ({ roomId, userId }) => {
+      extSocket.join(roomId)
+      console.log(`${userId} joined chat ${roomId}`)
     })
 
-    extSocket.on('leave', ({ id }) => {
-      extSocket.leave(id)
-      console.log(`${extSocket.userData.userId} left chat ${id}`)
+    extSocket.on('leave', ({ roomId, userId }) => {
+      extSocket.leave(roomId)
+      console.log(`${userId} left chat ${roomId}`)
     })
 
-    extSocket.on('message', async ({ id, content }) => {
+    extSocket.on('message', async ({ roomId, userId, content }) => {
+      console.log(content)
       if (content.trim().length > 0) {
         try {
-          const message = await controller.saveMessage(extSocket, { id, content })
-          io.to(id).emit('newMessage', message)
+          const message = await controller.saveMessage(userId, { roomId, content })
+          io.to(roomId).emit('newMessage', message)
         } catch (err) {
           console.log(err)
         }

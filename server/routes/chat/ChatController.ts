@@ -27,21 +27,24 @@ const ChatController = {
   },
 
   createChatRoom: async (req: Request, res: Response): Promise<void> => {
-    const { buyerId, sellerId, roomname } = <CreateChatRoom>(<unknown>req.body)
-    const newRoom = { name: mongoose.Types.ObjectId(roomname) }
-    const newIds: mongoose.Types.ObjectId[] = []
-    newIds.push(mongoose.Types.ObjectId(buyerId))
-    newIds.push(mongoose.Types.ObjectId(sellerId))
+    const { buyerId, sellerId, roomname, bookId } = <CreateChatRoom>(<unknown>req.body)
+    const newRoom = {
+      name: mongoose.Types.ObjectId(roomname),
+      book: mongoose.Types.ObjectId(bookId),
+      messages: [],
+      users: [mongoose.Types.ObjectId(buyerId), mongoose.Types.ObjectId(sellerId)],
+    }
     Chat.create(newRoom, (err, data) => {
       if (err) {
         return res.status(400).send({ message: 'Error creating chat room' })
       }
-      Chat.updateOne({ _id: data._id }, { $set: { users: newIds } }, {}, (err, result) => {
-        if (err) {
-          return res.status(400).send({ message: 'users not added' })
-        }
-        return res.status(200).send({ message: 'chat room created and users added' })
-      })
+      return res.status(200).send(data)
+      // Chat.updateOne({ _id: data._id }, { $set: { users: newIds } }, {}, (err, result) => {
+      //   if (err) {
+      //     return res.status(400).send({ message: 'users not added' })
+      //   }
+      //   return res.status(200).send(result)
+      // })
     })
   },
 
@@ -84,6 +87,7 @@ const ChatController = {
     Chat.find({ users: _userId })
       .populate('users')
       .populate('messages')
+      .populate('book')
       .then((data) => {
         return res.status(200).send(data)
       })

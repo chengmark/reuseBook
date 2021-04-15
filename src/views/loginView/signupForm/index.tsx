@@ -44,9 +44,10 @@ const SignupForm = (props: Props): ReactElement => {
     if (formNoErr(input)) {
       UserService.signup(toData(input))
         .then((res) => {
-          userState.updateState(res)
-          history.push(toPath(LOCATIONS.profile))
-          enqueueSnackbar('Successful signup', { variant: 'success' })
+          // userState.updateState(res)
+          setOperation(LOGIN)
+          // history.push(toPath(LOCATIONS.profile))
+          enqueueSnackbar('Successful signup. You can login now. ', { variant: 'success' })
         })
         .catch((err) => {
           if (err.response) enqueueSnackbar(err.response.data.message, { variant: 'error' })

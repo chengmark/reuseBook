@@ -122,6 +122,14 @@ const BookService = {
     })
     return await response.data
   },
+  getChatroomByUserId: async (userId: string) => {
+    const response = await axios({
+      method: 'get',
+      url: `${URL}/chats/user/${userId}`,
+      headers: { 'Content-Type': 'application/json;charset=utf-8' },
+    })
+    return await response.data
+  },
 }
 
 export default BookService

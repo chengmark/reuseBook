@@ -11,12 +11,12 @@ const ChatService = {
     })
     return await response.data
   },
-  createChatroom: async (buyerId: string, sellerId: string, roomname: string): Promise<any> => {
+  createChatroom: async (buyerId: string, sellerId: string, roomname: string, bookId: string): Promise<any> => {
     const response = await axios({
       method: 'post',
       url: `${URL}/chats`,
       headers: { 'Content-Type': 'application/json;charset=utf-8' },
-      data: { buyerId: buyerId, sellerId: sellerId, roomname: roomname },
+      data: { buyerId: buyerId, sellerId: sellerId, roomname: roomname, bookId: bookId },
     })
     return await response.data
   },
