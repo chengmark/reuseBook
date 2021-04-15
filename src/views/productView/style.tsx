@@ -41,6 +41,7 @@ type ImageProps = {
 export const ImageWrapper = styled.div`
   flex: 1;
   cursor: pointer;
+  justify-content: center;
   display: ${(props: ImageProps) => (props.isMobile ? `none` : `flex`)};
   @media (max-width: ${MEDIA_BREAK}px) {
     display: ${(props: ImageProps) => (props.isMobile ? `flex` : `none`)};
@@ -50,6 +51,7 @@ export const ImageWrapper = styled.div`
 
 export const Image = styled.img`
   max-width: 650px;
+  max-height: 400px;
   @media (max-width: ${MEDIA_BREAK}px) {
     max-width: 308px;
   }
