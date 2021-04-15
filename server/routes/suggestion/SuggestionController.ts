@@ -8,15 +8,12 @@ import User from '../../models/User'
 const SuggestionController = {
   suggest: async (req: Request, res: Response): Promise<any> => {
     const { interestIds, max, exclude } = <ListSuggestions>(<unknown>req.body)
-    var maxInt = parseInt(max)
-    console.log(interestIds.length)
-    console.log(interestIds)
-    console.log(maxInt)
+    let maxInt = parseInt(max)
+    console.log('ids length: ', interestIds.length)
     console.log(exclude)
     const selections = {}
 
     if (interestIds.length < 1) {
-      console.log('The interest id is ' + interestIds.length)
       const books = await Book.aggregate([{ $sample: { size: maxInt } }])
       await Category.populate(books, { path: 'category' })
       await Review.populate(books, { path: 'reviews' })
@@ -30,14 +27,14 @@ const SuggestionController = {
       maxInt -= 2
     }
 
-    let ids = Object.keys(selections)
+    const ids = Object.keys(selections)
     for (let i = 0; i < ids.length; i++) {
-      console.log('id is ' + ids[i])
       const book = await Book.find({ category: ids[i], _id: { $ne: exclude } })
         .populate('category')
+        .populate('reviews')
+        .populate('sellerId')
         .limit(selections[ids[i]])
         .exec()
-      console.log(selections[ids[i]])
       books = books.concat(book)
     }
     if (books.length < parseInt(max)) {

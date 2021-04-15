@@ -14,6 +14,7 @@ import {
   ListBookBySellerId,
 } from './params'
 import mongoose from 'mongoose'
+import Chat from '../../models/Chat'
 
 const BookController = {
   listBooks: async (req: Request, res: Response): Promise<void> => {
@@ -68,7 +69,10 @@ const BookController = {
       const _id = mongoose.Types.ObjectId(bookId)
       Book.deleteOne({ _id: _id }, {}, (err: any) => {
         if (err) return res.status(500).send(err)
-        res.status(200).send({ message: 'book deleted' })
+        Chat.deleteOne({ book: _id }, {}, (err: any) => {
+          if (err) return res.status(500).send(err)
+          res.status(200).send({ message: 'book deleted' })
+        })
       })
     } catch (e) {
       res.status(500).send({ message: 'invalid bookId' })
