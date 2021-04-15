@@ -8,6 +8,7 @@ import CategoryOutlinedIcon from '@material-ui/icons/CategoryOutlined'
 import CalendarTodayOutlinedIcon from '@material-ui/icons/CalendarTodayOutlined'
 import styled from 'styled-components'
 import { COLOR } from '@src/styling'
+import { Skeleton } from '@material-ui/lab'
 
 export const CardWrapper = styled(Card)`
   &.MuiCard-root {
@@ -149,5 +150,51 @@ export const ContentWrapper = styled(CardContent)`
     min-height: 180px;
     display: flex;
     flex-direction: column;
+  }
+`
+
+export const SkeletonWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  grid-gap: 20px;
+  //   background: ${COLOR.bg.light};
+  padding: 10px 15px 10px 15px;
+  width: 345px;
+  height: 400px;
+`
+
+export const SkeletonImageWrapper = styled.div`
+  width: 345px;
+  height: 400px;
+  @media (max-width: ${MEDIA_BREAK}px) {
+    width: 300px !important;
+  }
+`
+
+export const SkeletonImage = styled(Skeleton)`
+  &.MuiSkeleton-root {
+    flex: 2;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 167%;
+    top: -130px;
+    @media (max-width: ${MEDIA_BREAK}px) {
+      width: 345px !important;
+    }
+  }
+`
+
+export const SkeletonInfoSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 6;
+`
+
+export const SkeletonText = styled(Skeleton)`
+  &.MuiSkeleton-root {
+    margin: 5px 0 5px 0;
+    top: -140px;
+    left: 10px;
   }
 `
