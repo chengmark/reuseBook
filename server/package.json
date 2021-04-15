@@ -5,7 +5,6 @@
     "@types/jest": "^26.0.22",
     "@types/socket.io": "^2.1.13",
     "@types/supertest": "^2.0.11",
-    "@types/socket.io": "^2.1.13",
     "aws-sdk": "^2.884.0",
     "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",

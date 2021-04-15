@@ -1,52 +1,53 @@
 import { Request, Response } from 'express'
 import Book from '../../models/Book'
-
-type Suggest = {
-  interestIds: Array<string>
-  max: number
-  exclude: string // book id
-}
+import { ListSuggestions } from './params'
+import Category from '../../models/Category'
+import Review from '../../models/Review'
+import User from '../../models/User'
 
 const SuggestionController = {
   suggest: async (req: Request, res: Response): Promise<any> => {
-    const { interestIds, max, exclude } = <Suggest>(<unknown>req.body)
+    const { interestIds, max, exclude } = <ListSuggestions>(<unknown>req.body)
+    var maxInt = parseInt(max)
+    console.log(interestIds.length)
+    console.log(interestIds)
+    console.log(maxInt)
+    console.log(exclude)
     const selections = {}
 
     if (interestIds.length < 1) {
-      return res.status(200).send(
-        await Book.find({ _id: { $ne: exclude } })
-          .populate('sellerId')
-          .populate('category')
-          .populate('reviews')
-          .limit(max)
-          .exec(),
-      )
+      console.log('The interest id is ' + interestIds.length)
+      const books = await Book.aggregate([{ $sample: { size: maxInt } }])
+      await Category.populate(books, { path: 'category' })
+      await Review.populate(books, { path: 'reviews' })
+      await User.populate(books, { path: 'sellerId' })
+      return res.status(200).send(books)
     }
-    for (let i = max; i > 0; i--) {
-      const interestId = interestIds[Math.floor(Math.random() * interestIds.length)]
-      if (!selections[interestId]) selections[interestId] = 0
-      selections[interestId] += 1
-    }
+
     let books: Array<any> = []
-    Object.keys(selections).forEach(async (interestId, count) => {
-      const booksOfCategory = await Book.find({ category: interestId, _id: { $ne: exclude } })
-        .populate('category')
-        .populate('reviews')
-        .limit(count)
-        .exec()
-      if (booksOfCategory) {
-        books = books.concat(booksOfCategory)
-      }
-    })
-    if (books.length < max) {
-      const otherBooks = await Book.find({ category: { $nin: Object.keys(selections) }, _id: { $ne: exclude } })
-        .populate('category')
-        .populate('reviews')
-        .limit(max - books.length)
-        .exec()
-      books = books.concat(otherBooks)
+    for (let i = 0; i < interestIds.length; i++) {
+      if (maxInt >= 2) if (!selections[interestIds[i]]) selections[interestIds[i]] = 2
+      maxInt -= 2
     }
-    return res.status(200).send(books)
+
+    let ids = Object.keys(selections)
+    for (let i = 0; i < ids.length; i++) {
+      console.log('id is ' + ids[i])
+      const book = await Book.find({ category: ids[i], _id: { $ne: exclude } })
+        .populate('category')
+        .limit(selections[ids[i]])
+        .exec()
+      console.log(selections[ids[i]])
+      books = books.concat(book)
+    }
+    if (books.length < parseInt(max)) {
+      const remBooks = await Book.aggregate([{ $sample: { size: parseInt(max) - books.length } }])
+      await Category.populate(remBooks, { path: 'category' })
+      await Review.populate(remBooks, { path: 'reviews' })
+      await User.populate(remBooks, { path: 'sellerId' })
+      books = books.concat(remBooks)
+    }
+    res.status(200).send(books)
   },
 }
 
