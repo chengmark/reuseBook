@@ -19,6 +19,7 @@ export const Wrapper = styled.div`
   grid-gap: 20px;
   background: ${COLOR.bg.light};
   padding: 10px 15px 10px 15px;
+  max-height: 200px;
   max-height: ${(props: SimplifiedProps) => (props.simplified ? `180px` : ``)};
 `
 
