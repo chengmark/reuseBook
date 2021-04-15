@@ -40,7 +40,7 @@ export const Container = styled.div`
   align-items: center;
   background: ${COLOR.bg.light};
   border: 1px solid ${COLOR.divider.dark};
-  padding: 35px;
+  padding: 5px;
   margin: 10px 0px 10px 0px;
   width: 100%;
   @media (max-width: ${MEDIA_BREAK}px) {
@@ -69,16 +69,38 @@ export const Input = styled(TextField)`
 export const MessageWrapper = styled.div`
   background: ${COLOR.chatroom.grey};
   height: 600px;
-  width: 95%;
+  width: 100%;
+  overflow-y: scroll;
+  @media (max-width: ${MEDIA_BREAK}px) {
+    height: 460px;
+  }
 `
 
 export const InputWrapper = styled.div`
   display: flex;
   flex-direction: row;
-  width: 95%;
+  width: 100%;
   margin: 5px 0 0 0;
 `
 
 export const Btn = styled(IconButton)`
   flex: 1;
+`
+
+type MessageProps = {
+  isSender: boolean
+}
+
+export const MessageRow = styled.div`
+  display: flex;
+  justify-content: ${(props: MessageProps) => (props.isSender ? 'flex-end' : 'flex-start')};
+  margin-top: 4px;
+  margin-bottom: 4px;
+`
+
+export const MessageBubble = styled.div`
+  padding: 12px 20px;
+  background-color: ${(props: MessageProps) => (props.isSender ? `white` : `${COLOR.font.dark}`)};
+  color: ${(props: MessageProps) => (props.isSender ? `${COLOR.font.dark}` : `${COLOR.font.light}`)};
+  border-radius: 18px;
 `

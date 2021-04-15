@@ -33,8 +33,18 @@ export const toStandardTime = (timeString: string): string =>
 
 export const capFirst = (string: string): string => string.charAt(0).toUpperCase() + string.slice(1)
 
-export const getUrlLastSegmant = () => {
-  return location.href.substring(location.href.lastIndexOf('/') + 1).replaceAll('%20', ' ')
+export const getUrlLastSegmant = () =>
+  location.href.substring(location.href.lastIndexOf('/') + 1).replaceAll('%20', ' ')
+
+export const toPreciseTime = (timeString: string): string => {
+  const date = new Date(timeString)
+  const DD = ('0' + date.getDate()).slice(-2)
+  const MM = ('0' + (date.getMonth() + 1)).slice(-2)
+  const YYYY = date.getFullYear()
+  const HH = date.getHours()
+  const mm = date.getMinutes()
+  const ss = date.getSeconds()
+  return YYYY + '-' + MM + '-' + DD + ' ' + HH + ':' + mm + ':' + ss
 }
 
 export const uuidv4 = (): string => {

@@ -140,6 +140,7 @@ export const ReviewBtn = styled(IconButton)`
     margin-top: auto;
     justify-content: start;
     padding: 0px;
+    width: fit-content;
   }
 `
 

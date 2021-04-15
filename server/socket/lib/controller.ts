@@ -7,13 +7,14 @@ interface ExtSocket extends Socket {
 }
 
 const Controller = {
-  saveMessage: async (extSocket: any, { id, content }: any) => {
-    const message = {content: content, sender: extSocket.userData.userId}
-    Message.create(message, (err: any, data: any) => {
-        Chat.findByIdAndUpdate(id, { $push: { messages: data._id} }, { new: true })
-        return data
-    })
-  },
+  saveMessage: async (userId: string, { roomId, content }: any) =>
+    new Promise((resolve) => {
+      const message = { content: content, sender: userId }
+      Message.create(message, async (err: any, data: any) => {
+        const chat = await Chat.findByIdAndUpdate(roomId, { $push: { messages: data._id } }, { new: true })
+        resolve(data)
+      })
+    }),
 }
 
 export default Controller
