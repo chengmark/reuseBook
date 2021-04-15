@@ -9,12 +9,17 @@ import CalendarTodayOutlinedIcon from '@material-ui/icons/CalendarTodayOutlined'
 import { MEDIA_BREAK } from '@src/layout'
 import { IconButton } from '@material-ui/core'
 
+type SimplifiedProps = {
+  simplified: boolean
+}
+
 export const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
   grid-gap: 20px;
   background: ${COLOR.bg.light};
   padding: 10px 15px 10px 15px;
+  max-height: ${(props: SimplifiedProps) => (props.simplified ? `180px` : ``)};
 `
 
 export const ImageWrapper = styled.div`
@@ -51,12 +56,35 @@ export const ProductTitle = styled.div`
   font-weight: 400;
   width: 100%;
   cursor: pointer;
+  text-overflow: ellipsis;
+  ${(props: SimplifiedProps) =>
+    props.simplified
+      ? `
+  top: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 420px;
+  height: 35px;
+  `
+      : ``}
   &:hover {
     color: ${COLOR.secondary.shade1};
   }
   @media (max-width: ${MEDIA_BREAK}px) {
     font-size: 16px;
     line-height: 20px;
+    ${(props: SimplifiedProps) =>
+      props.simplified
+        ? `
+    top: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 130px;
+    height: 35px;
+    `
+        : ``}
   }
 `
 

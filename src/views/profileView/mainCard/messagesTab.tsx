@@ -1,100 +1,106 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 import Tooltip from '@src/components/tooltip'
 import {
   TileTitle,
   TabPanel,
-  Tile,
   TileInfoBlock,
-  TileDetails,
-  IconWrapper,
   CenteredTabPanel,
-  BookAvatar,
-  Btn,
-  StyledForwardIcon,
+  Image,
+  TileWrapper,
+  ImageWrapper,
+  InfoSection,
+  InfoText,
+  BuyerName,
+  FlexRow,
+  LastMsgText,
 } from '../style'
 import { ChatBubbleOutline, FavoriteBorder, PostAdd, Visibility } from '@material-ui/icons'
 import { useHistory } from 'react-router'
 import { LOCATIONS, toPath } from '@src/routes'
+import BookService from '@src/services/BookService'
+import { useUserState } from '@src/context/UserContext'
+import { toPreciseTime, uuidv4 } from '@src/utils'
+import { Separator } from '@src/views/resultView/style'
+import { Chip } from '@material-ui/core'
 
 type Props = {
   currentTab: number
   index?: number
 }
 
-const testChatrooms: any[] = [
-  // {
-  //   coverPhoto: '',
-  //   name: 'Test book name',
-  //   auther: 'Test author',
-  //   views: 24,
-  //   favorites: 12,
-  //   comments: 2,
-  //   postDate: Date.now(),
-  //   price: 240,
-  //   type: 'For Listing',
-  // },
-  // {
-  //   coverPhoto: '',
-  //   name: 'Test book name 2',
-  //   auther: 'Test author 2',
-  //   views: 54,
-  //   favorites: 1,
-  //   comments: 0,
-  //   postDate: Date.now(),
-  //   price: 20,
-  //   type: 'For Rent',
-  // },
-]
-
-const ListingTab = (props: Props): ReactElement => {
-  const { currentTab, index = 1 } = props
+const MessagesTab = (props: Props): ReactElement => {
+  const { currentTab, index = 2 } = props
   const history = useHistory()
+  const [chatrooms, setChatrooms] = useState<Array<any>>([])
+  const { state } = useUserState()
+  const [loading, setLoading] = useState(true)
 
-  const redirect = () => {
-    history.push(toPath(LOCATIONS.sell))
+  useEffect(() => {
+    getChatrooms()
+  }, [])
+
+  const getChatrooms = () => {
+    BookService.getChatroomByUserId(state._id as string)
+      .then((res) => {
+        setLoading(false)
+        setChatrooms(res)
+      })
+      .catch((err) => {
+        setLoading(false)
+        console.log(err)
+      })
+  }
+
+  const getLastMessageTime = (messages: Array<any>) => {
+    if (messages.length > 0) return 'last message at: ' + toPreciseTime(messages[messages.length - 1].createdAt)
+    else return ''
+  }
+
+  const isSeller = (chatroom: any) => chatroom.users[0]._id == state._id
+
+  const redirect = (bookId: string) => {
+    history.push(toPath(LOCATIONS.chat, bookId))
   }
 
   return (
-    <TabPanel currentTab={currentTab} index={0}>
-      {testChatrooms.length > 0 &&
-        testChatrooms.map((listing) => (
-          <Tile key={listing.name}>
-            <BookAvatar src={listing.users}></BookAvatar>
-            <TileInfoBlock>
-              <TileTitle>{listing.name}</TileTitle>
-              <TileDetails>
-                <div>$ {listing.price}</div>
-                <div>{'(' + listing.type + ')'}</div>
-                <div>{listing.postDate}</div>
-              </TileDetails>
-              <TileDetails>
-                <Tooltip title="views" placement="top">
-                  <IconWrapper>
-                    <Visibility></Visibility> {listing.views}
-                  </IconWrapper>
-                </Tooltip>
-                <Tooltip title="favorites" placement="top">
-                  <IconWrapper>
-                    <FavoriteBorder></FavoriteBorder> {listing.favorites}
-                  </IconWrapper>
-                </Tooltip>
-                <Tooltip title="comments" placement="top">
-                  <IconWrapper>
-                    <ChatBubbleOutline></ChatBubbleOutline> {listing.comments}
-                  </IconWrapper>
-                </Tooltip>
-              </TileDetails>
-            </TileInfoBlock>
-            <StyledForwardIcon></StyledForwardIcon>
-          </Tile>
+    <TabPanel currentTab={currentTab} index={2}>
+      {!loading &&
+        chatrooms?.map((chatroom, i) => (
+          <>
+            <TileWrapper key={chatroom._id}>
+              <ImageWrapper
+                onClick={() => {
+                  redirect(chatroom.book._id)
+                }}
+              >
+                <Image src={chatroom.book.img} />
+              </ImageWrapper>
+              <InfoSection>
+                <FlexRow>
+                  <BuyerName
+                    onClick={() => {
+                      redirect(chatroom.book._id)
+                    }}
+                  >{`${
+                    isSeller(chatroom)
+                      ? `${chatroom.users[1].firstname} ${chatroom.users[1].lastname}`
+                      : `${chatroom.users[0].firstname} ${chatroom.users[0].lastname}`
+                  }`}</BuyerName>
+                  {isSeller(chatroom) ? <Chip label={`Seller of the book`} /> : <Chip label={`Buyer of your book`} />}
+                </FlexRow>
+
+                <InfoText>{`Book Name: ${chatroom.book.name}`}</InfoText>
+                {/* <InfoText>{`contact: ${offer.contact}`}</InfoText> */}
+                <LastMsgText>{`${getLastMessageTime(chatroom.messages)}`}</LastMsgText>
+              </InfoSection>
+            </TileWrapper>
+            <Separator isBook key={i} />
+          </>
         ))}
-      {testChatrooms.length === 0 && (
+      {chatrooms?.length === 0 && (
         <CenteredTabPanel>
           <TileInfoBlock>
-            <TileTitle>{'Your listings will be displayed here.'}</TileTitle>
-            <Btn startIcon={<PostAdd />} onClick={redirect}>
-              Sell a book now
-            </Btn>
+            <TileTitle>{'No chatrooms yet.'}</TileTitle>
           </TileInfoBlock>
         </CenteredTabPanel>
       )}
@@ -102,4 +108,4 @@ const ListingTab = (props: Props): ReactElement => {
   )
 }
 
-export default ListingTab
+export default MessagesTab

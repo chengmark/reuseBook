@@ -28,7 +28,6 @@ export class ChatRoutes extends Routes {
       })
 
     this.router.route('/chats/user/:userId').get((req: Request, res: Response) => {
-      console.log('test1')
       ChatController.listUserChatRooms(req, res)
     })
 

@@ -25,13 +25,17 @@ import { LOCATIONS, toPath } from '@src/routes'
 import { useUserState } from '@src/context/UserContext'
 import { useSnackbar } from 'notistack'
 import ReviewPopup from '../reviewPopup'
+import { Btn } from '@src/views/profileView/style'
+import { LocalOfferOutlined } from '@material-ui/icons'
 
 type Props = {
   book: any
+  simplified?: boolean
+  handleOffer?: () => any
 }
 
 const ProductTile = (props: Props): ReactElement => {
-  const { book, ...rest } = props
+  const { book, simplified, handleOffer, ...rest } = props
   const history = useHistory()
   const [open, setOpen] = useState(false)
   const { enqueueSnackbar } = useSnackbar()
@@ -47,25 +51,30 @@ const ProductTile = (props: Props): ReactElement => {
   }
 
   return (
-    <Wrapper>
+    <Wrapper simplified={simplified || false}>
       <ImageWrapper onClick={redirect}>
         <Image src={book.img} />
       </ImageWrapper>
       <InfoSection>
-        <ProductTitle onClick={redirect}>{book.name}</ProductTitle>
+        <ProductTitle onClick={redirect} simplified={simplified || false}>
+          {book.name}
+        </ProductTitle>
         <FlexRow>
           <InfoText>{`by ${book.author}`}</InfoText>
         </FlexRow>
-        <FlexRow>
-          <CategoryIcon />
-          <InfoText>{book.category?.name}</InfoText>
-          <InfoText>{'|'}</InfoText>
-          <TimeIcon />
-          <InfoText>{toRelativeTime(book.createdAt)}</InfoText>
-          <InfoText>{'|'}</InfoText>
-          <ConditionIcon />
-          <InfoText>{book.condition}</InfoText>
-        </FlexRow>
+        {!simplified && (
+          <FlexRow>
+            <CategoryIcon />
+            <InfoText>{book.category?.name}</InfoText>
+            <InfoText>{'|'}</InfoText>
+            <TimeIcon />
+            <InfoText>{toRelativeTime(book.createdAt)}</InfoText>
+            <InfoText>{'|'}</InfoText>
+            <ConditionIcon />
+            <InfoText>{book.condition}</InfoText>
+          </FlexRow>
+        )}
+
         {book.type == 'sell' ? (
           <FlexRow>
             <SellIcon />
@@ -84,19 +93,30 @@ const ProductTile = (props: Props): ReactElement => {
             <InfoText>{book.description}</InfoText>
           </FlexRow>
         )}
-        <Tooltip title={`Number of reviews`} style={{ fontSize: '14px' }}>
+        {!simplified && (
+          <Tooltip title={`Number of reviews`} style={{ fontSize: '14px' }}>
+            <FlexRow>
+              <ReviewIcon />
+              <InfoText>{book.reviews?.length}</InfoText>
+            </FlexRow>
+          </Tooltip>
+        )}
+        {simplified && handleOffer && (
           <FlexRow>
-            <ReviewIcon />
-            <InfoText>{book.reviews?.length}</InfoText>
+            <ReviewBtn onClick={handleOffer}>
+              <Btn startIcon={<LocalOfferOutlined />}>Make Offer</Btn>
+            </ReviewBtn>
           </FlexRow>
-        </Tooltip>
+        )}
       </InfoSection>
       <OperationSection>
-        <Tooltip title="Have read this book before? Write a review!" style={{ fontSize: '14px' }}>
-          <ReviewBtn onClick={handleAddReview}>
-            <RateReviewIcon />
-          </ReviewBtn>
-        </Tooltip>
+        {!simplified && (
+          <Tooltip title="Have read this book before? Write a review!" style={{ fontSize: '14px' }}>
+            <ReviewBtn onClick={handleAddReview}>
+              <RateReviewIcon />
+            </ReviewBtn>
+          </Tooltip>
+        )}
       </OperationSection>
       <ReviewPopup
         bookId={book._id}

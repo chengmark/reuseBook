@@ -152,10 +152,13 @@ const BookController = {
   },
   listBookBySellerId: async (req: Request, res: Response) => {
     const { sellerId } = <ListBookBySellerId>(<unknown>req.params)
-    Book.find({ sellerId: sellerId }, (err: any, data: any) => {
-      if (err) return res.status(400).send(err)
-      res.status(200).send(data)
-    })
+    Book.find({ sellerId: sellerId })
+      .populate('category')
+      .populate('reviews')
+      .populate('sellerId')
+      .then((data) => {
+        res.status(200).send(data)
+      })
   },
 }
 

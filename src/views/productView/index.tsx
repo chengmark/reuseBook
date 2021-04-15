@@ -40,6 +40,7 @@ import { useUserState } from '@src/context/UserContext'
 import { LOCATIONS, toPath } from '@src/routes'
 import { useHistory } from 'react-router-dom'
 import { InfoDialog } from '../profileView/style'
+import { LocalOfferOutlined } from '@material-ui/icons'
 
 type Props = {
   children?: ReactElement
@@ -111,11 +112,11 @@ const ProductView = (props: Props): ReactElement => {
   const { ...rest } = props
   const [loading, setLoading] = useState(true)
   const [book, setBook] = useState<Obj>({})
-  const { enqueueSnackbar } = useSnackbar()
   const { loggedIn } = useUserState()
   const history = useHistory()
   const userState = useUserState()
   const [open, setOpen] = useState(false)
+  const { enqueueSnackbar } = useSnackbar()
   const { state } = useUserState()
   const [input, setInput] = useState({
     contact: { value: '', errMsg: '' },
@@ -148,10 +149,10 @@ const ProductView = (props: Props): ReactElement => {
 
   const handleImageOnClick = (url: string) => window.open(url, '_blank')
 
-  // const handleChatBtnOnClick = () => {
-  //   if (!loggedIn()) return enqueueSnackbar('Please Login First.', { variant: 'warning' })
-  //   else history.push(toPath(LOCATIONS.chat, book._id as string))
-  // }
+  const handleChatBtnOnClick = () => {
+    if (!loggedIn()) return enqueueSnackbar('Please Login First.', { variant: 'warning' })
+    else history.push(toPath(LOCATIONS.chat, book._id as string))
+  }
 
   const handleMakeOfferClick = () => {
     if (!loggedIn()) return enqueueSnackbar('Please Login First.', { variant: 'warning' })
@@ -273,9 +274,14 @@ const ProductView = (props: Props): ReactElement => {
                 Delete this listing
               </DeleteBtn>
             ) : (
-              <ChatBtn onClick={handleMakeOfferClick} startIcon={<ChatBubbleOutlineOutlinedIcon />}>
-                Make an offer
-              </ChatBtn>
+              <>
+                <ChatBtn onClick={handleMakeOfferClick} startIcon={<LocalOfferOutlined />}>
+                  Make an offer
+                </ChatBtn>
+                <ChatBtn onClick={handleChatBtnOnClick} startIcon={<ChatBubbleOutlineOutlinedIcon />}>
+                  Chat with seller
+                </ChatBtn>
+              </>
             )}
             <ShareBtn startIcon={<ShareOutlinedIcon />} onClick={handleShareOnClick}>
               Share

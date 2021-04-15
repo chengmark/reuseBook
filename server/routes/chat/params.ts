@@ -9,6 +9,7 @@ export type CreateChatRoom = {
   sellerId: string
   buyerId: string
   roomname: string
+  bookId: string
 }
 
 export type ListUserChatRooms = {

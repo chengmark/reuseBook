@@ -20,6 +20,8 @@ import { LOCATIONS, toPath } from '@src/routes'
 import BookService from '@src/services/BookService'
 import { useUserState } from '@src/context/UserContext'
 import { useSnackbar } from 'notistack'
+import { Separator } from '@src/views/resultView/style'
+import { uuidv4 } from '@src/utils'
 
 type Props = {
   currentTab: number
@@ -57,6 +59,7 @@ const OfferTab = (props: Props): ReactElement => {
   const [offers, setOffers] = useState<Array<any>>()
   const { enqueueSnackbar } = useSnackbar()
   const history = useHistory()
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     getOffers()
@@ -65,9 +68,11 @@ const OfferTab = (props: Props): ReactElement => {
   const getOffers = () => {
     BookService.getOfferBySeller(state._id as string)
       .then((res) => {
+        setLoading(false)
         setOffers(res)
       })
       .catch((err) => {
+        setLoading(false)
         console.log(err)
       })
   }
@@ -89,42 +94,37 @@ const OfferTab = (props: Props): ReactElement => {
 
   return (
     <TabPanel currentTab={currentTab} index={1}>
-      {offers?.map((offer) => (
-        <TileWrapper key={offer._id}>
-          <ImageWrapper
-            onClick={() => {
-              redirect(offer.book._id)
-            }}
-          >
-            <Image src={offer.book.img} />
-          </ImageWrapper>
-          <InfoSection>
-            <BuyerName>{`User: ${offer.buyerId.firstname} ${offer.buyerId.lastname}`}</BuyerName>
-            <InfoText>{`made an offer on you book: ${offer.book.name}`}</InfoText>
-            <InfoText>{`contact: ${offer.contact}`}</InfoText>
-            <FlexRow>
-              <Tooltip title={`Clear this offer`} style={{ fontSize: '14px' }}>
-                <FinishBtn
-                  onClick={() => {
-                    handleIgnoreOnClick(offer._id)
-                  }}
-                >
-                  Finish
-                </FinishBtn>
-              </Tooltip>
-              {/* <Tooltip title={`Delete this offer`} style={{ fontSize: '14px' }}>
-                <IgnoreBtn
-                  onClick={() => {
-                    handleIgnoreOnClick(offer._id)
-                  }}
-                >
-                  Ignore
-                </IgnoreBtn>
-              </Tooltip> */}
-            </FlexRow>
-          </InfoSection>
-        </TileWrapper>
-      ))}
+      {!loading &&
+        offers?.map((offer, i) => (
+          <>
+            <TileWrapper key={offer._id}>
+              <ImageWrapper
+                onClick={() => {
+                  redirect(offer.book._id)
+                }}
+              >
+                <Image src={offer.book.img} />
+              </ImageWrapper>
+              <InfoSection>
+                <BuyerName>{`User: ${offer.buyerId.firstname} ${offer.buyerId.lastname}`}</BuyerName>
+                <InfoText>{`made an offer on you book: ${offer.book.name}`}</InfoText>
+                <InfoText>{`contact: ${offer.contact}`}</InfoText>
+                <FlexRow>
+                  <Tooltip title={`Clear this offer`} style={{ fontSize: '14px' }}>
+                    <FinishBtn
+                      onClick={() => {
+                        handleIgnoreOnClick(offer._id)
+                      }}
+                    >
+                      Finish
+                    </FinishBtn>
+                  </Tooltip>
+                </FlexRow>
+              </InfoSection>
+            </TileWrapper>
+            <Separator isBook key={i} />
+          </>
+        ))}
       {offers?.length === 0 && (
         <CenteredTabPanel>
           <TileInfoBlock>
