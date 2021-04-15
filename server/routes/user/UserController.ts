@@ -24,11 +24,12 @@ const UserController = {
   // session checking
   auth: (req: Request, res: Response) => {
     if (req.signedCookies['SID']) {
-      User.findOne({ _id: req.session.userId }, (err: any, data: any) => {
-        if (err) return res.status(500).send({ message: 'Cannot get user' })
-        if (!data) return res.status(403).send({ message: 'Invalid user id' })
-        res.status(200).send(data)
-      })
+      User.findOne({ _id: req.session.userId })
+        .populate('interests')
+        .then((data) => {
+          if (!data) return res.status(403).send({ message: 'Invalid user id' })
+          res.status(200).send(data)
+        })
     } else {
       res.status(204).send({ message: 'no session' })
     }
