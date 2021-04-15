@@ -3,7 +3,6 @@
     "@types/aws-sdk": "^2.7.0",
     "@types/express-session": "^1.17.3",
     "@types/jest": "^26.0.22",
-    "@types/socket.io": "^2.1.13",
     "@types/supertest": "^2.0.11",
     "@types/socket.io": "^2.1.13",
     "socket.io": "^4.0.1",
