@@ -37,13 +37,16 @@ const SuggestionController = {
         .exec()
       books = books.concat(book)
     }
+    let remBooks: Array<any> = []
     if (books.length < parseInt(max)) {
-      const remBooks = await Book.aggregate([{ $sample: { size: parseInt(max) - books.length } }])
-      await Category.populate(remBooks, { path: 'category' })
-      await Review.populate(remBooks, { path: 'reviews' })
-      await User.populate(remBooks, { path: 'sellerId' })
-      books = books.concat(remBooks)
+      for (let i = 0; i < 10; i++) {
+        remBooks[i] = await Book.aggregate([{ $sample: { size: parseInt(max) - books.length } }])
+        await Category.populate(remBooks[i], { path: 'category' })
+        await Review.populate(remBooks[i], { path: 'reviews' })
+        await User.populate(remBooks[i], { path: 'sellerId' })
+      }
     }
+    books = books.concat(remBooks[Math.floor(Math.random() * 10)])
     res.status(200).send(books)
   },
 }
