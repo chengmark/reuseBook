@@ -32,7 +32,7 @@ middlewares.use(
       maxAge: ONE_DAY,
       httpOnly: true,
       // if true, then cookie will only sent to server with https://
-      secure: process.env.NODE_ENV == 'production' ? true : false,
+      secure: false,
       // corss-site requests not allowed, but nevigation from external link is allowed
       sameSite: 'lax',
     },
