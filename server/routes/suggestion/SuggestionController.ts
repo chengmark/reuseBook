@@ -22,9 +22,18 @@ const SuggestionController = {
     }
 
     let books: Array<any> = []
-    for (let i = 0; i < interestIds.length; i++) {
-      if (maxInt >= 2) if (!selections[interestIds[i]]) selections[interestIds[i]] = 2
-      maxInt -= 2
+    let randomIds: Array<string> = []
+
+    while (maxInt > 0) {
+      randomIds.push(interestIds[Math.floor(Math.random() * interestIds.length)])
+      maxInt -= 1
+    }
+    console.log(randomIds)
+    for (let i = 0; i < parseInt(max); i++) {
+      if (!selections[randomIds[i]]) {
+        selections[randomIds[i]] = 0
+      }
+      selections[randomIds[i]] += 1
     }
 
     const ids = Object.keys(selections)
@@ -38,13 +47,6 @@ const SuggestionController = {
       books = books.concat(book)
     }
 
-    if (books.length < parseInt(max)) {
-      const remBooks = await Book.aggregate([{ $sample: { size: parseInt(max) - books.length } }])
-      await Category.populate(remBooks, { path: 'category' })
-      await Review.populate(remBooks, { path: 'reviews' })
-      await User.populate(remBooks, { path: 'sellerId' })
-      books = books.concat(remBooks)
-    }
     res.status(200).send(books)
   },
 }
