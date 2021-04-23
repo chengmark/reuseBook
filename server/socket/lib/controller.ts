@@ -2,11 +2,14 @@ import { Server, Socket } from 'socket.io'
 import Chat from '../../models/Chat'
 import Message from '../../models/Message'
 
-interface ExtSocket extends Socket {
-  userData: any
-}
-
 const Controller = {
+  /**
+   * save the message to chat room
+   *
+   * @param userId sender ID
+   * @param roomId chat room ID
+   * @param content message content
+   */
   saveMessage: async (userId: string, { roomId, content }: any) =>
     new Promise((resolve) => {
       const message = { content: content, sender: userId }

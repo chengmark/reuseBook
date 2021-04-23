@@ -12,7 +12,7 @@ MongoDB config is in `./DB.ts` database name is `csci3100`
 
 **prettier will run in pre commit stage, for coding style consistency**
 
-### Add new APIs ( 20/3/2021 updated )(MUST READ)
+### Add new APIs
 
 - Naming convention:
 
@@ -33,13 +33,11 @@ MongoDB config is in `./DB.ts` database name is `csci3100`
 
 - after coding all the handlers, you can add the route in `./index.ts`
 
-### Packages used
+### Packages used (mainly used)
 
 - **express** ( popular web framework )
 - **mongoose** ( mongodb manipulation library )
 - **express-session** ( session manipulation library )
-- **passport** ( oauth services library )
-  - **passport-google-oauth2** ( google oauth support )
 
 ### File structure
 
@@ -50,17 +48,20 @@ CSCI3100_project/
 ├── models               # Database models in form of mongoose schema e.g. userModel, bookModel. (Like SQL table definition)
 ├── node_modules         # Packages
 ├── routes               # Modulize the APIs into different routes
-│   └── auth             # Oauth API route (leave it alone first)
 │   └── user             # User API route (all the user related APIs e.g. login, signup, list_users, etc. )
 │   └── index.ts         # General Route class. Whenever you want to add a new route, use this class
+│   └── ...              # other API routes
+├── types                # Self defined types or extended types
 │   └── ...
-├── types                # Self defined types if necessary
-│   └── ...
-├── utils                # Put all common functions here e.g. parseDate, checkEmail
 ├── .gitignore           # Files to be ignored
-├── authentication       # Oauth services settings (leave it alone first)
+├── authentication       # Oauth services settings (leave it alone first) ( no time to implement )
+├── DB.ts                # MongoDB config, connection file
 ├── index.ts             # Entry of the server, you can register routes here by creating a Route class
+├── initDB.ts            # Database initialization file
+├── jest.config.js       # jest config file for testing APIs
+├── Mailer.ts            # Mailing functions
 ├── package.json         # Node project configs
 ├── tsconfig.json        # Typescript configs
+├── utils                # Common utility functions
 └── ...
 ```

@@ -6,6 +6,7 @@ const S3_BUCKET = process.env.S3_BUCKET_NAME
 aws.config.region = 'ap-southeast-1'
 
 const AwsController = {
+  // sign s3 url for image uploading
   signS3: async (req: Request, res: Response): Promise<void> => {
     const { fileName, fileType } = <signS3>(<unknown>req.body)
     const s3 = new aws.S3()

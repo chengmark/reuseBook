@@ -17,6 +17,7 @@ import mongoose from 'mongoose'
 import Chat from '../../models/Chat'
 
 const BookController = {
+  // list all books
   listBooks: async (req: Request, res: Response): Promise<void> => {
     const { status } = <ListBooks>(<unknown>req.body)
     const query = status ? { status: status } : {}
@@ -32,7 +33,7 @@ const BookController = {
         res.status(200).send(data)
       })
   },
-
+  // craete a book
   createBook: async (req: Request, res: Response): Promise<void> => {
     req.body.category = mongoose.Types.ObjectId(req.body.category._id)
     const newBook = <CreateBook>(<unknown>req.body)
@@ -41,7 +42,7 @@ const BookController = {
       res.status(200).send(data)
     })
   },
-
+  // get book by book id
   getBook: async (req: Request, res: Response): Promise<void> => {
     console.log(req.params)
     const { bookId } = <GetBook>(<unknown>req.params)
@@ -62,7 +63,7 @@ const BookController = {
       res.status(500).send({ message: 'invalid bookId' })
     }
   },
-
+  // delete book by book id
   deleteBook: async (req: Request, res: Response): Promise<void> => {
     const { bookId } = <DeleteBook>(<unknown>req.params)
     try {
@@ -78,7 +79,7 @@ const BookController = {
       res.status(500).send({ message: 'invalid bookId' })
     }
   },
-
+  // list book by category id
   listByCategory: async (req: Request, res: Response): Promise<void> => {
     const { categoryId } = <FindByCategory>(<unknown>req.params)
     const query = categoryId ? { category: categoryId } : {}
@@ -87,7 +88,7 @@ const BookController = {
       res.status(200).send(data)
     })
   },
-
+  // delete books by category id
   deleteByCategory: async (req: Request, res: Response): Promise<void> => {
     const { categoryId } = <DeleteByCategory>(<unknown>req.params)
     try {
@@ -101,7 +102,8 @@ const BookController = {
       res.status(500).send({ message: 'invalid categoryId' })
     }
   },
-
+  // simplest search function, deprecated
+  // use the dedicated search algo in search route
   search: async (req: Request, res: Response): Promise<void> => {
     const { name, author } = <Search>(<unknown>req.body)
     let query = {}
@@ -123,7 +125,8 @@ const BookController = {
         res.status(200).send(data)
       })
   },
-
+  // simplest search function, deprecated
+  // use the dedicated search algo in search route
   advancedSearch: async (req: Request, res: Response) => {
     console.log(req.body)
     const { name, price, category } = <AdvancedSearch>(<unknown>req.body)
@@ -141,7 +144,8 @@ const BookController = {
         res.status(200).send(data)
       })
   },
-
+  // simplest search function, deprecated
+  // use the dedicated search algo in search route
   pagination: async (req: Request, res: Response): Promise<void> => {
     const { pageNo, pageSize } = <Pagination>(<unknown>req.params)
     const pageNoInt = parseInt(pageNo)
@@ -154,6 +158,7 @@ const BookController = {
         res.status(200).send(data)
       })
   },
+  // list book by seller id
   listBookBySellerId: async (req: Request, res: Response) => {
     const { sellerId } = <ListBookBySellerId>(<unknown>req.params)
     Book.find({ sellerId: sellerId })

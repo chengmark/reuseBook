@@ -11,7 +11,7 @@ const CategoryController = {
       res.status(200).send(docs)
     })
   },
-
+  // get category by category id
   getCategory: async (req: Request, res: Response): Promise<void> => {
     const { categoryId } = <GetCategory>(<unknown>req.params)
     const _id = mongoose.Types.ObjectId(categoryId)

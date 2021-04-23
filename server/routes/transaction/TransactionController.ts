@@ -4,6 +4,7 @@ import mongoose from 'mongoose'
 import Transaction from '../../models/Transaction'
 
 const TransactionController = {
+  // create a new transaction
   recordTransaction: async (req: Request, res: Response): Promise<void> => {
     const newTransaction = <RecordTransaction>(<unknown>req.body)
 
@@ -14,7 +15,7 @@ const TransactionController = {
       res.status(200).send(data)
     })
   },
-
+  // list all transactions
   listTransactions: async (req: Request, res: Response): Promise<void> => {
     const { status } = <ListTransactions>(<unknown>req.body)
     const query = status ? { status: status } : {}
@@ -28,7 +29,7 @@ const TransactionController = {
         res.status(200).send(data)
       })
   },
-
+  // list transactions of a buyer
   listBuying: async (req: Request, res: Response): Promise<void> => {
     const { userId } = <ListBuying>(<unknown>req.params)
     const _id = mongoose.Types.ObjectId(userId)
@@ -42,7 +43,7 @@ const TransactionController = {
         res.status(200).send(data)
       })
   },
-
+  // list transactions of a seller
   listSelling: async (req: Request, res: Response): Promise<void> => {
     const { userId } = <ListSelling>(<unknown>req.params)
     const _id = mongoose.Types.ObjectId(userId)

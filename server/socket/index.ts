@@ -1,10 +1,12 @@
 import { Server, Socket } from 'socket.io'
 import controller from './lib/controller'
 
+// extended socket typing
 interface ExtSocket extends Socket {
   userId: string
 }
 
+// socket for chatroom
 export default (httpServer: any) => {
   const io = new Server(httpServer)
   // const io = socket(httpServer)
