@@ -1,8 +1,15 @@
 import nodemailer from 'nodemailer'
 
+// email sender credentials, only accessible in env var
 const user = process.env.MAIL_USER
 const pass = process.env.MAIL_PASS
 
+/**
+ * send a mail to recipient using the template
+ *
+ * @param recipient recipient's email address
+ * @param template email html template in string
+ */
 const sendMail = async (recipient: string, template: string) => {
   const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -23,6 +30,12 @@ const sendMail = async (recipient: string, template: string) => {
   return info
 }
 
+/**
+ * return a HTML template for reset password
+ *
+ * @param name recipient's name
+ * @param resetURL URL used for reset password
+ */
 export const resetPwTemplate = (name: string, resetURL: string): string => `
   <div style="display: flex;justify-content: center; align-items: center;width: 100%; background: #f9f9f9; min-height: 250px; flex-direction: column;">
     <div style="margin: 20px auto 20px auto; background: white; padding: 25px;">

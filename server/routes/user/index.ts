@@ -2,7 +2,7 @@ import { Request, Response, Router } from 'express'
 import { Routes } from '..'
 import UserController from './UserController'
 
-// routes for user related operations
+// API for user related operations
 export class UserRoutes extends Routes {
   constructor(router: Router) {
     super(router, 'UserRoutes')

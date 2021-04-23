@@ -19,6 +19,8 @@ middlewares.use(bodyParser.urlencoded({ extended: false }))
 middlewares.use(bodyParser.json())
 middlewares.use(cors({ credentials: true, origin: true }))
 
+// use session and will be expired after 1 day
+// session stored in mongoDB
 middlewares.use(
   session({
     secret: SESSION_SECRET,

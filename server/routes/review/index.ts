@@ -2,7 +2,7 @@ import { Request, Response, Router } from 'express'
 import { Routes } from '..'
 import ReviewController from './ReviewController'
 
-// routes for user related operations
+// routes for review related operations
 export class ReviewRoutes extends Routes {
   constructor(router: Router) {
     super(router, 'ReviewRoutes')

@@ -2,7 +2,7 @@ import { Request, Response, Router } from 'express'
 import { Routes } from '..'
 import AwsController from './AwsController'
 
-// routes for user related operations
+// routes for aws related operations
 export class AWSRoutes extends Routes {
   constructor(router: Router) {
     super(router, 'AWSRoutes')

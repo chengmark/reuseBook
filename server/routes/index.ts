@@ -1,7 +1,6 @@
 import express from 'express'
 
 // super class of all routes
-
 export abstract class Routes {
   router: express.Router
   name: string // name of the group of routes
@@ -12,7 +11,11 @@ export abstract class Routes {
     this.configureRoutes()
   }
 
-  getName() {
+  /**
+   * return name of this route
+   *
+   */
+  getName(): string {
     return this.name
   }
 

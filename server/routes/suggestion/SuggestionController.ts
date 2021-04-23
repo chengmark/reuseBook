@@ -6,13 +6,16 @@ import Review from '../../models/Review'
 import User from '../../models/User'
 
 const SuggestionController = {
+  // suggest ${max} number of books based on user interests
   suggest: async (req: Request, res: Response): Promise<any> => {
     const { interestIds, max, exclude } = <ListSuggestions>(<unknown>req.body)
-    let maxInt = parseInt(max)
+    let maxInt = parseInt(max) // book number to be returned
     console.log('ids length: ', interestIds.length)
     console.log(exclude)
     const selections = {}
 
+    // if no interests e.g. new user / not logged in
+    // randomly choose books to return by $sample
     if (interestIds.length < 1) {
       const books = await Book.aggregate([{ $sample: { size: maxInt } }])
       await Category.populate(books, { path: 'category' })
@@ -22,13 +25,15 @@ const SuggestionController = {
     }
 
     let books: Array<any> = []
-    let randomIds: Array<string> = []
+    const randomIds: Array<string> = []
 
+    // randomly select intersts to maintain diversity in suggestion
     while (maxInt > 0) {
       randomIds.push(interestIds[Math.floor(Math.random() * interestIds.length)])
       maxInt -= 1
     }
-    console.log(randomIds)
+
+    // count appearance in random draws above
     for (let i = 0; i < parseInt(max); i++) {
       if (!selections[randomIds[i]]) {
         selections[randomIds[i]] = 0
@@ -37,6 +42,7 @@ const SuggestionController = {
     }
 
     const ids = Object.keys(selections)
+    // get books from db based on the random selection above
     for (let i = 0; i < ids.length; i++) {
       const book = await Book.find({ category: ids[i], _id: { $ne: exclude } })
         .populate('category')

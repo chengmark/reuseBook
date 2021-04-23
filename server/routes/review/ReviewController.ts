@@ -6,6 +6,7 @@ import Book from '../../models/Book'
 import User from '../../models/User'
 
 const ReviewController = {
+  // create a review
   createReview: async (req: Request, res: Response): Promise<void> => {
     const { bookId } = <CreateReview>(<unknown>req.params)
     const { content, userId } = <CreateReview>(<unknown>req.body)
@@ -33,6 +34,7 @@ const ReviewController = {
       )
     })
   },
+  // get review by id
   getReview: async (req: Request, res: Response): Promise<void> => {
     console.log(req.params)
     const { reviewId } = <GetReview>(<unknown>req.params)
@@ -52,7 +54,7 @@ const ReviewController = {
       res.status(500).send({ message: 'invalid reviewId' })
     }
   },
-
+  // delete review by id
   deleteReview: async (req: Request, res: Response): Promise<void> => {
     const { reviewId } = <DeleteReview>(<unknown>req.params)
     try {
@@ -65,7 +67,7 @@ const ReviewController = {
       res.status(500).send({ message: 'invalid review Id' })
     }
   },
-
+  // edit review by id
   editReview: async (req: Request, res: Response): Promise<void> => {
     const { reviewId } = <EditReview>(<unknown>req.params)
     const { content } = <EditReview>(<unknown>req.body)
@@ -78,7 +80,7 @@ const ReviewController = {
       res.status(200).send(result)
     })
   },
-
+  // list all reviews of a book
   listReviews: async (req: Request, res: Response): Promise<void> => {
     const { bookId } = <ListReviews>(<unknown>req.params)
     const _id = mongoose.Types.ObjectId(bookId)
@@ -105,7 +107,7 @@ const ReviewController = {
         })
     })
   },
-
+  // delete reviews
   deleteReviews: async (req: Request, res: Response): Promise<void> => {
     console.log(req.params)
     const { bookId } = <DeleteReviews>(<unknown>req.params)
@@ -132,7 +134,7 @@ const ReviewController = {
       }
     })
   },
-
+  // get user by review id
   getUser: async (req: Request, res: Response): Promise<void> => {
     const { reviewId } = <GetUser>(<unknown>req.params)
 

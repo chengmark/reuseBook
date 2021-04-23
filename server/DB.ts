@@ -1,8 +1,13 @@
 import mongoose from 'mongoose'
 
+// DB connection URL
 export const MONGODB_URL = process.env.MONGODB_URI ? process.env.MONGODB_URI : 'mongodb://localhost:27017/csci3100'
 
+// DB object
 const DB = {
+  /**
+   * conenct to the DB
+   */
   connect: (): void => {
     mongoose.connect(MONGODB_URL, {
       useNewUrlParser: true,

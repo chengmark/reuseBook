@@ -2,7 +2,7 @@ import { Request, Response, Router } from 'express'
 import { Routes } from '..'
 import OfferController from './OfferController'
 
-// routes for user related operations
+// routes for offer related operations
 export class OfferRoutes extends Routes {
   constructor(router: Router) {
     super(router, 'AWSRoutes')

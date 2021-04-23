@@ -1,5 +1,6 @@
 import Category from './models/Category'
-// {name: 'Music'},
+
+// init values of categories
 export const categories = [
   { name: 'arts' },
   { name: 'biographies' },
@@ -20,6 +21,11 @@ export const categories = [
   { name: 'travel' },
 ]
 
+/**
+ * return array of category names
+ *
+ * @param categories array of category objects
+ */
 const toNames = (categories: Array<{ name: string }>) => {
   const result: Array<string> = []
   categories.forEach((category) => {
@@ -28,6 +34,9 @@ const toNames = (categories: Array<{ name: string }>) => {
   return result
 }
 
+/**
+ * initialize mongoDB
+ */
 const initDB = async () =>
   new Promise((resolve) => {
     console.log('initializing Categories...')
