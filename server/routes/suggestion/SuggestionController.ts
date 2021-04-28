@@ -33,8 +33,6 @@ const SuggestionController = {
 
     let books: Array<any> = []
 
-    let randomIds: Array<string> = [] // randomised IDs to fetch random books for given interestIDs
-
     const randomIds: Array<string> = []
 
     // randomly select intersts to maintain diversity in suggestion
