@@ -17,6 +17,7 @@ import mongoose from 'mongoose'
 import Chat from '../../models/Chat'
 
 const BookController = {
+  // list all the books
   listBooks: async (req: Request, res: Response): Promise<void> => {
     const { status } = <ListBooks>(<unknown>req.body)
     const query = status ? { status: status } : {}
@@ -33,6 +34,7 @@ const BookController = {
       })
   },
 
+  // create the book
   createBook: async (req: Request, res: Response): Promise<void> => {
     req.body.category = mongoose.Types.ObjectId(req.body.category._id)
     const newBook = <CreateBook>(<unknown>req.body)
@@ -42,6 +44,7 @@ const BookController = {
     })
   },
 
+  // get the book by book ID
   getBook: async (req: Request, res: Response): Promise<void> => {
     console.log(req.params)
     const { bookId } = <GetBook>(<unknown>req.params)
@@ -63,6 +66,7 @@ const BookController = {
     }
   },
 
+  // delete the book by book ID
   deleteBook: async (req: Request, res: Response): Promise<void> => {
     const { bookId } = <DeleteBook>(<unknown>req.params)
     try {
@@ -79,6 +83,7 @@ const BookController = {
     }
   },
 
+  // list books by category
   listByCategory: async (req: Request, res: Response): Promise<void> => {
     const { categoryId } = <FindByCategory>(<unknown>req.params)
     const query = categoryId ? { category: categoryId } : {}
@@ -88,6 +93,7 @@ const BookController = {
     })
   },
 
+  // delete books by category
   deleteByCategory: async (req: Request, res: Response): Promise<void> => {
     const { categoryId } = <DeleteByCategory>(<unknown>req.params)
     try {

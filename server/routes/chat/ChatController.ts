@@ -17,6 +17,7 @@ import Message from '../../models/Message'
 import User from '../../models/User'
 
 const ChatController = {
+  // list all the chat rooms
   listChatRooms: async (req: Request, res: Response): Promise<void> => {
     const { status } = <ListChatRooms>(<unknown>req.body)
     const query = status ? { status: status } : {}
@@ -26,6 +27,7 @@ const ChatController = {
     })
   },
 
+  // create the chat room
   createChatRoom: async (req: Request, res: Response): Promise<void> => {
     const { buyerId, sellerId, roomname, bookId } = <CreateChatRoom>(<unknown>req.body)
     const newRoom = {
@@ -48,6 +50,7 @@ const ChatController = {
     })
   },
 
+  // add message to chat room
   addMessage: async (req: Request, res: Response): Promise<void> => {
     const { roomId } = <AddMessage>(<unknown>req.params)
     const { body, author } = <AddMessage>(<unknown>req.body)
@@ -67,6 +70,7 @@ const ChatController = {
     })
   },
 
+  // add user to chat rooms
   addUser: async (req: Request, res: Response): Promise<void> => {
     const { roomId } = <AddUser>(<unknown>req.params)
     const { userId } = <AddUser>(<unknown>req.body)
@@ -81,6 +85,7 @@ const ChatController = {
     })
   },
 
+  // list chat rooms by userID
   listUserChatRooms: async (req: Request, res: Response): Promise<void> => {
     const { userId } = <ListUserChatRooms>(<unknown>req.params)
     const _userId = mongoose.Types.ObjectId(userId)
@@ -93,6 +98,7 @@ const ChatController = {
       })
   },
 
+  // get chat room by chat room ID
   getChatRoom: async (req: Request, res: Response): Promise<void> => {
     const { roomId } = <GetChatRoom>(<unknown>req.params)
     const _id = mongoose.Types.ObjectId(roomId)
@@ -104,6 +110,7 @@ const ChatController = {
     })
   },
 
+  // delete chat room by chat room ID
   deleteChatRoom: async (req: Request, res: Response): Promise<void> => {
     const { roomId } = <DeleteChatRoom>(<unknown>req.params)
     try {
@@ -117,6 +124,7 @@ const ChatController = {
     }
   },
 
+  // delete the message
   deleteMessage: async (req: Request, res: Response): Promise<void> => {
     const { roomId, messageId } = <DeleteMessage>(<unknown>req.params)
 
@@ -132,6 +140,7 @@ const ChatController = {
     }
   },
 
+  // list the users of given chat room ID
   listUsers: async (req: Request, res: Response): Promise<void> => {
     const { roomId } = <ListUsers>(<unknown>req.params)
     const _id = mongoose.Types.ObjectId(roomId)
@@ -161,6 +170,7 @@ const ChatController = {
     })
   },
 
+  // list the messages of given chat room ID
   listMessages: async (req: Request, res: Response): Promise<void> => {
     const { roomId } = <ListMessages>(<unknown>req.params)
     const _id = mongoose.Types.ObjectId(roomId)

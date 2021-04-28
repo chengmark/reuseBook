@@ -3,7 +3,13 @@ import { RecordTransaction, ListTransactions, ListBuying, ListSelling } from './
 import mongoose from 'mongoose'
 import Transaction from '../../models/Transaction'
 
+/*
+This is used to store the transaction that will be made via our system. When seller accept the offer
+of particular buyer, the transaction will be recorded in database. 
+*/
+
 const TransactionController = {
+  // record the transaction in database
   recordTransaction: async (req: Request, res: Response): Promise<void> => {
     const newTransaction = <RecordTransaction>(<unknown>req.body)
 
@@ -15,6 +21,7 @@ const TransactionController = {
     })
   },
 
+  // list all the transactions store in database
   listTransactions: async (req: Request, res: Response): Promise<void> => {
     const { status } = <ListTransactions>(<unknown>req.body)
     const query = status ? { status: status } : {}
@@ -29,6 +36,7 @@ const TransactionController = {
       })
   },
 
+  // list all transactions for a user in which he was a buyer
   listBuying: async (req: Request, res: Response): Promise<void> => {
     const { userId } = <ListBuying>(<unknown>req.params)
     const _id = mongoose.Types.ObjectId(userId)
@@ -43,6 +51,7 @@ const TransactionController = {
       })
   },
 
+  // list all transactions for a user in which he was a seller
   listSelling: async (req: Request, res: Response): Promise<void> => {
     const { userId } = <ListSelling>(<unknown>req.params)
     const _id = mongoose.Types.ObjectId(userId)
