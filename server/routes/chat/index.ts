@@ -2,7 +2,7 @@ import { Request, Response, Router } from 'express'
 import { Routes } from '..'
 import ChatController from './ChatController'
 
-// routes for user related operations
+// routes for chat related operations
 export class ChatRoutes extends Routes {
   constructor(router: Router) {
     super(router, 'ChatRoutes')

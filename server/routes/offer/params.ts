@@ -1,5 +1,4 @@
 // clear listing of params for APIs
-import mongoose from 'mongoose'
 
 export type ListOfferBySeller = {
   sellerId: string

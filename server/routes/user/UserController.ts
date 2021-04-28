@@ -21,8 +21,10 @@ import nodemailer from 'nodemailer'
 const SECURE_COOKIE = process.env.NODE_ENV == 'production'
 
 const UserController = {
-  // session checking
-  auth: (req: Request, res: Response) => {
+  /**
+   * session checking
+   */
+  auth: (req: Request, res: Response): void => {
     if (req.signedCookies['SID']) {
       User.findOne({ _id: req.session.userId })
         .populate('interests')
@@ -45,7 +47,7 @@ const UserController = {
         res.status(200).send(data)
       })
   },
-  // create a user
+  // create a user e.g. signup
   createUser: async (req: Request, res: Response): Promise<void> => {
     const newUser = <CreateUser>(<unknown>req.body)
     bcrypt.genSalt(10, (err, salt) => {
@@ -105,12 +107,13 @@ const UserController = {
         if (err) return res.status(500).send(err)
       })
   },
+  // logout
   logout: async (req: Request, res: Response): Promise<void> => {
     req.session.destroy(() => {
       res.status(200).clearCookie('SID').send({ message: 'Logout successfully' })
     })
   },
-  // get a user
+  // get a user by user id
   getUser: async (req: Request, res: Response): Promise<void> => {
     const { userId } = <GetUser>(<unknown>req.params)
     try {
@@ -124,7 +127,7 @@ const UserController = {
       res.status(500).send({ message: 'invalid userId' })
     }
   },
-  // delete a user
+  // delete a user by user id
   deleteUser: async (req: Request, res: Response): Promise<void> => {
     const { userId } = <DeleteUser>(<unknown>req.params)
     try {
@@ -137,7 +140,7 @@ const UserController = {
       res.status(500).send({ message: 'invalid userId' })
     }
   },
-
+  // update user info by user id
   updateUserInfo: async (req: Request, res: Response): Promise<void> => {
     const { userId } = <UpdateUserInfo>(<unknown>req.params)
     const _userId = mongoose.Types.ObjectId(userId)
@@ -163,7 +166,7 @@ const UserController = {
     }
   },
 
-  // add interests
+  // set interests to new values
   setInterests: async (req: Request, res: Response): Promise<void> => {
     const { userId } = req.params
     const { interestIds } = <AddInterests>(<unknown>req.body)
@@ -176,6 +179,7 @@ const UserController = {
       res.status(200).send({ message: 'Interests updated' })
     })
   },
+  // create a token for password resrt
   createResetPwToken: async (req: Request, res: Response): Promise<void> => {
     const { email } = <ResetPassword>(<unknown>req.body)
     User.findOne({ email: email }, (err, data) => {
@@ -197,6 +201,7 @@ const UserController = {
       )
     })
   },
+  // reset password of a user
   resetPassword: async (req: Request, res: Response): Promise<void> => {
     const { tokenId, password } = <SetPassword>(<unknown>req.body)
     Token.findOne({ tokenId: tokenId }, (err, token) => {

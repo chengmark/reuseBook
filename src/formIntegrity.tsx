@@ -54,9 +54,12 @@ const NUM_ONLY: Validator = {
   },
 }
 
-// check whether the target passes the integrity test
-// @return original Target if passes all validators
-// @return modified errMsg if fails 1 validator
+/**
+ * check whether the target passes the integrity test
+ * @param target target to be tested
+ * @param validators validators of types of integrity test
+ * @returns target with error message if fails testing, else original target
+ */
 export const checkIntegrity = (target: Target, validators: Array<Validator>): Target => {
   validators.some((validator) => {
     if (!validator.check(target.value)) return (target.errMsg = validator.errMsg)
@@ -64,6 +67,13 @@ export const checkIntegrity = (target: Target, validators: Array<Validator>): Ta
   return target
 }
 
+/**
+ * check whether 2 targets have the same value
+ *
+ * @param target1
+ * @param target2
+ * @returns target array with error message if fails testing, else original targets
+ */
 export const checkSameValue = (target1: Target, target2: Target): Array<Target> => {
   if (target1.value != target2.value) {
     target1.errMsg = target2.errMsg = 'Please enter the same value'
@@ -71,6 +81,11 @@ export const checkSameValue = (target1: Target, target2: Target): Array<Target> 
   return [target1, target2]
 }
 
+/**
+ * check whether a form state has no error
+ * @param formState
+ * @returns true if no error, else false
+ */
 export const formNoErr = (formState: Record<string, Target>): boolean => {
   let flag = true
   for (const key of Object.keys(formState)) {
@@ -82,6 +97,11 @@ export const formNoErr = (formState: Record<string, Target>): boolean => {
   return flag
 }
 
+/**
+ * convert form state to data to be passed through API
+ * @param formState
+ * @returns object of data
+ */
 export const toData = (formState: Record<string, Target>): Record<string, string | number> => {
   const data: Record<string, string | number> = {}
   for (const key of Object.keys(formState)) {

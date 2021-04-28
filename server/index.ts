@@ -20,19 +20,22 @@ import DB from './DB'
 import initDB from './InitDB'
 import socket from './socket'
 
+// init server
 export const app: express.Application = express()
 const server: http.Server = http.createServer(app)
+// env PORT or 3002
 const PORT = process.env.PORT ? process.env.PORT : 3002
 
+// init socket
 socket(server)
 
 // use middlewares
 app.use(middlewares)
 // initPassport()
 
+// API routes
 const routes: Array<Routes> = []
 const router = express.Router()
-// create user routes to the router
 routes.push(new UserRoutes(router))
 routes.push(new CategoryRoutes(router))
 routes.push(new BookRoutes(router))
@@ -43,25 +46,27 @@ routes.push(new ReviewRoutes(router))
 routes.push(new AWSRoutes(router))
 routes.push(new TransactionRoutes(router))
 routes.push(new OfferRoutes(router))
-// create auth routes to the router
-// routes.push(new AuthRoutes(router))
 
 // all routes start with '/api'
 app.use('/api', router)
 
+// production start config
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../../build')))
   app.get('*', (req: Request, res: Response) => {
     res.sendFile(path.join(__dirname, '../../', 'build', 'index.html'))
   })
 } else {
+  // dev start config
   app.use(express.static(path.join(__dirname, '../build')))
   app.get('*', (req: Request, res: Response) => {
     res.sendFile(path.join(__dirname, '../', 'build', 'index.html'))
   })
 }
 
+// connect to mongoDB
 DB.connect()
+// testing configs
 if (process.env.NODE_ENV === 'testing') {
   server.listen(process.env.TESTING_PORT, () => {
     console.log(`Server running on port: ${PORT}`)
@@ -71,6 +76,7 @@ if (process.env.NODE_ENV === 'testing') {
     })
   })
 } else {
+  // dev or production
   initDB().then(() => {
     server.listen(PORT, () => {
       console.log(`Server running on port: ${PORT}`)

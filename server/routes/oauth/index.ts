@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express'
 // import { Routes } from '..'
 // import passport, { session } from 'passport'
 
-// // routes for authentication related operations
+// // routes for oauth related operations
 // // get /auth/strategy will start authenticating through [strategy] api
 // // after authentication it send the callback path
 // // and we are redirecting it to our site

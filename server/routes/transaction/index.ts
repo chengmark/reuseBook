@@ -2,7 +2,7 @@ import { Request, Response, Router } from 'express'
 import { Routes } from '..'
 import TransactionController from './TransactionController'
 
-// routes for user related operations
+// API for transaction related operations
 export class TransactionRoutes extends Routes {
   constructor(router: Router) {
     super(router, 'TransactionRoutes')

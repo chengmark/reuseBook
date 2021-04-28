@@ -2,6 +2,7 @@ import { Request, Response, Router } from 'express'
 import { Routes } from '..'
 import CategoryController from './CategoryController'
 
+// routes for category related operations
 export class CategoryRoutes extends Routes {
   constructor(router: Router) {
     super(router, 'Category')
