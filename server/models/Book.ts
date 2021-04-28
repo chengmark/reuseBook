@@ -1,5 +1,15 @@
 import mongoose from 'mongoose'
 
+/* This is the book model we use
+  name // Book Name
+  type // sell or trade
+  price // book price
+  tradeOption // Which book the seller want to trade with
+  author // author of book
+  category // category of the book
+  condition // new or used
+*/
+
 const Book = new mongoose.Schema({
   name: { type: String },
   type: { type: String },

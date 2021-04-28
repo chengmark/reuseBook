@@ -1,5 +1,9 @@
 import mongoose from 'mongoose'
 
+/*
+Offer model
+*/
+
 const Offer = new mongoose.Schema({
   sellerId: { type: mongoose.Types.ObjectId, ref: 'User' },
   buyerId: { type: mongoose.Types.ObjectId, ref: 'User' },

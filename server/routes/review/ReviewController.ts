@@ -6,7 +6,10 @@ import Book from '../../models/Book'
 import User from '../../models/User'
 
 const ReviewController = {
-  // create a review
+
+  // create the review for book
+
+  // create a review>>>>>>> main
   createReview: async (req: Request, res: Response): Promise<void> => {
     const { bookId } = <CreateReview>(<unknown>req.params)
     const { content, userId } = <CreateReview>(<unknown>req.body)
@@ -21,6 +24,7 @@ const ReviewController = {
           return res.status(500).send({ message: 'error setting up user id' })
         }
       })
+      // add review to book
       Book.updateOne(
         { _id: mongoose.Types.ObjectId(bookId) },
         { $push: { reviews: data._id } },
@@ -34,7 +38,12 @@ const ReviewController = {
       )
     })
   },
+
+
+  // get review by review ID
+
   // get review by id
+
   getReview: async (req: Request, res: Response): Promise<void> => {
     console.log(req.params)
     const { reviewId } = <GetReview>(<unknown>req.params)

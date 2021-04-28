@@ -6,16 +6,27 @@ import Review from '../../models/Review'
 import User from '../../models/User'
 
 const SuggestionController = {
+
+  // suggest the book according to interestIDs array
+  suggest: async (req: Request, res: Response): Promise<any> => {
+    const { interestIds, max, exclude } = <ListSuggestions>(<unknown>req.body)
+    let maxInt = parseInt(max) // maximum number of books to output
+
   // suggest ${max} number of books based on user interests
   suggest: async (req: Request, res: Response): Promise<any> => {
     const { interestIds, max, exclude } = <ListSuggestions>(<unknown>req.body)
     let maxInt = parseInt(max) // book number to be returned
+
     console.log('ids length: ', interestIds.length)
     console.log(exclude)
-    const selections = {}
+    const selections = {} // store number of books for particular interest
+
+
+    // if the interest array is empty, then return random books
 
     // if no interests e.g. new user / not logged in
     // randomly choose books to return by $sample
+
     if (interestIds.length < 1) {
       const books = await Book.aggregate([{ $sample: { size: maxInt } }])
       await Category.populate(books, { path: 'category' })
@@ -24,8 +35,14 @@ const SuggestionController = {
       return res.status(200).send(books)
     }
 
+    // the interest array is not empty, then fetch the books from database and store it into books array
+
     let books: Array<any> = []
+
+    let randomIds: Array<string> = [] // randomised IDs to fetch random books for given interestIDs
+
     const randomIds: Array<string> = []
+
 
     // randomly select intersts to maintain diversity in suggestion
     while (maxInt > 0) {
